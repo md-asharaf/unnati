@@ -15,8 +15,11 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Mail, Shield } from "lucide-react";
+import { useState } from "react";
+import { InputOTPForm } from "@/components/forms/otp-input";
 
 export default function LoginPage() {
+    const [showOTP, setShowOTP] = useState(false);
     const form = useForm<Login>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -24,8 +27,9 @@ export default function LoginPage() {
         },
     });
 
-    const onSubmit = (values: Login) => {
-        console.log(values);
+    const onSubmit = (data: Login) => {
+        console.log(data);
+        setShowOTP(true);
     };
 
     return (
@@ -60,43 +64,48 @@ export default function LoginPage() {
 
                 {/* Form */}
                 <CardContent>
-                    <Form {...form}>
-                        <form
-                            onSubmit={form.handleSubmit(onSubmit)}
-                            className="space-y-6"
-                        >
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email Address</FormLabel>
-                                        <FormControl>
-                                            <div className="relative">
-                                                <Mail
-                                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50"
-                                                    size={18}
-                                                />
-                                                <Input
-                                                    placeholder="Enter your email"
-                                                    className="pl-10 bg-primary-foreground border-none focus-visible:ring-1 focus-visible:ring-gray-400"
-                                                    {...field}
-                                                />
-                                            </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <Button
-                                type="submit"
-                                className="w-full bg-accent hover:bg-accent/80 text-primary"
+                    {showOTP ? (
+                        <InputOTPForm email={form.getValues("email")} />
+                    ) : (
+                        <Form {...form}>
+                            <form
+                                onSubmit={form.handleSubmit(onSubmit)}
+                                className="space-y-6"
                             >
-                                Send OTP →
-                            </Button>
-                        </form>
-                    </Form>
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email Address</FormLabel>
+                                            <FormControl>
+                                                <div className="relative">
+                                                    <Mail
+                                                        className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/50"
+                                                        size={18}
+                                                    />
+                                                    <Input
+                                                        placeholder="Enter your email"
+                                                        className="pl-10 bg-primary-foreground border-none focus-visible:ring-1 focus-visible:ring-gray-400"
+                                                        {...field}
+                                                    />
+                                                </div>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <Button
+                                    size="lg"
+                                    type="submit"
+                                    className="w-full bg-accent hover:bg-accent/80 text-primary"
+                                >
+                                    Send OTP →
+                                </Button>
+                            </form>
+                        </Form>
+                    )}
 
                     <p className="mt-6 text-sm text-center text-primary/50">
                         By continuing, you agree to our{" "}
