@@ -1,7 +1,7 @@
+import { FAQs } from "@/components/sections/faqs";
+import { Hero } from "@/components/sections/hero";
+import { PremiumPartners } from "@/components/sections/premium-partners";
 import Image from "next/image";
-import { PremiumPartners } from "./components/layout/sections/premium-partners";
-import { Hero } from "./components/layout/sections/hero";
-import { FAQs } from "./components/layout/sections/faqs";
 
 export default function Home() {
     const faqs = [
