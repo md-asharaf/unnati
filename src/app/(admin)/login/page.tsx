@@ -15,11 +15,25 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Mail, Shield } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputOTPForm } from "@/components/forms/otp-input";
+import { login } from "@/queries/auth";
+import { toast } from "sonner";
+import { useAuth } from "@/providers/auth-provider";
+import Loader from "@/components/ui/loader";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+    const router = useRouter();
+    const { loading, admin } = useAuth();
     const [showOTP, setShowOTP] = useState(false);
+
+    useEffect(() => {
+        if (admin) {
+            router.push("/dashboard");
+        }
+    }, [admin, router]);
+
     const form = useForm<Login>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -27,11 +41,20 @@ export default function LoginPage() {
         },
     });
 
-    const onSubmit = (data: Login) => {
-        console.log(data);
-        setShowOTP(true);
+    const onSubmit = async (values: Login) => {
+        setShowOTP(false)
+        try {
+            await login(values.email)
+            toast.success("OTP sent to your email")
+            setShowOTP(true)
+        } catch (error) {
+            toast.error("Failed to send OTP. Please try again.")
+        }
     };
-
+    
+    if (loading) {
+        return <Loader text="Loading..." />
+    }
     return (
         <div className="flex min-h-screen items-center justify-center bg-secondary">
             <Card className="w-full max-w-md border-none shadow-none bg-transparent">
