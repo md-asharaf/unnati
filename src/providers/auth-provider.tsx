@@ -18,7 +18,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("Checking auth status...");
         const fetchCurrentAdmin = async () => {
             try {
                 const {data} = await getMe();

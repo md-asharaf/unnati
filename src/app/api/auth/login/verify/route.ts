@@ -18,17 +18,17 @@ export const POST = async (req: NextRequest) => {
     });
 
     if (!admin) {
-        return NextResponse.json({ error: "Invalid email" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
 
     const { status } = await OTPService.verifyOtp(result.email, result.otp);
     if (!status) {
-        return NextResponse.json({ error: "Invalid OTP" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
     }
 
     const { accessToken, refreshToken } = generateTokens({ id: admin.id });
     return NextResponse.json(
-        { message: "OTP sent", data: { accessToken, refreshToken } },
+        { message: "Logged in successfully", data: { accessToken, refreshToken } },
         { status: 200 },
     );
 };

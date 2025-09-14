@@ -6,12 +6,12 @@ export const GET = async (req: Request) => {
     if (admin instanceof NextResponse) return admin;
     if (!admin) {
         return NextResponse.json({
-            message:"Admin not found"
-        }, {status:404})
+            error: "Admin not found"
+        }, { status: 404 })
     }
     return NextResponse.json({
-        message:"Admin fetched successfully",
-        data:{
+        message: "Admin fetched successfully",
+        data: {
             admin
         }
     })

@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { Login, loginSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import OTPservice from "@/services/otp";
-export const POST = async (req: NextRequest, res: NextResponse) => {
+export const POST = async (req: NextRequest) => {
     const { email } = (await req.json()) as Login;
     if (!email) {
         return NextResponse.json({ error: "Missing email" }, { status: 400 });
@@ -14,9 +14,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     });
 
     if (!admin) {
-        return NextResponse.json({ error: "Invalid email" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
     // send otp to email
     await OTPservice.sendOtp(result.email);
-    return NextResponse.json({ message: "OTP sent" }, { status: 200 });
+    return NextResponse.json({ message: "OTP sent to your email" }, { status: 200 });
 };
