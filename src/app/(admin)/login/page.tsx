@@ -29,10 +29,10 @@ export default function LoginPage() {
     const [showOTP, setShowOTP] = useState(false);
 
     useEffect(() => {
-        if (admin) {
+        if (!loading && admin) {
             router.push("/dashboard");
         }
-    }, [admin, router]);
+    }, [admin, loading,router]);
 
     const form = useForm<Login>({
         resolver: zodResolver(loginSchema),
@@ -44,16 +44,19 @@ export default function LoginPage() {
     const onSubmit = async (values: Login) => {
         setShowOTP(false)
         try {
-            await login(values.email)
-            toast.success("OTP sent to your email")
+            const { message } = await login(values.email)
+            toast.success(message || "OTP sent to email")
             setShowOTP(true)
-        } catch (error) {
-            toast.error("Failed to send OTP. Please try again.")
+        } catch (error: any) {
+            toast.error(error.response?.data?.error || "Failed to send OTP. Please try again.")
         }
     };
-    
+
     if (loading) {
         return <Loader text="Loading..." />
+    }
+    if (admin) {
+        return null;
     }
     return (
         <div className="flex min-h-screen items-center justify-center bg-secondary">

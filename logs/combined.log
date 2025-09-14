@@ -134,3 +134,37 @@ Validation Error Count: 1
 2025-09-14 02:17:37 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
 2025-09-14 02:18:03 [32minfo[39m: [OTP_SERVICE] Verifying OTP
 2025-09-14 02:18:03 [32minfo[39m: [OTP_SERVICE] OTP verified successfully
+2025-09-14 21:30:05 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-14 21:30:06 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 21:41:20 [32minfo[39m: [REDIS] Connected to Redis.
+2025-09-14 21:41:21 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 21:41:47 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 21:42:13 [32minfo[39m: [OTP_SERVICE] Verifying OTP
+2025-09-14 21:42:13 [32minfo[39m: [OTP_SERVICE] OTP verified successfully
+2025-09-14 21:45:52 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 21:46:12 [32minfo[39m: [OTP_SERVICE] Verifying OTP
+2025-09-14 21:46:12 [32minfo[39m: [OTP_SERVICE] OTP verified successfully
+2025-09-14 22:24:29 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 22:24:49 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 22:25:04 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 22:25:42 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 22:25:42 [32minfo[39m: [OTP_SERVICE] Verifying OTP
+2025-09-14 22:25:42 [32minfo[39m: [OTP_SERVICE] OTP verified successfully
+2025-09-14 23:10:28 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 23:10:29 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 23:10:31 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 23:10:46 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 23:10:47 [32minfo[39m: [OTP_SERVICE] Verifying OTP
+2025-09-14 23:10:47 [32minfo[39m: [OTP_SERVICE] OTP verified successfully
+2025-09-14 23:44:50 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 23:45:08 [32minfo[39m: [OTP_SERVICE] Verifying OTP
+2025-09-14 23:45:08 [32minfo[39m: [OTP_SERVICE] OTP verified successfully
+2025-09-14 23:57:23 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 23:57:41 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 23:58:31 [32minfo[39m: [PRISMA] : connected to database
+2025-09-14 23:58:40 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-14 23:59:49 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-15 00:01:46 [34mdebug[39m: [OTP_SERVICE] OTP stored in Redis
+2025-09-15 00:02:40 [32minfo[39m: [PRISMA] : connected to database
+2025-09-15 00:02:41 [32minfo[39m: [OTP_SERVICE] Verifying OTP
+2025-09-15 00:02:41 [32minfo[39m: [OTP_SERVICE] OTP verified successfully

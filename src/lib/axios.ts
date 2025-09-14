@@ -1,5 +1,6 @@
 import axios from "axios"
-import { getAccessToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from "./cookies";
+import { getAccessToken, getRefreshToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from "./cookies";
+import { refreshTokens } from "@/queries/auth";
 
 const instance = axios.create({
     baseURL: "http://localhost:3000/api",
@@ -21,17 +22,14 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(
     response => response,
     async error => {
-        if (error.response?.status === 401) {
+        if (error.response?.status === 401 && getRefreshToken()) {
             try {
-                const res = await fetch("/api/auth/refresh", { method: "POST", credentials: "include" });
-                if (res.ok) {
-                    const data = await res.json();
-                    setAccessToken(data.accessToken);
-                    setRefreshToken(data.refreshToken);
-                    // Retry original request with new token
-                    error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
-                    return instance(error.config);
-                }
+                const { data } = await refreshTokens();
+                setAccessToken(data.accessToken);
+                setRefreshToken(data.refreshToken);
+                // Retry original request with new token
+                error.config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+                return instance(error.config);
             } catch (err) {
                 removeAccessToken();
                 removeRefreshToken();

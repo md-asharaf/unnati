@@ -14,3 +14,8 @@ export const getMe = async () => {
     const response =  await instance.get('/me');
     return response.data;
 }
+
+export const refreshTokens = async () => {
+    const response =  await instance.post('/auth/refresh',{},{ withCredentials: true });
+    return response.data;
+}

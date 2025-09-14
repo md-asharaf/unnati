@@ -1,4 +1,3 @@
-"use client"
 import {
   Sidebar,
   SidebarContent,
@@ -12,9 +11,7 @@ import {
 import { Newspaper, Image, Star, Building2, Handshake } from "lucide-react"
 import { NavUser } from "./nav-user"
 import Link from "next/link"
-import { useAuth } from "@/providers/auth-provider"
-import { useRouter } from "next/navigation"
-import { useEffect } from "react"
+import { Admin } from "@/schemas"
 
 const items = [
   {
@@ -38,15 +35,7 @@ const items = [
     icon: Handshake,
   },
 ]
-export const AppSidebar = () => {
-  const router = useRouter()
-  const { admin } = useAuth()
-  useEffect(() => {
-    if (!admin) {
-      router.push("/login")
-    }
-  }, [admin, router])
-  if(!admin) return null;
+export const AppSidebar = ({admin}:{admin:Admin}) => {
   return (
     <Sidebar className="border-r border-sidebar-border">
       <SidebarHeader className="border-b border-sidebar-border">
