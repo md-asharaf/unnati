@@ -1,3 +1,4 @@
+"use client"
 import { Card, CardContent } from "@/components/ui/card";
 import {
     Carousel,
@@ -7,15 +8,14 @@ import {
     CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { AnimatedHeading } from "../animated-heading";
 interface PremiumPartnersProps {
     partners: string[];
 }
 export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
     return (
         <div className="w-full flex flex-col items-center justify-center space-y-8 p-12 md:p-20 lg:p-24">
-            <h1 className="text-3xl font-semibold text-center w-full">
-                Our Premium Partners
-            </h1>
+            <AnimatedHeading text="Our Premium Partners" />
             <Carousel
                 opts={{
                     align: "center",
