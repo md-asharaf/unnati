@@ -1,4 +1,4 @@
-import { redis } from "@/app/lib/db";
+import { redis } from "@/lib/db";
 import mailService from "./email";
 import { logger } from "../lib/logger";
 class OTPservice {
