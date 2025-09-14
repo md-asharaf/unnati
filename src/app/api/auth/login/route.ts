@@ -1,13 +1,13 @@
-import { db } from "@/app/lib/db";
-import { Login, LoginSchema } from "@/app/schemas";
-import OTPservice from "@/app/services/otp";
+import { db } from "@/lib/db";
+import { Login, loginSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
+import OTPservice from "@/services/otp";
 export const POST = async (req: NextRequest, res: NextResponse) => {
     const { email } = (await req.json()) as Login;
     if (!email) {
         return NextResponse.json({ error: "Missing email" }, { status: 400 });
     }
-    const result = LoginSchema.parse({ email });
+    const result = loginSchema.parse({ email });
 
     const admin = await db.admin.findUnique({
         where: { email: result.email },
