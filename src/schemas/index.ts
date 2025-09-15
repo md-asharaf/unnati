@@ -58,6 +58,10 @@ export const createBlogSchema = z.object({
     thumbnail: z.instanceof(File),
 });
 
+export const updateBlogSchema = createBlogSchema.omit({ thumbnail: true }).and(z.object({
+    thumbnail: z.instanceof(File).optional(),
+}));
+
 export const loginSchema = z.object({
     email: z.email("invalid email format"),
 });
@@ -83,6 +87,7 @@ export type CreateTopic = z.infer<typeof createTopicSchema>;
 
 export type Blog = z.infer<typeof blogSchema>;
 export type CreateBlog = z.infer<typeof createBlogSchema>;
+export type UpdateBlog = z.infer<typeof updateBlogSchema>;
 
 export type VerifyLogin = z.infer<typeof verifyLoginSchema>;
 
