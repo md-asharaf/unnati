@@ -1,24 +1,25 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { verifyToken } from "../lib/token";
 import { db } from "../lib/db";
-export function authMiddleware(handler: Function) {
-    return async (req: NextApiRequest, res: NextApiResponse) => {
-        const authHeader = req.headers.authorization;
-        const token = authHeader?.startsWith("Bearer ")
-            ? authHeader.slice(7)
-            : null;
 
-        if (!token) {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
-        const { id } = verifyToken(token) as { id: string };
+export async function requireAdmin(request: Request) {
+    const authHeader = request.headers.get("authorization");
+    const token = authHeader?.startsWith("Bearer ")
+        ? authHeader.slice(7)
+        : null;
 
-        const admin = await db.admin.findUnique({
-            where: { id },
-        });
-        // @ts-ignore
-        req.admin = admin;
+    if (!token) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    try {
+        var decodedToken = verifyToken(token);
+    } catch (err) {
+        return NextResponse.json({ error: "Invalid or expired token" }, { status: 401 });
+    }
+    const admin = await db.admin.findUnique({ where: { id: decodedToken.id } });
 
-        return handler(req, res);
-    };
+    if (!admin) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    return admin;
 }

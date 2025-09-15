@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -42,14 +43,29 @@ export const Header = ({ logoUrl }: HeaderProps) => {
                 {/* Desktop Nav links - Using primary color for main navigation */}
                 <ul className="hidden md:flex items-center space-x-4 lg:space-x-8 font-medium text-foreground">
                     {navLinks.map((link) => (
-                        <li key={link.href}>
+                        <motion.li
+                            key={link.href}
+                            className="relative"
+                            initial="rest"
+                            whileHover="hover"
+                            animate="rest"
+                        >
                             <Link
                                 href={link.href}
-                                className="hover:text-accent transition-colors duration-200 focus:outline-none focus:text-accent"
+                                className="hover:text-accent transition-colors duration-200 focus:outline-none focus:text-accent px-1 relative"
                             >
                                 {link.label}
+                                <motion.span
+                                    variants={{
+                                        rest: { scaleX: 0 },
+                                        hover: { scaleX: 1 },
+                                    }}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    className="origin-left absolute left-0 -bottom-6 h-[1px] w-full bg-primary"
+                                    style={{ display: "block" }}
+                                />
                             </Link>
-                        </li>
+                        </motion.li>
                     ))}
                 </ul>
 

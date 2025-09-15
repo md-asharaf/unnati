@@ -1,5 +1,5 @@
 import Redis from "ioredis";
-import { logger } from "../lib/logger";
+import { logger } from "@/lib/logger";
 
 export default class RedisService {
     private client: Redis;

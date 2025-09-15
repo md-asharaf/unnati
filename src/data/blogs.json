@@ -1,0 +1,17 @@
+{
+    "blogs": [
+        {
+            "slug": "understanding-the-basics-of-react",
+            "imageUrl": "https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
+        },
+        {
+            "slug": "10-tips-for-effective-remote-work",
+            "imageUrl": "https://images.unsplash.com/photo-1519389950473-47ba0277781c"
+        },
+        {
+            "slug": "a-guide-to-modern-css-techniques",
+            "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb"
+        }
+        
+    ]
+}

@@ -1,8 +1,8 @@
-import { db } from "@/app/lib/db";
-import { VerifyLogin, VerifyLoginSchema } from "@/app/schemas";
+import { VerifyLogin, verifyLoginSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
-import OTPService from "@/app/services/otp";
-import { generateTokens } from "@/app/lib/token";
+import OTPService from "@/services/otp";
+import { generateTokens } from "@/lib/token";
+import { db } from "@/lib/db";
 export const POST = async (req: NextRequest) => {
     const { email, otp } = (await req.json()) as VerifyLogin;
     if (!email || !otp) {
@@ -11,24 +11,24 @@ export const POST = async (req: NextRequest) => {
             { status: 400 },
         );
     }
-    const result = VerifyLoginSchema.parse({ email, otp });
+    const result = verifyLoginSchema.parse({ email, otp });
 
     const admin = await db.admin.findUnique({
         where: { email: result.email },
     });
 
     if (!admin) {
-        return NextResponse.json({ error: "Invalid email" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid email" }, { status: 400 });
     }
 
     const { status } = await OTPService.verifyOtp(result.email, result.otp);
     if (!status) {
-        return NextResponse.json({ error: "Invalid OTP" }, { status: 401 });
+        return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
     }
 
     const { accessToken, refreshToken } = generateTokens({ id: admin.id });
     return NextResponse.json(
-        { message: "OTP sent", data: { accessToken, refreshToken } },
+        { message: "Logged in successfully", data: { accessToken, refreshToken } },
         { status: 200 },
     );
 };

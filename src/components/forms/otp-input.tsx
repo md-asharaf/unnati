@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -20,21 +19,28 @@ import {
     InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { VerifyLogin, verifyLoginSchema } from "@/schemas";
-import { useRouter } from "next/navigation";
+import { verifyLogin } from "@/queries/auth";
+import { toast } from "sonner";
+import { useAuth } from "@/providers/auth-provider";
 
 export function InputOTPForm({ email }: { email: string }) {
-    const router = useRouter();
+    const { login } = useAuth();
     const form = useForm<VerifyLogin>({
         resolver: zodResolver(verifyLoginSchema),
         defaultValues: {
             email,
-            otp: "",
+            otp: "",    
         },
     });
 
-    function onSubmit(data: VerifyLogin) {
-        console.log(data);
-        router.push("/dashboard");
+    const onSubmit = async (values: VerifyLogin) => {
+        try {
+            const { data,message } = await verifyLogin(values.email, values.otp);
+            login(data.admin, data.accessToken, data.refreshToken);
+            toast.success(message || "Login successful!");
+        } catch (error:any) {
+            toast.error(error.response?.message || "Failed to verify OTP. Please try again.");
+        }
     }
 
     return (
