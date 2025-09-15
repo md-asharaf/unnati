@@ -1,22 +1,35 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Search, Plus, MoreHorizontal, Edit, Trash2, Eye } from "lucide-react"
-import { BlogFormDialog } from "./blog-form-dialog"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Plus, MoreHorizontal, Edit, Trash2, Eye } from "lucide-react";
+import { BlogFormDialog } from "./blog-form-dialog";
+import { CustomAlertDialog } from "./custom-alert-dialog";
 
 interface Blog {
-    id: string
-    title: string
-    slug: string
-    content: string
-    thumbnail: string
-    updatedAt: string
+    id: string;
+    title: string;
+    slug: string;
+    content: string;
+    thumbnail: string;
+    updatedAt: string;
 }
 
 // Mock data for demonstration
@@ -25,7 +38,8 @@ const mockBlogs: Blog[] = [
         id: "1",
         title: "Getting Started with Next.js 15",
         slug: "getting-started-nextjs-15",
-        content: "Learn how to build modern web applications with Next.js 15...",
+        content:
+            "Learn how to build modern web applications with Next.js 15...",
         thumbnail: "/nextjs-blog-thumbnail.jpg",
         updatedAt: "2024-01-15",
     },
@@ -45,53 +59,63 @@ const mockBlogs: Blog[] = [
         thumbnail: "/api-development-blog-thumbnail.jpg",
         updatedAt: "2024-01-13",
     },
-]
+];
 
 export function BlogsTable() {
-    const [blogs, setBlogs] = useState<Blog[]>(mockBlogs)
-    const [searchTerm, setSearchTerm] = useState("")
-    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false)
-    const [editingBlog, setEditingBlog] = useState<Blog | null>(null)
+    const [isOpen, setIsOpen] = useState(false);
+    const [blogs, setBlogs] = useState<Blog[]>(mockBlogs);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
 
     const filteredBlogs = blogs.filter(
         (blog) =>
             blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             blog.slug.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
+    );
 
     const handleCreateBlog = (blogData: Omit<Blog, "id" | "updatedAt">) => {
         const newBlog: Blog = {
             ...blogData,
             id: Date.now().toString(),
             updatedAt: new Date().toISOString().split("T")[0],
-        }
-        setBlogs([newBlog, ...blogs])
-        setIsCreateDialogOpen(false)
-    }
+        };
+        setBlogs([newBlog, ...blogs]);
+        setIsCreateDialogOpen(false);
+    };
 
     const handleUpdateBlog = (blogData: Omit<Blog, "id" | "updatedAt">) => {
-        if (!editingBlog) return
+        if (!editingBlog) return;
 
         const updatedBlog: Blog = {
             ...editingBlog,
             ...blogData,
             updatedAt: new Date().toISOString().split("T")[0],
-        }
+        };
 
-        setBlogs(blogs.map((blog) => (blog.id === editingBlog.id ? updatedBlog : blog)))
-        setEditingBlog(null)
-    }
+        setBlogs(
+            blogs.map((blog) =>
+                blog.id === editingBlog.id ? updatedBlog : blog,
+            ),
+        );
+        setEditingBlog(null);
+    };
 
     const handleDeleteBlog = (id: string) => {
-        setBlogs(blogs.filter((blog) => blog.id !== id))
-    }
+        setBlogs(blogs.filter((blog) => blog.id !== id));
+    };
 
     return (
         <Card>
             <CardHeader>
                 <div className="flex items-center justify-between">
-                    <CardTitle className="text-2xl font-bold">Blog Posts</CardTitle>
-                    <Button onClick={() => setIsCreateDialogOpen(true)} className="gap-2 bg-accent hover:bg-accent/80" >
+                    <CardTitle className="text-2xl font-bold">
+                        Blog Posts
+                    </CardTitle>
+                    <Button
+                        onClick={() => setIsCreateDialogOpen(true)}
+                        className="gap-2 bg-accent hover:bg-accent/80"
+                    >
                         <Plus className="h-4 w-4" />
                         Create Blog
                     </Button>
@@ -107,7 +131,8 @@ export function BlogsTable() {
                         />
                     </div>
                     <Badge variant="secondary" className="text-sm">
-                        {filteredBlogs.length} blog{filteredBlogs.length !== 1 ? "s" : ""}
+                        {filteredBlogs.length} blog
+                        {filteredBlogs.length !== 1 ? "s" : ""}
                     </Badge>
                 </div>
             </CardHeader>
@@ -116,7 +141,7 @@ export function BlogsTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead >Thumbnail</TableHead>
+                                <TableHead>Thumbnail</TableHead>
                                 <TableHead>Title</TableHead>
                                 <TableHead>Slug</TableHead>
                                 <TableHead>Updated</TableHead>
@@ -126,8 +151,13 @@ export function BlogsTable() {
                         <TableBody>
                             {filteredBlogs.length === 0 ? (
                                 <TableRow>
-                                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                                        {searchTerm ? "No blogs found matching your search." : "No blogs created yet."}
+                                    <TableCell
+                                        colSpan={7}
+                                        className="text-center py-8 text-muted-foreground"
+                                    >
+                                        {searchTerm
+                                            ? "No blogs found matching your search."
+                                            : "No blogs created yet."}
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -135,39 +165,69 @@ export function BlogsTable() {
                                     <TableRow key={blog.id}>
                                         <TableCell>
                                             <img
-                                                src={blog.thumbnail || "/placeholder.svg"}
+                                                src={
+                                                    blog.thumbnail ||
+                                                    "/placeholder.svg"
+                                                }
                                                 alt={blog.title}
                                                 className="h-12 w-12 rounded-md object-cover"
                                             />
                                         </TableCell>
                                         <TableCell className="font-medium max-w-xs">
-                                            <div className="truncate" title={blog.title}>
+                                            <div
+                                                className="truncate"
+                                                title={blog.title}
+                                            >
                                                 {blog.title}
                                             </div>
                                         </TableCell>
-                                        <TableCell className="text-muted-foreground font-mono text-sm">{blog.slug}</TableCell>
-                                        <TableCell className="text-muted-foreground">{blog.updatedAt}</TableCell>
+                                        <TableCell className="text-muted-foreground font-mono text-sm">
+                                            {blog.slug}
+                                        </TableCell>
+                                        <TableCell className="text-muted-foreground">
+                                            {blog.updatedAt}
+                                        </TableCell>
                                         <TableCell>
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        className="h-8 w-8 p-0"
+                                                    >
                                                         <MoreHorizontal className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
                                                 <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem className="gap-2" onClick={() => setEditingBlog(blog)}>
+                                                    <DropdownMenuItem
+                                                        className="gap-2"
+                                                        onClick={() =>
+                                                            setEditingBlog(blog)
+                                                        }
+                                                    >
                                                         <Edit className="h-4 w-4" />
                                                         Edit
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         className="gap-2 text-destructive"
-                                                        onClick={() => handleDeleteBlog(blog.id)}
+                                                        onClick={() =>
+                                                            setIsOpen(true)
+                                                        }
                                                     >
                                                         <Trash2 className="h-4 w-4" />
                                                         Delete
                                                     </DropdownMenuItem>
                                                 </DropdownMenuContent>
                                             </DropdownMenu>
+                                            <CustomAlertDialog
+                                                isOpen={isOpen}
+                                                onCancel={() =>
+                                                    setIsOpen(false)
+                                                }
+                                                onContinue={() =>
+                                                    handleDeleteBlog(blog.id)
+                                                }
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 ))
@@ -192,5 +252,5 @@ export function BlogsTable() {
                 initialData={editingBlog || undefined}
             />
         </Card>
-    )
+    );
 }

@@ -7,26 +7,26 @@ import {
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
+    AlertDialogOverlay,
     AlertDialogTitle,
-    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 interface CustomAlertDialogProps {
-    children: React.ReactNode;
+    isOpen: boolean;
     description?: string;
     title?: string;
     onCancel?: () => void;
     onContinue?: () => void;
 }
 export const CustomAlertDialog = ({
-    children,
+    isOpen,
     description = "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
     title = "Are you sure?",
     onCancel = () => {},
     onContinue = () => {},
 }: CustomAlertDialogProps) => {
     return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>{children}</AlertDialogTrigger>
+        <AlertDialog open={isOpen} onOpenChange={onCancel}>
+            <AlertDialogOverlay className="bg-black/20" />
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>

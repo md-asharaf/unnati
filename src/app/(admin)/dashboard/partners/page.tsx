@@ -9,9 +9,11 @@ import { Loader2, Trash, Building2 } from "lucide-react";
 import Image from "next/image";
 import { PartnerUpload } from "@/components/dashboard/partner-upload";
 import { deletePartner, fetchPartners, Partner } from "@/queries/partners";
-import { CustomAlertDialog } from "@/components/dashboard/alert-dialog";
+import { CustomAlertDialog } from "@/components/dashboard/custom-alert-dialog";
+import { useState } from "react";
 
 function PremiumPartners() {
+    const [open, setOpen] = useState(false);
     const queryClient = useQueryClient();
 
     const { data: partners = [], isLoading } = useQuery({
@@ -88,17 +90,24 @@ function PremiumPartners() {
                                 key={partner.id}
                                 className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02] relative"
                             >
-                                <CustomAlertDialog description="this action cannot be undone" onContinue={() => deleteMutation.mutate(partner.id)}>
-                                    <Button
-                                        size="sm"
-                                        variant="destructive"
-                                        className="absolute rounded-full top-2 right-2 z-10 p-2 h-auto opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 disabled:group-hover:opacity-100"
-                                        disabled={deleteMutation.isPending}
-                                        aria-label="Delete partner"
-                                    >
-                                        <Trash className="w-4 h-4" />
-                                    </Button>
-                                </CustomAlertDialog>
+                                <Button
+                                    size="sm"
+                                    variant="destructive"
+                                    className="absolute rounded-full top-2 right-2 z-10 p-2 h-auto opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 disabled:group-hover:opacity-100"
+                                    disabled={deleteMutation.isPending}
+                                    aria-label="Delete partner"
+                                    onClick={() => setOpen(true)}
+                                >
+                                    <Trash className="w-4 h-4" />
+                                </Button>
+                                <CustomAlertDialog
+                                    isOpen={open}
+                                    description="this action cannot be undone"
+                                    onCancel={() => setOpen(false)}
+                                    onContinue={() =>
+                                        deleteMutation.mutate(partner.id)
+                                    }
+                                />
                                 <CardContent className="p-4">
                                     <div className="aspect-[3/2] relative bg-muted/20 rounded-lg overflow-hidden">
                                         <Image
