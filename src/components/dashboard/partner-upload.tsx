@@ -4,14 +4,24 @@ import { Input } from "../ui/input"
 import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { Partner, uploadPartner } from "@/queries/partners"
+import { toast } from "sonner"
 export const PartnerUpload = () => {
     const queryClient = useQueryClient()
     const [uploading, setUploading] = useState(false)
     const uploadMutation = useMutation({
-        mutationFn: uploadPartner,
+        mutationFn: async (file: File) => {
+            const { data } = await uploadPartner(file)
+            return data.partner;
+        },
         onSuccess: (newPartner) => {
+            if (!newPartner) return;
+            toast.success("Partner uploaded successfully!")
             queryClient.setQueryData(["partners"], (old: Partner[] = []) => [...old, newPartner])
         },
+        onError: (error) => {
+            console.error("Error uploading partner:", error);
+            toast.error("Failed to upload partner. Please try again.")
+        }
     })
     const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -19,7 +29,7 @@ export const PartnerUpload = () => {
 
         setUploading(true)
         try {
-            await uploadMutation.mutateAsync({ name: file.name.split(".")[0], logo: file })
+            await uploadMutation.mutateAsync(file)
         } finally {
             setUploading(false)
             e.target.value = ""

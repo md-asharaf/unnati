@@ -20,5 +20,12 @@ export const POST = async (req: NextRequest) => {
             type: "PARTNER",
         },
     });
-    return NextResponse.json({ data: { partner }, message: "Partner image uploaded successfully" });
+    return NextResponse.json({
+        data: {
+            partner: {
+                id: partner.id,
+                url: partner.url
+            }
+        }, message: "Partner image uploaded successfully"
+    });
 }

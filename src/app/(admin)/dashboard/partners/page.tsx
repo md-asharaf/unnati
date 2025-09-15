@@ -11,6 +11,7 @@ import { PartnerUpload } from "@/components/dashboard/partner-upload";
 import { deletePartner, fetchPartners, Partner } from "@/queries/partners";
 import { CustomAlertDialog } from "@/components/dashboard/custom-alert-dialog";
 import { useState } from "react";
+import { toast } from "sonner";
 
 function PremiumPartners() {
     const [open, setOpen] = useState(false);
@@ -18,16 +19,29 @@ function PremiumPartners() {
 
     const { data: partners = [], isLoading } = useQuery({
         queryKey: ["partners"],
-        queryFn: fetchPartners,
+        queryFn: async (): Promise<Partner[]> => {
+            try {
+                const { data } = await fetchPartners()
+                return data.images;
+            } catch (error) {
+                console.error("Error fetching partners:", error);
+                return [];
+            }
+        },
     });
 
     const deleteMutation = useMutation({
         mutationFn: deletePartner,
         onSuccess: (_, deletedId) => {
+            toast.success("Partner deleted successfully");
+            queryClient.invalidateQueries({ queryKey: ["partners"] });
             queryClient.setQueryData(["partners"], (old: Partner[] = []) =>
                 old.filter((partner) => partner.id !== deletedId),
             );
         },
+        onError: () => {
+            toast.error("Failed to delete partner. Please try again.");
+        }
     });
 
     return (
@@ -85,7 +99,7 @@ function PremiumPartners() {
                     </Card>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        {partners.map((partner) => (
+                        {partners.map((partner, index) => (
                             <Card
                                 key={partner.id}
                                 className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02] relative"
@@ -112,21 +126,13 @@ function PremiumPartners() {
                                     <div className="aspect-[3/2] relative bg-muted/20 rounded-lg overflow-hidden">
                                         <Image
                                             src={
-                                                partner.logo ||
+                                                partner.url ||
                                                 "/placeholder.svg"
                                             }
-                                            alt={partner.name}
+                                            alt={`Partner ${index + 1}`}
                                             fill
                                             className="object-contain p-2"
                                         />
-                                    </div>
-                                    <div className="mt-3 text-center">
-                                        <p
-                                            className="text-sm font-medium truncate"
-                                            title={partner.name}
-                                        >
-                                            {partner.name}
-                                        </p>
                                     </div>
                                 </CardContent>
                             </Card>

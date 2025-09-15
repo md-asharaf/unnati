@@ -25,29 +25,18 @@ class UploadService {
                         | "video"
                         | "raw"
                         | "auto",
-                    folder: "unnati",
                     format: mimetype.split("/")[1],
                 },
                 (error, result) => {
                     if (error) {
                         logger.error("Cloudinary upload error:", error);
                         reject(error);
-                    } else if (!result?.url || !result?.public_id) {
-                        logger.error(
-                            "Cloudinary upload returned incomplete result:",
-                            result,
-                        );
-                        reject(
-                            new Error(
-                                "Cloudinary upload returned incomplete result.",
-                            ),
-                        );
-                    } else {
+                    }else {
                         logger.info("Cloudinary upload success:", {
-                            url: result.url,
-                            id: result.public_id,
+                            url: result?.url,
+                            id: result?.public_id,
                         });
-                        resolve({ url: result.url, id: result.public_id });
+                        resolve({ url: result?.url!, id: result?.public_id! });
                     }
                 },
             );
