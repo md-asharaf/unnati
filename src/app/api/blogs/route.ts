@@ -62,6 +62,9 @@ export const GET = async (req: NextRequest) => {
     const [blogs, total] = await Promise.all([
         db.blog.findMany({
             skip: (page - 1) * limit,
+            include:{
+                thumbnail: true
+            },
             take: limit,
         }),
         db.blog.count(),

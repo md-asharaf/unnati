@@ -49,17 +49,19 @@ export const blogSchema = z.object({
     imageId: z.string().min(1, "Image ID is required"),
     createdAt: z.date(),
     updatedAt: z.date(),
+    // Relations
+    thumbnail: imageSchema.optional(),
 });
 
 export const createBlogSchema = z.object({
     slug: z.string().min(1, "Slug is required"),
     title: z.string().min(1, "Title is required"),
     content: z.string().min(1, "Content is required"),
-    thumbnail: z.instanceof(File),
+    thumbnail: z.file(),
 });
 
 export const updateBlogSchema = createBlogSchema.omit({ thumbnail: true }).and(z.object({
-    thumbnail: z.instanceof(File).optional(),
+    thumbnail: z.file().optional(),
 }));
 
 export const loginSchema = z.object({

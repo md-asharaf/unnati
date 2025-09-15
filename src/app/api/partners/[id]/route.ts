@@ -6,7 +6,6 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ i
     const admin = await requireAdmin(req);
     if (admin instanceof NextResponse) return admin;
     const { id } = await params;
-    console.log(id)
     if (!id) {
         return NextResponse.json({ error: "No id provided" }, { status: 400 });
     }

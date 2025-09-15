@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card"
 import { Input } from "../ui/input"
 import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { Partner, uploadPartner } from "@/queries/partners"
+import { uploadPartner } from "@/queries/partners"
+import { Image as Partner } from "@/schemas"
 import { toast } from "sonner"
 export const PartnerUpload = () => {
     const queryClient = useQueryClient()
@@ -19,7 +20,6 @@ export const PartnerUpload = () => {
             queryClient.setQueryData(["partners"], (old: Partner[] = []) => [...old, newPartner])
         },
         onError: (error) => {
-            console.error("Error uploading partner:", error);
             toast.error("Failed to upload partner. Please try again.")
         }
     })

@@ -7,7 +7,6 @@ import {
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
-    AlertDialogOverlay,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 interface CustomAlertDialogProps {
@@ -26,7 +25,6 @@ export const CustomAlertDialog = ({
 }: CustomAlertDialogProps) => {
     return (
         <AlertDialog open={isOpen} onOpenChange={onCancel}>
-            <AlertDialogOverlay className="bg-black/20" />
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>

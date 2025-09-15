@@ -23,7 +23,6 @@ function PremiumPartners() {
                 const { data } = await fetchPartners()
                 return data.images;
             } catch (error) {
-                console.error("Error fetching partners:", error);
                 return [];
             }
         },

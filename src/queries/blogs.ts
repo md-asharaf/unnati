@@ -11,14 +11,14 @@ const fetchBlogs = async (page = 1, limit = 10) => {
     return response.data
 }
 
-const deleteBlog = async (id: string) => {
-    const response = await instance.delete(`/blogs/${id}`)
+const deleteBlog = async (slug: string) => {
+    const response = await instance.delete(`/blogs/${slug}`)
     return response.data
 }
 
 const createBlog = async ({ title, content, slug, thumbnail }: CreateBlog) => {
     const formData = new FormData()
-    formData.append("file", thumbnail)
+    formData.append("thumbnail", thumbnail)
     formData.append("title", title)
     formData.append("content", content)
     formData.append("slug", slug)
@@ -33,7 +33,7 @@ const createBlog = async ({ title, content, slug, thumbnail }: CreateBlog) => {
 const updateBlog = async (slug: string, { title, content, slug: newSlug, thumbnail }: UpdateBlog) => {
     const formData = new FormData()
     if (thumbnail) {
-        formData.append("file", thumbnail)
+        formData.append("thumbnail", thumbnail)
     }
     formData.append("title", title)
     formData.append("content", content)

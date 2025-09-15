@@ -22,88 +22,78 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Plus, MoreHorizontal, Edit, Trash2, Eye } from "lucide-react";
 import { BlogFormDialog } from "./blog-form-dialog";
 import { CustomAlertDialog } from "./custom-alert-dialog";
-
-interface Blog {
-    id: string;
-    title: string;
-    slug: string;
-    content: string;
-    thumbnail: string;
-    updatedAt: string;
-}
-
-// Mock data for demonstration
-const mockBlogs: Blog[] = [
-    {
-        id: "1",
-        title: "Getting Started with Next.js 15",
-        slug: "getting-started-nextjs-15",
-        content:
-            "Learn how to build modern web applications with Next.js 15...",
-        thumbnail: "/nextjs-blog-thumbnail.jpg",
-        updatedAt: "2024-01-15",
-    },
-    {
-        id: "2",
-        title: "Modern UI Design Principles",
-        slug: "modern-ui-design-principles",
-        content: "Explore the latest trends in user interface design...",
-        thumbnail: "/ui-design-blog-thumbnail.jpg",
-        updatedAt: "2024-01-14",
-    },
-    {
-        id: "3",
-        title: "Building Scalable APIs",
-        slug: "building-scalable-apis",
-        content: "Best practices for creating robust and scalable APIs...",
-        thumbnail: "/api-development-blog-thumbnail.jpg",
-        updatedAt: "2024-01-13",
-    },
-];
+import { Blog, CreateBlog, UpdateBlog } from "@/schemas";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createBlog, deleteBlog, fetchBlogs, updateBlog } from "@/queries/blogs";
+import { toast } from "sonner";
+import Image from "next/image";
 
 export function BlogsTable() {
     const [isOpen, setIsOpen] = useState(false);
-    const [blogs, setBlogs] = useState<Blog[]>(mockBlogs);
     const [searchTerm, setSearchTerm] = useState("");
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
     const [editingBlog, setEditingBlog] = useState<Blog | null>(null);
+    const queryClient = useQueryClient();
+    const { data: blogs, isLoading } = useQuery({
+        queryKey: ["blogs"],
+        queryFn: async (): Promise<Blog[]> => {
+            const { data } = await fetchBlogs()
+            return data.blogs;
+        }
+    })
 
-    const filteredBlogs = blogs.filter(
+    const filteredBlogs = blogs?.filter(
         (blog) =>
             blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
             blog.slug.toLowerCase().includes(searchTerm.toLowerCase()),
     );
 
-    const handleCreateBlog = (blogData: Omit<Blog, "id" | "updatedAt">) => {
-        const newBlog: Blog = {
-            ...blogData,
-            id: Date.now().toString(),
-            updatedAt: new Date().toISOString().split("T")[0],
-        };
-        setBlogs([newBlog, ...blogs]);
-        setIsCreateDialogOpen(false);
-    };
+    const deleteMutation = useMutation({
+        mutationFn: deleteBlog,
+        onSuccess: (_, slug) => {
+            setIsOpen(false);
+            toast.success("Blog deleted successfully");
+            queryClient.invalidateQueries({ queryKey: ["blogs"] });
+            queryClient.setQueryData(["blogs"], (old: Blog[] = []) =>
+                old.filter((blog) => blog.slug !== slug),
+            );
+        },
+        onError: () => {
+            setIsOpen(false);
+            toast.error("Failed to delete blog. Please try again.");
+        }
+    })
 
-    const handleUpdateBlog = (blogData: Omit<Blog, "id" | "updatedAt">) => {
-        if (!editingBlog) return;
-
-        const updatedBlog: Blog = {
-            ...editingBlog,
-            ...blogData,
-            updatedAt: new Date().toISOString().split("T")[0],
-        };
-
-        setBlogs(
-            blogs.map((blog) =>
-                blog.id === editingBlog.id ? updatedBlog : blog,
-            ),
-        );
-        setEditingBlog(null);
-    };
-
-    const handleDeleteBlog = (id: string) => {
-        setBlogs(blogs.filter((blog) => blog.id !== id));
-    };
+    const updatemutation = useMutation({
+        mutationFn: async (values: UpdateBlog) => {
+            if (!editingBlog) return;
+            const { data } = await updateBlog(editingBlog?.slug!, values)
+            return data.blog;
+        },
+        onSuccess: (updateBlog) => {
+            if (!updateBlog) return;
+            toast.success("Blog updated successfully!")
+            queryClient.setQueryData(["blogs"], (old: Blog[] = []) => old.map((blog) => blog.slug === updateBlog.slug ? updateBlog : blog))
+        },
+        onError: (error) => {
+            toast.error("Failed to update blog. Please try again.")
+        }
+    })
+    const createMutation = useMutation({
+        mutationFn: async (values: CreateBlog) => {
+            const { data } = await createBlog(values)
+            return data.blog;
+        },
+        onSuccess: (newBlog) => {
+            if (!newBlog) return;
+            toast.success("Blog created successfully!")
+            queryClient.setQueryData(["blogs"], (old: Blog[] = []) => [...old, newBlog])
+            setIsCreateDialogOpen(false);
+        },
+        onError: (error) => {
+            toast.error("Failed to create blog. Please try again.")
+        }
+    })
 
     return (
         <Card>
@@ -131,8 +121,8 @@ export function BlogsTable() {
                         />
                     </div>
                     <Badge variant="secondary" className="text-sm">
-                        {filteredBlogs.length} blog
-                        {filteredBlogs.length !== 1 ? "s" : ""}
+                        {filteredBlogs?.length} blog
+                        {filteredBlogs?.length !== 1 ? "s" : ""}
                     </Badge>
                 </div>
             </CardHeader>
@@ -149,7 +139,7 @@ export function BlogsTable() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {filteredBlogs.length === 0 ? (
+                            {filteredBlogs?.length === 0 ? (
                                 <TableRow>
                                     <TableCell
                                         colSpan={7}
@@ -161,14 +151,16 @@ export function BlogsTable() {
                                     </TableCell>
                                 </TableRow>
                             ) : (
-                                filteredBlogs.map((blog) => (
-                                    <TableRow key={blog.id}>
+                                filteredBlogs?.map((blog) => (
+                                    <TableRow key={blog.slug}>
                                         <TableCell>
-                                            <img
+                                            <Image
                                                 src={
-                                                    blog.thumbnail ||
+                                                    blog.thumbnail?.url ||
                                                     "/placeholder.svg"
                                                 }
+                                                width={50}
+                                                height={50}
                                                 alt={blog.title}
                                                 className="h-12 w-12 rounded-md object-cover"
                                             />
@@ -185,7 +177,11 @@ export function BlogsTable() {
                                             {blog.slug}
                                         </TableCell>
                                         <TableCell className="text-muted-foreground">
-                                            {blog.updatedAt}
+                                            {new Date(blog.updatedAt).toLocaleDateString("en-US", {
+                                                year: "numeric",
+                                                month: "short",
+                                                day: "numeric",
+                                            })}
                                         </TableCell>
                                         <TableCell>
                                             <DropdownMenu>
@@ -225,7 +221,7 @@ export function BlogsTable() {
                                                     setIsOpen(false)
                                                 }
                                                 onContinue={() =>
-                                                    handleDeleteBlog(blog.id)
+                                                    deleteMutation.mutate(blog.slug)
                                                 }
                                             />
                                         </TableCell>
@@ -240,14 +236,20 @@ export function BlogsTable() {
             <BlogFormDialog
                 open={isCreateDialogOpen}
                 onOpenChange={setIsCreateDialogOpen}
-                onSubmit={handleCreateBlog}
+                onSubmit={(data) =>
+                    createMutation.mutate({
+                        ...data,
+                        thumbnail: data.thumbnail!,
+                    })
+                }
                 title="Create New Blog"
             />
 
             <BlogFormDialog
+               key={editingBlog?.slug || "edit-dialog"}
                 open={!!editingBlog}
                 onOpenChange={(open) => !open && setEditingBlog(null)}
-                onSubmit={handleUpdateBlog}
+                onSubmit={(data) => updatemutation.mutate(data)}
                 title="Edit Blog"
                 initialData={editingBlog || undefined}
             />
