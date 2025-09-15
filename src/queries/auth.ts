@@ -11,7 +11,7 @@ export const verifyLogin = async (email:string,otp:string) => {
 }
 
 export const getMe = async () => {
-    const response =  await instance.get('/me');
+    const response =  await instance.get('/auth/me');
     return response.data;
 }
 
