@@ -1,6 +1,6 @@
 import instance from "@/lib/axios"
 
-export const fetchPartners = async (page = 1, limit = 10) => {
+const fetchPartners = async (page = 1, limit = 10) => {
   const response = await instance.get("/images", {
     params: {
       type: "PARTNER",
@@ -11,12 +11,12 @@ export const fetchPartners = async (page = 1, limit = 10) => {
   return response.data
 }
 
-export const deletePartner = async (id: string) => {
+const deletePartner = async (id: string) => {
   const response = await instance.delete(`/partners/${id}`)
   return response.data
 }
 
-export const uploadPartner = async (file: File) => {
+const uploadPartner = async (file: File) => {
   const formData = new FormData()
   formData.append("file", file)
 
@@ -28,7 +28,8 @@ export const uploadPartner = async (file: File) => {
   return response.data
 }
 
-export interface Partner {
-  id: string
-  url: string
+export {
+  fetchPartners,
+  deletePartner,
+  uploadPartner
 }
