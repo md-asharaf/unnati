@@ -1,10 +1,10 @@
 import { db } from "@/lib/db";
-import { CreateFAQ, createFaqSchema } from "@/schemas";
+import { CreateFaq, createFaqSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 export const POST = async (req: NextRequest) => {
-    const { question, answer, topicId } = (await req.json()) as CreateFAQ;
+    const { question, answer, topicId } = (await req.json()) as CreateFaq;
     let validatedData;
     try {
         validatedData = createFaqSchema.parse({ question, answer, topicId });

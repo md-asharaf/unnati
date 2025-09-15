@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { requireAdmin } from "@/middlewares/auth";
-import { CreateFAQ, createFaqSchema } from "@/schemas";
+import { CreateFaq, createFaqSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
@@ -30,7 +30,7 @@ export const PUT = async (req: NextRequest, { params }: { params: Promise<{ id: 
     const admin = await requireAdmin(req);
     if (admin instanceof Response) return admin;
     const { id } = await params;
-    const { question, answer, topicId } = await req.json() as CreateFAQ;
+    const { question, answer, topicId } = await req.json() as CreateFaq;
     let validatedData;
     try {
         validatedData = createFaqSchema.parse({ question, answer, topicId });

@@ -1,17 +1,16 @@
 "use client";
-
 import type React from "react";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Trash, Building2 } from "lucide-react";
 import Image from "next/image";
 import { PartnerUpload } from "@/components/dashboard/partner-upload";
-import { deletePartner, fetchPartners, Partner } from "@/queries/partners";
+import { deletePartner, fetchPartners } from "@/queries/partners";
 import { CustomAlertDialog } from "@/components/dashboard/custom-alert-dialog";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Image as Partner } from "@/schemas";
 
 function PremiumPartners() {
     const [open, setOpen] = useState(false);

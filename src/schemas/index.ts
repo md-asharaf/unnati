@@ -79,8 +79,8 @@ export type Admin = z.infer<typeof adminSchema>;
 
 export type Image = z.infer<typeof imageSchema>;
 
-export type FAQ = z.infer<typeof faqSchema>;
-export type CreateFAQ = z.infer<typeof createFaqSchema>;
+export type Faq = z.infer<typeof faqSchema>;
+export type CreateFaq = z.infer<typeof createFaqSchema>;
 
 export type Topic = z.infer<typeof topicSchema>;
 export type CreateTopic = z.infer<typeof createTopicSchema>;
