@@ -1,7 +1,7 @@
 import { requireAdmin } from "@/middlewares/auth"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
-export const GET = async (req: Request) => {
+export const GET = async (req: NextRequest) => {
     const admin = await requireAdmin(req);
     if (admin instanceof NextResponse) return admin;
     if (!admin) {

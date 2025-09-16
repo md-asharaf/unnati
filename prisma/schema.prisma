@@ -13,3 +13,47 @@ model Admin {
     name  String
     email String @unique
 }
+
+model Image {
+    id        String    @id @default(uuid())
+    type      ImageType
+    url       String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    blogs     Blog[]
+}
+
+model Topic {
+    id        String   @id @default(uuid())
+    name      String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    faqs      Faq[]
+}
+
+model Faq {
+    id        String   @id @default(uuid())
+    topicId   String
+    question  String
+    answer    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    topic     Topic    @relation(fields: [topicId], references: [id])
+}
+
+model Blog {
+    slug      String   @id
+    title     String
+    content   String
+    imageId   String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    thumbnail Image?   @relation(fields: [imageId], references: [id])
+}
+
+enum ImageType {
+    LOGO
+    HERO
+    BLOG
+    PARTNER
+}

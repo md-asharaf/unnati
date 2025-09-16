@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { verifyToken } from "../lib/token";
 import { db } from "../lib/db";
 
-export async function requireAdmin(request: Request) {
-    const authHeader = request.headers.get("authorization");
+export async function requireAdmin(req: NextRequest) {
+    const authHeader = req.headers.get("authorization");
     const token = authHeader?.startsWith("Bearer ")
         ? authHeader.slice(7)
         : null;
