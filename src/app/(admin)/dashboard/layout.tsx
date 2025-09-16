@@ -1,10 +1,11 @@
 "use client"
 import { AppSidebar } from "@/components/dashboard/sidebar";
 import Loader from "@/components/ui/loader";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { useAuth } from "@/providers/auth-provider";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { BreadcrumbHeader } from "@/components/dashboard/common/breadcrumb-header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     const { loading, admin } = useAuth();
@@ -30,7 +31,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SidebarProvider defaultOpen={defaultOpen}>
             <AppSidebar admin={admin} />
             <main className="flex-grow">
-                <SidebarTrigger />
+                <BreadcrumbHeader />
                 {children}
             </main>
         </SidebarProvider>
