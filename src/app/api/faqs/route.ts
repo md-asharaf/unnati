@@ -50,6 +50,9 @@ export const GET = async (req: NextRequest) => {
     const [faqs, total] = await Promise.all([
         db.faq.findMany({
             where,
+            include:{
+                topic:true
+            },
             skip: (page - 1) * limit,
             take: limit,
         }),
