@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { AnimatedHeading } from "../animated-heading";
 
 export interface Blog {
@@ -10,10 +9,9 @@ export interface Blog {
 
 interface BlogsProps {
   blogs: Blog[];
-  onMoreBlogs?: () => void;
 }
 
-export const Blogs = ({ blogs, onMoreBlogs }: BlogsProps) => {
+export const Blogs = ({ blogs }: BlogsProps) => {
   return (
     <section className="w-full py-12 px-2 md:px-0 flex flex-col items-center max-w-6xl mx-auto" >
       <AnimatedHeading text="Latest Blogs" />

@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Newspaper, Image, Star, Building2, Handshake } from "lucide-react"
+import { Newspaper, Image, Star, Building2, Handshake, Video } from "lucide-react"
 import { NavUser } from "./nav-user"
 import Link from "next/link"
 import { Admin } from "@/schemas"
@@ -18,6 +18,11 @@ const items = [
     title: "Blogs",
     url: "/blogs",
     icon: Newspaper,
+  },
+  {
+    title: "FAQs",
+    url: "/faqs",
+    icon: Video,
   },
   {
     title: "Images",

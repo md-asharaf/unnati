@@ -11,9 +11,9 @@ const Blogs = React.lazy(() => import("@/components/sections/blogs").then(mod =>
 const FAQs = React.lazy(() => import("@/components/sections/faqs").then(mod => ({ default: mod.FAQs })));
 const Hero = React.lazy(() => import("@/components/sections/hero").then(mod => ({ default: mod.Hero })));
 const PremiumPartners = React.lazy(() => import("@/components/sections/premium-partners").then(mod => ({ default: mod.PremiumPartners })));
-import {blogs} from "@/data/blogs.json"
-import {faqs} from "@/data/faqs.json"
-import {partners} from "@/data/partners.json"
+import { blogs } from "@/data/blogs.json"
+import { faqs } from "@/data/faqs.json"
+import { partners } from "@/data/partners.json"
 export default function Home() {
     return (
         <div className="text-primary">

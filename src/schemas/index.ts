@@ -16,21 +16,22 @@ export const imageSchema = z.object({
     updatedAt: z.date(),
 });
 
-export const faqSchema = z.object({
-    id: z.string(),
-    question: z.string().min(1, "Question is required"),
-    answer: z.string().min(1, "Answer is required"),
-    topic: z.string().min(1, "Topic is required"),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-});
-
 export const topicSchema = z.object({
     id: z.string(),
     name: z.string().min(1, "Name is required"),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
+
+export const faqSchema = z.object({
+    id: z.string(),
+    question: z.string().min(1, "Question is required"),
+    answer: z.string().min(1, "Answer is required"),
+    topic: topicSchema,
+    createdAt: z.date(),
+    updatedAt: z.date(),
+});
+
 
 export const createTopicSchema = z.object({
     name: z.string().min(1, "Name is required"),

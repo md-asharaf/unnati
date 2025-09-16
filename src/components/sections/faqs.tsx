@@ -6,7 +6,6 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "../ui/button";
 import Link from "next/link";
 import { AnimatedHeading } from "../animated-heading";
 
