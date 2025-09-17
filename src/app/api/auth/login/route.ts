@@ -3,7 +3,7 @@ import { Login, loginSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import OTPservice from "@/services/otp";
 export const POST = async (req: NextRequest) => {
-    const { email } = (await req.json()) as Login;
+    const { email } = await req.json() as Login;
     if (!email) {
         return NextResponse.json({ error: "Missing email" }, { status: 400 });
     }

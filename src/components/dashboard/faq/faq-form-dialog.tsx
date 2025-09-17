@@ -63,7 +63,7 @@ export function FaqFormDialog({
         defaultValues: {
             question: initialData?.question || "",
             answer: initialData?.answer || "",
-            topicId: "",
+            topicId: initialData?.topic.id || "",
         },
     });
 

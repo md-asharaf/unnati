@@ -1,11 +1,8 @@
 import { db } from "@/lib/db";
-import { requireAdmin } from "@/middlewares/auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
-    const admin = await requireAdmin(req);
-    if (admin instanceof NextResponse) return admin;
-    const { id } = await params;
+    const { id } = await params;    
     if (!id) {
         return NextResponse.json({ error: "No id provided" }, { status: 400 });
     }

@@ -19,6 +19,7 @@ type Props = {
     searchPlaceholder: string;
     pageSize: number;
     onChangePageSize: (v: string) => void;
+    showPageSize?: boolean;
 };
 
 export function TableHeaderControls({
@@ -33,6 +34,7 @@ export function TableHeaderControls({
     searchPlaceholder,
     pageSize,
     onChangePageSize,
+    showPageSize = true,
 }: Props) {
     return (
         <>
@@ -63,9 +65,11 @@ export function TableHeaderControls({
                     {count} {countNoun}
                     {count !== 1 ? "s" : ""}
                 </Badge>
-                <div className="ml-auto flex items-center gap-2">
-                    <PageSizeSelect value={pageSize} onChange={onChangePageSize} />
-                </div>
+                {showPageSize && (
+                  <div className="ml-auto flex items-center gap-2">
+                      <PageSizeSelect value={pageSize} onChange={onChangePageSize} />
+                  </div>
+                )}
             </div>
         </>
     );

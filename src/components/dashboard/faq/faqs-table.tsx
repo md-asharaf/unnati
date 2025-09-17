@@ -88,6 +88,7 @@ export function FaqsTable() {
             queryClient.setQueryData(["faqs"], (old: Faq[] = []) =>
                 old.map((f) => (f.id === updated.id ? updated : f)),
             );
+            setEditingFaq(null);
         },
         onError: () => {
             toast.error("Failed to update FAQ. Please try again.");

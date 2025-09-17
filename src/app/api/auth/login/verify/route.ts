@@ -26,7 +26,7 @@ export const POST = async (req: NextRequest) => {
         return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
     }
 
-    const { accessToken, refreshToken } = generateTokens({ id: admin.id });
+    const { accessToken, refreshToken } = await generateTokens({ id: admin.id });
     return NextResponse.json(
         { message: "Logged in successfully", data: { accessToken, refreshToken } },
         { status: 200 },

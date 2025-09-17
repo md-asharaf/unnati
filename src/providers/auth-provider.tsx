@@ -20,7 +20,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const fetchCurrentAdmin = async () => {
             try {
-                const {data} = await getMe();
+                const { data } = await getMe();
                 setAdmin(data.admin);
             } catch {
                 setAdmin(null);

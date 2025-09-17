@@ -1,12 +1,9 @@
 import { db } from "@/lib/db";
-import { requireAdmin } from "@/middlewares/auth";
 import { CreateTopic, createTopicSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
     const { id } = await params;
     const topic = await db.topic.findUnique({
         where: { id }
@@ -27,8 +24,6 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ i
 }
 
 export const PUT = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
     const { id } = await params;
     const { name } = await req.json() as CreateTopic;
     let validatedData;
