@@ -88,9 +88,11 @@ export function BlogFormDialog({
             setThumbnailPreview(null);
         }
     };
-    return (
-        <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="w-full min-w-[80%] xl:min-w-5xl mx-auto max-h-[80vh] overflow-y-auto">
+    return (<>{open && <div className="fixed inset-0 bg-black/50 pointer-events-none z-40" />}
+        <Dialog open={open} onOpenChange={onOpenChange} modal={false}>
+            <DialogContent className="w-full min-w-[80%] xl:min-w-5xl mx-auto max-h-[80vh] overflow-y-auto z-50"
+                onInteractOutside={(e) => e.preventDefault()}
+            >
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">
                         {title}
@@ -261,7 +263,7 @@ export function BlogFormDialog({
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit">
+                            <Button type="submit" >
                                 {initialData ? "Update Blog" : "Create Blog"}
                             </Button>
                         </div>
@@ -269,5 +271,6 @@ export function BlogFormDialog({
                 </Form>
             </DialogContent>
         </Dialog>
+    </>
     );
 }

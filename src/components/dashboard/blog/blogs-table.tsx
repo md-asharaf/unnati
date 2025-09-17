@@ -88,11 +88,13 @@ export function BlogsTable() {
         onSuccess: (updateBlog) => {
             if (!updateBlog) return;
             toast.success("Blog updated successfully!");
+            queryClient.invalidateQueries({ queryKey: ["blogs"] });
             queryClient.setQueryData(["blogs"], (old: Blog[] = []) =>
                 old.map((blog) =>
                     blog.slug === updateBlog.slug ? updateBlog : blog,
                 ),
             );
+            setEditingBlog(null);
         },
         onError: (error) => {
             toast.error("Failed to update blog. Please try again.");
@@ -106,6 +108,7 @@ export function BlogsTable() {
         onSuccess: (newBlog) => {
             if (!newBlog) return;
             toast.success("Blog created successfully!");
+            queryClient.invalidateQueries({ queryKey: ["blogs"] });
             queryClient.setQueryData(["blogs"], (old: Blog[] = []) => [
                 ...old,
                 newBlog,
@@ -121,7 +124,7 @@ export function BlogsTable() {
         <Card>
             <CardHeader>
                 <TableHeaderControls
-                    title="Blog Posts"
+                    title="Blogs"
                     count={filteredBlogs?.length ?? 0}
                     countNoun="blog"
                     isFetching={isFetching}
@@ -156,11 +159,11 @@ export function BlogsTable() {
                                 <TableLoadingRows
                                     rows={6}
                                     columns={[
-                                        "h-12 w-12 rounded-md bg-muted/30",
-                                        "h-4 w-64 bg-muted/30",
+                                        "h-12 w-40 rounded-md bg-muted/30",
                                         "h-4 w-40 bg-muted/30",
-                                        "h-4 w-28 bg-muted/30",
-                                        "h-8 w-8 rounded bg-muted/30",
+                                        "h-4 w-40 bg-muted/30",
+                                        "h-4 w-40 bg-muted/30",
+                                        "h-8 w-12 rounded bg-muted/30",
                                     ]}
                                 />
                             ) : filteredBlogs.length === 0 ? (
