@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Newspaper, Image, Star, Building2, Handshake, Video } from "lucide-react"
+import { Newspaper, Image, Star, Building2, Handshake, Video, MapPin } from "lucide-react"
 import { NavUser } from "./nav-user"
 import Link from "next/link"
 import { Admin } from "@/schemas"
@@ -38,6 +38,11 @@ const items = [
     title: "Partners",
     url: "/partners",
     icon: Handshake,
+  },
+  {
+    title: "Branches",
+    url: "/branches",
+    icon: MapPin,
   },
 ]
 export const AppSidebar = ({admin}:{admin:Admin}) => {
