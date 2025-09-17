@@ -76,7 +76,7 @@ export const AppSidebar = ({admin}:{admin:Admin}) => {
                 >
                   <Link href={`/dashboard${item.url}`} className="flex items-center gap-3">
                     <item.icon className="size-4" />
-                    <span className="font-medium">{item.title}</span>
+                    <span className="font-medium text-base">{item.title}</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>

@@ -127,11 +127,11 @@ export function BranchesTable() {
             <TableBody>
               {isLoading ? (
                 <TableLoadingRows rows={6} columns={[
-                  "h-8 w-40 bg-muted/30",
-                  "h-8 w-40 bg-muted/30",
-                  "h-8 w-40 bg-muted/30",
-                  "h-8 w-40 bg-muted/30",
-                  "h-8 w-12 rounded bg-muted/30",
+                  "h-8 w-40",
+                  "h-8 w-40",
+                  "h-8 w-40",
+                  "h-8 w-40",
+                  "h-8 w-12 rounded",
                 ]} />
               ) : filtered.length === 0 ? (
                 <TableRow>

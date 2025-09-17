@@ -156,11 +156,11 @@ export function FaqsTable() {
                                 <TableLoadingRows
                                     rows={6}
                                     columns={[
-                                        "h-4 w-64 bg-muted/30",
-                                        "h-4 w-80 bg-muted/30",
-                                        "h-6 w-20 rounded-full bg-muted/30",
-                                        "h-4 w-28 bg-muted/30",
-                                        "h-8 w-8 rounded bg-muted/30",
+                                        "h-4 w-64",
+                                        "h-4 w-80",
+                                        "h-6 w-20 rounded-full",
+                                        "h-4 w-28",
+                                        "h-8 w-8 rounded",
                                     ]}
                                 />
                             ) : filteredFaqs.length === 0 ? (
