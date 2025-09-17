@@ -9,7 +9,7 @@ export const adminSchema = z.object({
 });
 
 export const imageSchema = z.object({
-    id: z.string(),
+    id: z.uuid(),
     url: z.url(),
     type: imageTypeSchema,
     createdAt: z.date(),
@@ -17,14 +17,14 @@ export const imageSchema = z.object({
 });
 
 export const topicSchema = z.object({
-    id: z.string(),
+    id: z.uuid(),
     name: z.string().min(1, "Name is required"),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
 
 export const faqSchema = z.object({
-    id: z.string(),
+    id: z.uuid(),
     question: z.string().min(1, "Question is required"),
     answer: z.string().min(1, "Answer is required"),
     topic: topicSchema,
@@ -40,14 +40,14 @@ export const createTopicSchema = z.object({
 export const createFaqSchema = z.object({
     question: z.string().min(1, "Question is required"),
     answer: z.string().min(1, "Answer is required"),
-    topicId: z.string().min(1, "Topic ID is required"),
+    topicId: z.uuid().min(1, "Topic ID is required"),
 });
 
 export const blogSchema = z.object({
     slug: z.string(),
     title: z.string().min(1, "Title is required"),
     content: z.string().min(1, "Content is required"),
-    imageId: z.string().min(1, "Image ID is required"),
+    imageId: z.uuid().min(1, "Image ID is required"),
     createdAt: z.date(),
     updatedAt: z.date(),
     // Relations
@@ -64,6 +64,27 @@ export const createBlogSchema = z.object({
 export const updateBlogSchema = createBlogSchema.omit({ thumbnail: true }).and(z.object({
     thumbnail: z.file().optional(),
 }));
+
+export const branchSchema = z.object({
+    id: z.uuid(),
+    name: z.string(),
+    phone: z.string(),
+    address: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+});
+
+
+export const createBranchSchema = z.object({
+    address: z.string().min(1, "Address is required"),
+    name: z.string().min(1, "Branch name is required"),
+    phone: z.string().min(1, "Phone is required"),
+    latitude: z.number(),
+    longitude: z.number(),
+});
+
 
 export const loginSchema = z.object({
     email: z.email("invalid email format"),
@@ -91,6 +112,9 @@ export type CreateTopic = z.infer<typeof createTopicSchema>;
 export type Blog = z.infer<typeof blogSchema>;
 export type CreateBlog = z.infer<typeof createBlogSchema>;
 export type UpdateBlog = z.infer<typeof updateBlogSchema>;
+
+export type Branch = z.infer<typeof branchSchema>;
+export type CreateBranch = z.infer<typeof createBranchSchema>;
 
 export type VerifyLogin = z.infer<typeof verifyLoginSchema>;
 
