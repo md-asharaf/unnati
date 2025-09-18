@@ -2,16 +2,33 @@
 
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { fetchTrainers, deleteTrainer, updateTrainer, createTrainer } from "@/queries/trainers";
+import {
+    fetchTrainers,
+    deleteTrainer,
+    updateTrainer,
+    createTrainer,
+} from "@/queries/trainers";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 import { toast } from "sonner";
 import { TrainerFormDialog } from "./trainer-form-dialog";
 import { EmptyState } from "@/components/dashboard/common/empty-state";
 import { TableLoadingRows } from "@/components/dashboard/common/table-loading-rows";
 import { Edit, MoreHorizontal, Trash2 } from "lucide-react";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { OverlaySpinner } from "../common/overlay-spinner";
 import TableHeaderControls from "@/components/dashboard/common/table-header-controls";
 import { Trainer, CreateTrainer } from "@/schemas";
@@ -24,18 +41,24 @@ export function TrainersTable() {
     const [searchTerm, setSearchTerm] = useState("");
     const [createOpen, setCreateOpen] = useState(false);
     const [editingTrainer, setEditingTrainer] = useState<Trainer | null>(null);
-    const { data: trainers = [], isLoading, isFetching } = useQuery({
+    const {
+        data: trainers = [],
+        isLoading,
+        isFetching,
+    } = useQuery({
         queryKey: ["trainers"],
         queryFn: async (): Promise<Trainer[]> => {
-            const { data } = await fetchTrainers()
+            const { data } = await fetchTrainers();
             return data.trainers;
-        }
+        },
     });
     const filtered = useMemo(() => {
         const q = searchTerm.trim().toLowerCase();
         if (!q) return trainers;
         return trainers.filter((b: any) =>
-            [b.name, b.phone, b.address].some((v: string) => (v || "").toLowerCase().includes(q))
+            [b.name, b.phone, b.address].some((v: string) =>
+                (v || "").toLowerCase().includes(q),
+            ),
         );
     }, [trainers, searchTerm]);
 
@@ -102,13 +125,15 @@ export function TrainersTable() {
                     count={filtered.length}
                     countNoun="trainer"
                     isFetching={isFetching}
-                    onRefresh={() => qc.invalidateQueries({ queryKey: ["trainers"] })}
+                    onRefresh={() =>
+                        qc.invalidateQueries({ queryKey: ["trainers"] })
+                    }
                     onCreate={() => setCreateOpen(true)}
                     searchTerm={searchTerm}
                     onSearch={setSearchTerm}
                     searchPlaceholder="Search trainers..."
                     pageSize={filtered.length || 0}
-                    onChangePageSize={() => { }}
+                    onChangePageSize={() => {}}
                     showPageSize={false}
                 />
             </CardHeader>
@@ -128,18 +153,28 @@ export function TrainersTable() {
                         </TableHeader>
                         <TableBody>
                             {isLoading ? (
-                                <TableLoadingRows rows={6} columns={[
-                                    "h-12 w-40 rounded-md",
-                                    "h-8 w-40",
-                                    "h-8 w-40",
-                                    "h-8 w-40",
-                                    "h-8 w-40",
-                                    "h-8 w-12 rounded",
-                                ]} />
+                                <TableLoadingRows
+                                    rows={6}
+                                    columns={[
+                                        "h-12 w-40 rounded-md",
+                                        "h-8 w-40",
+                                        "h-8 w-40",
+                                        "h-8 w-40",
+                                        "h-8 w-40",
+                                        "h-8 w-12 rounded",
+                                    ]}
+                                />
                             ) : filtered.length === 0 ? (
                                 <TableRow>
                                     <TableCell colSpan={5}>
-                                        <EmptyState title="No trainers" description={searchTerm ? "Try a different search." : "Create your first trainer to get started."} />
+                                        <EmptyState
+                                            title="No trainers"
+                                            description={
+                                                searchTerm
+                                                    ? "Try a different search."
+                                                    : "Create your first trainer to get started."
+                                            }
+                                        />
                                     </TableCell>
                                 </TableRow>
                             ) : (
@@ -147,7 +182,10 @@ export function TrainersTable() {
                                     <TableRow key={b.id}>
                                         <TableCell>
                                             <Image
-                                                src={b.photoUrl || "/placeholder.svg"}
+                                                src={
+                                                    b.photoUrl ||
+                                                    "/placeholder.svg"
+                                                }
                                                 alt={b.name}
                                                 width={50}
                                                 height={50}
@@ -161,7 +199,10 @@ export function TrainersTable() {
                                         <TableCell className="text-right">
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon">
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="icon"
+                                                    >
                                                         <MoreHorizontal className="w-4 h-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
@@ -179,7 +220,8 @@ export function TrainersTable() {
                                                         className="gap-2 text-destructive"
                                                         onClick={() => {
                                                             setAlertOpen(true);
-                                                            pendingDeleteId = b.id;
+                                                            pendingDeleteId =
+                                                                b.id;
                                                         }}
                                                     >
                                                         <Trash2 className="h-4 w-4" />
@@ -206,10 +248,7 @@ export function TrainersTable() {
             <TrainerFormDialog
                 open={createOpen}
                 onOpenChange={setCreateOpen}
-                onSubmit={(data) => {
-                    console.log(data)
-                    createMutation.mutate(data)
-                }}
+                onSubmit={(data) => createMutation.mutate(data)}
                 title="Create New Trainer"
             />
             <CustomAlertDialog
@@ -226,4 +265,3 @@ export function TrainersTable() {
 }
 
 let pendingDeleteId: string | null = null;
-

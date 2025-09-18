@@ -9,11 +9,10 @@ import { fetchFaqs } from "@/queries/faqs";
 
 export default async function Home() {
     const [blogs, faqs, partners] = await Promise.all([
-        fetchBlogs(1,3),
-        fetchFaqs(undefined,1,5),
-        fetchPartners(1,10)
-    ])
-    console.log(blogs.data.blogs, faqs.data.faqs, partners.data.images);
+        fetchBlogs(1, 3),
+        fetchFaqs(undefined, 1, 5),
+        fetchPartners(1, 10),
+    ]);
     return (
         <div className="text-primary">
             <Hero
