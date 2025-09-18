@@ -28,7 +28,7 @@ export function TrainerFormDialog({ open, onOpenChange, onSubmit, title, initial
             experience: "",
             expertise: "",
             name: "",
-            bio: "",
+            bio: undefined,
             photoUrl: ""
         },
     });
@@ -50,6 +50,20 @@ export function TrainerFormDialog({ open, onOpenChange, onSubmit, title, initial
                                     <FormLabel>Name</FormLabel>
                                     <FormControl>
                                         <Input placeholder="Trainer name" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="photoUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Photo URL</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Photo URL" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -118,7 +132,7 @@ export function TrainerFormDialog({ open, onOpenChange, onSubmit, title, initial
 
                         <DialogFooter>
                             <Button variant="outline" onClick={() => onOpenChange(false)} disabled={!form.watch("name")}>Cancel</Button>
-                            <Button type="submit">
+                            <Button type="submit" disabled={!form.watch("name")}>
                                 {initialData ? "Save" : "Create"}
                             </Button>
                         </DialogFooter>

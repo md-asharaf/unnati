@@ -16,6 +16,7 @@ import { OverlaySpinner } from "../common/overlay-spinner";
 import TableHeaderControls from "@/components/dashboard/common/table-header-controls";
 import { Trainer, CreateTrainer } from "@/schemas";
 import { CustomAlertDialog } from "../common/custom-alert-dialog";
+import Image from "next/image";
 
 export function TrainersTable() {
     const qc = useQueryClient();
@@ -117,6 +118,7 @@ export function TrainersTable() {
                     <Table>
                         <TableHeader>
                             <TableRow>
+                                <TableHead>Photo</TableHead>
                                 <TableHead>Name</TableHead>
                                 <TableHead>Designation</TableHead>
                                 <TableHead>Expertise</TableHead>
@@ -127,6 +129,7 @@ export function TrainersTable() {
                         <TableBody>
                             {isLoading ? (
                                 <TableLoadingRows rows={6} columns={[
+                                    "h-12 w-40 rounded-md",
                                     "h-8 w-40",
                                     "h-8 w-40",
                                     "h-8 w-40",
@@ -142,6 +145,15 @@ export function TrainersTable() {
                             ) : (
                                 filtered.map((b) => (
                                     <TableRow key={b.id}>
+                                        <TableCell>
+                                            <Image
+                                                src={b.photoUrl || "/placeholder.svg"}
+                                                alt={b.name}
+                                                width={50}
+                                                height={50}
+                                                className="h-10 w-10 rounded-full object-cover"
+                                            />
+                                        </TableCell>
                                         <TableCell>{b.name}</TableCell>
                                         <TableCell>{b.designation}</TableCell>
                                         <TableCell>{b.expertise}</TableCell>
@@ -195,6 +207,7 @@ export function TrainersTable() {
                 open={createOpen}
                 onOpenChange={setCreateOpen}
                 onSubmit={(data) => {
+                    console.log(data)
                     createMutation.mutate(data)
                 }}
                 title="Create New Trainer"
