@@ -33,10 +33,10 @@ export const POST = async (req: NextRequest) => {
 };
 
 export const GET = async () => {
-    const traineres = await db.trainer.findMany();
+    const trainers = await db.trainer.findMany();
     return NextResponse.json({
         data: {
-            traineres,
+            trainers,
         },
         message: "Traineres fetched successfully",
     });

@@ -87,11 +87,11 @@ export const createBranchSchema = z.object({
 
 export const trainerSchema = z.object({
     id: z.uuid(),
-    name: z.string().min(1, "Name is required"),
+    name: z.string(),
     bio: z.string().optional(),
-    expertise: z.string().min(1, "Expertise is required"),
-    experience: z.number().int().nonnegative(),
-    designation: z.string().min(1, "Designation is required"),
+    expertise: z.string(),
+    experience: z.string(),
+    designation: z.string(),
     photoUrl: z.url(),
     createdAt: z.date(),
     updatedAt: z.date(),
@@ -101,7 +101,7 @@ export const createTrainerSchema = z.object({
     name: z.string().min(1, "Name is required"),
     bio: z.string().optional(),
     expertise: z.string().min(1, "Expertise is required"),
-    experience: z.number().int().nonnegative(),
+    experience: z.string().min(1, "Experience is required"),
     designation: z.string().min(1, "Designation is required"),
     photoUrl: z.url(),
 });

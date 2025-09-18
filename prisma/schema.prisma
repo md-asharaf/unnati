@@ -67,7 +67,7 @@ model Trainer {
     name        String
     bio         String?
     expertise   String
-    experience  Int
+    experience  String
     designation String
     photoUrl    String
     createdAt   DateTime @default(now())
