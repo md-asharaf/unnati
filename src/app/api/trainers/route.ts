@@ -1,13 +1,13 @@
 import { db } from "@/lib/db";
-import { CreateBranch, createBranchSchema } from "@/schemas";
+import { CreateTrainer, createTrainerSchema } from "@/schemas";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 export const POST = async (req: NextRequest) => {
-    const { address, latitude, longitude, name, phone } = await req.json() as CreateBranch
+    const { designation, experience, expertise, name, bio, photoUrl } = await req.json() as CreateTrainer
     let validatedData;
     try {
-        validatedData = createBranchSchema.parse({ address, latitude, longitude, name, phone });
+        validatedData = createTrainerSchema.parse({ designation, experience, expertise, name, bio, photoUrl });
     } catch (error) {
         return NextResponse.json(
             {
@@ -18,26 +18,26 @@ export const POST = async (req: NextRequest) => {
             { status: 400 },
         );
     }
-    const branch = await db.branch.create({
+    const trainer = await db.trainer.create({
         data: validatedData
     });
     return NextResponse.json(
         {
             data: {
-                branch,
+                trainer,
             },
-            message: "Branch created successfully",
+            message: "Trainer created successfully",
         },
         { status: 201 },
     );
 };
 
 export const GET = async () => {
-    const branches = await db.branch.findMany();
+    const traineres = await db.trainer.findMany();
     return NextResponse.json({
         data: {
-            branches,
+            traineres,
         },
-        message: "Branches fetched successfully",
+        message: "Traineres fetched successfully",
     });
 };
