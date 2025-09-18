@@ -85,6 +85,26 @@ export const createBranchSchema = z.object({
     longitude: z.number(),
 });
 
+export const trainerSchema = z.object({
+    id: z.uuid(),
+    name: z.string().min(1, "Name is required"),
+    bio: z.string().optional(),
+    expertise: z.string().min(1, "Expertise is required"),
+    experience: z.number().int().nonnegative(),
+    designation: z.string().min(1, "Designation is required"),
+    photoUrl: z.url(),
+    createdAt: z.date(),
+    updatedAt: z.date(),
+});
+
+export const createTrainerSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    bio: z.string().optional(),
+    expertise: z.string().min(1, "Expertise is required"),
+    experience: z.number().int().nonnegative(),
+    designation: z.string().min(1, "Designation is required"),
+    photoUrl: z.url(),
+});
 
 export const loginSchema = z.object({
     email: z.email("invalid email format"),
@@ -115,6 +135,9 @@ export type UpdateBlog = z.infer<typeof updateBlogSchema>;
 
 export type Branch = z.infer<typeof branchSchema>;
 export type CreateBranch = z.infer<typeof createBranchSchema>;
+
+export type Trainer = z.infer<typeof trainerSchema>;
+export type CreateTrainer = z.infer<typeof createTrainerSchema>;
 
 export type VerifyLogin = z.infer<typeof verifyLoginSchema>;
 
