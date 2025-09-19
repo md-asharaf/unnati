@@ -51,6 +51,29 @@ model Blog {
     thumbnail Image?   @relation(fields: [imageId], references: [id])
 }
 
+model Branch {
+    id        String   @id @default(uuid())
+    name      String
+    address   String
+    latitude  Float
+    longitude Float
+    phone     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Trainer {
+    id          String   @id @default(uuid())
+    name        String
+    bio         String?
+    expertise   String
+    experience  String
+    designation String
+    photoUrl    String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
 enum ImageType {
     LOGO
     HERO

@@ -1,13 +1,10 @@
 import { db } from "@/lib/db";
-import { requireAdmin } from "@/middlewares/auth";
-import { UpdateBlog, updateBlogSchema } from "@/schemas";
+import { updateBlogSchema } from "@/schemas";
 import uploadService from "@/services/cloudinary";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ slug: string }> }) => {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
     const { slug } = await params;
     const blog = await db.blog.findUnique({
         where: { slug },
@@ -34,14 +31,12 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ s
 }
 
 export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ slug: string }> }) => {
-    const admin = await requireAdmin(req);
-    if (admin instanceof Response) return admin;
     const { slug } = await params;
     const formData = await req.formData();
     const content = formData.get("content") as string;
     const newSlug = formData.get("slug") as string;
     const title = formData.get("title") as string;
-    const thumbnail = formData.get("thumbnail") as File;
+    const thumbnail = formData.get("thumbnail") as File | null  || undefined;
     let validatedData;
     try {
         validatedData = updateBlogSchema.parse({ content, slug: newSlug, thumbnail, title });

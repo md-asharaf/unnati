@@ -1,19 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "../ui/button";
 import { AnimatedHeading } from "../animated-heading";
-
-export interface Blog {
-  slug: string;
-  imageUrl: string;
-}
-
+import { Blog } from "@/schemas";
 interface BlogsProps {
   blogs: Blog[];
-  onMoreBlogs?: () => void;
 }
 
-export const Blogs = ({ blogs, onMoreBlogs }: BlogsProps) => {
+export const Blogs = ({ blogs }: BlogsProps) => {
   return (
     <section className="w-full py-12 px-2 md:px-0 flex flex-col items-center max-w-6xl mx-auto" >
       <AnimatedHeading text="Latest Blogs" />
@@ -25,11 +18,11 @@ export const Blogs = ({ blogs, onMoreBlogs }: BlogsProps) => {
             className="block max-w-md h-[220px] rounded-lg overflow-hidden shadow hover:sm:scale-105 transition-transform bg-primary border"
           >
             <Image
-              src={blog.imageUrl}
+              src={blog.thumbnail?.url || "/placeholder.svg"}
               alt={`Blog ${idx + 1}`}
-              width={350}
-              height={220}
-              className="object-cover w-full h-full"
+              width={100}
+              height={100}
+              className="object-cover aspect-video w-full h-full"
             />
           </Link>
         ))}

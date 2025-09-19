@@ -1,145 +1,156 @@
 "use client";
-import type React from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Trash, Building2 } from "lucide-react";
-import Image from "next/image";
-import { PartnerUpload } from "@/components/dashboard/partner-upload";
-import { deletePartner, fetchPartners } from "@/queries/partners";
-import { CustomAlertDialog } from "@/components/dashboard/custom-alert-dialog";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Image as Partner } from "@/schemas";
 
-function PremiumPartners() {
-    const [open, setOpen] = useState(false);
+import { useEffect, useState } from "react";
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import type { Image as Partner } from "@/schemas";
+
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import PageSizeSelect from "@/components/dashboard/common/page-size-select";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+
+import { Building2, Trash } from "lucide-react";
+import NextImage from "next/image";
+
+import { PartnerUpload } from "@/components/dashboard/partner/partner-upload";
+import { CustomAlertDialog } from "@/components/dashboard/common/custom-alert-dialog";
+import { deletePartner, fetchPartners } from "@/queries/partners";
+
+import { PageHeader } from "@/components/dashboard/common/page-header";
+import { OverlaySpinner } from "@/components/dashboard/common/overlay-spinner";
+import { PaginationControls } from "@/components/dashboard/common/pagination-controls";
+import { RefreshButton } from "@/components/dashboard/common/refresh-button";
+import { PartnersSkeleton } from "@/components/dashboard/skeletons/partners-skeleton";
+import { EmptyState } from "@/components/dashboard/common/empty-state";
+
+export default function PartnersPage() {
+    const [openId, setOpenId] = useState<string | null>(null);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(12);
+
     const queryClient = useQueryClient();
 
-    const { data: partners = [], isLoading } = useQuery({
-        queryKey: ["partners"],
-        queryFn: async (): Promise<Partner[]> => {
-            try {
-                const { data } = await fetchPartners()
-                return data.images;
-            } catch (error) {
-                return [];
-            }
-        },
+    const { data, error, isError, refetch, isLoading, isFetching } = useQuery({
+        queryKey: ["partners", { page, limit }],
+        queryFn: async () => await fetchPartners(page, limit),
+        placeholderData: keepPreviousData,
+        staleTime: 30_000,
+        retry: 1,
     });
+
+    useEffect(() => {
+        if (isError) {
+            toast.error((error as Error)?.message ?? "Failed to load partners");
+        }
+    }, [isError, error]);
+
+    const partners = (data?.data.images ?? []) as Partner[];
+    const totalPages = data?.data.totalPages ?? 1;
+    const totalCount: number = (data?.data?.total ?? data?.data?.count ?? (Array.isArray(partners) ? partners.length : 0)) as number;
 
     const deleteMutation = useMutation({
         mutationFn: deletePartner,
         onSuccess: (_, deletedId) => {
             toast.success("Partner deleted successfully");
             queryClient.invalidateQueries({ queryKey: ["partners"] });
-            queryClient.setQueryData(["partners"], (old: Partner[] = []) =>
-                old.filter((partner) => partner.id !== deletedId),
-            );
+            queryClient.setQueryData(["partners", { page, limit }], (old: { data?: { images?: Partner[] } } | undefined) => {
+                const current = old?.data?.images ?? [];
+                return {
+                    ...(old ?? {}),
+                    data: {
+                        ...(old?.data ?? {}),
+                        images: current.filter((p) => p.id !== deletedId),
+                    },
+                } as typeof old;
+            });
+            setOpenId(null);
         },
         onError: () => {
             toast.error("Failed to delete partner. Please try again.");
-        }
+        },
     });
 
     return (
-        <div className="sm:max-w-6xl mx-auto w-full space-y-8 p-4">
-            <div className="space-y-2">
-                <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                        <Building2 className="w-6 h-6 text-primary" />
-                    </div>
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-balance">
-                            Premium Partners
-                        </h1>
-                        <p className="text-muted-foreground text-pretty">
-                            Manage and showcase your premium partner logos
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div className="space-y-6 max-w-6xl mx-auto p-4">
+            <PageHeader icon={Building2} title="Premium Partners" subtitle="Manage and showcase your premium partner logos" />
 
             <PartnerUpload />
 
-            <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold">Current Partners</h2>
-                    <div className="text-sm text-muted-foreground">
-                        {partners.length} partner
-                        {partners.length !== 1 ? "s" : ""}
+            <Card className="p-4">
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center gap-2">
+                        <PageSizeSelect
+                            value={limit}
+                            onChange={(val) => {
+                                setLimit(Number(val));
+                                setPage(1);
+                            }}
+                        />
+                    </div>
+
+                    <Separator orientation="vertical" className="h-6" />
+                    <Badge variant="secondary">{totalCount} partner{totalCount === 1 ? "" : "s"}</Badge>
+                    <div className="ml-auto">
+                        <RefreshButton spinning={isFetching} onClick={() => refetch()} />
                     </div>
                 </div>
+            </Card>
 
+            <div className="relative">
+                <OverlaySpinner show={isFetching} />
                 {isLoading ? (
-                    <div className="flex justify-center py-12">
-                        <div className="text-center space-y-3">
-                            <Loader2 className="w-8 h-8 animate-spin text-primary mx-auto" />
-                            <p className="text-sm text-muted-foreground">
-                                Loading partners...
-                            </p>
-                        </div>
-                    </div>
+                    <PartnersSkeleton />
                 ) : partners.length === 0 ? (
-                    <Card className="border-dashed">
-                        <CardContent className="flex flex-col items-center justify-center py-12 text-center space-y-3">
-                            <div className="p-3 bg-muted rounded-full">
-                                <Building2 className="w-8 h-8 text-muted-foreground" />
-                            </div>
-                            <div className="space-y-1">
-                                <h3 className="font-medium">No partners yet</h3>
-                                <p className="text-sm text-muted-foreground">
-                                    Upload your first partner logo to get
-                                    started
-                                </p>
-                            </div>
-                        </CardContent>
-                    </Card>
+                    <EmptyState
+                        title="No partners yet"
+                        description="Upload your first partner to get started"
+                    />
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        {partners.map((partner, index) => (
-                            <Card
-                                key={partner.id}
-                                className="group hover:shadow-md transition-all duration-200 hover:scale-[1.02] relative"
-                            >
+                        {partners.map((partner: Partner, index) => (
+                            <Card key={partner.id} className="group relative hover:shadow-md transition-all duration-200 hover:scale-[1.02] overflow-hidden">
                                 <Button
                                     size="sm"
                                     variant="destructive"
-                                    className="absolute rounded-full top-2 right-2 z-10 p-2 h-auto opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 disabled:group-hover:opacity-100"
+                                    className="absolute rounded-full top-2 right-2 z-10 p-2 h-auto opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-50"
                                     disabled={deleteMutation.isPending}
                                     aria-label="Delete partner"
-                                    onClick={() => setOpen(true)}
+                                    onClick={() => setOpenId(partner.id)}
                                 >
                                     <Trash className="w-4 h-4" />
                                 </Button>
                                 <CustomAlertDialog
-                                    isOpen={open}
-                                    description="this action cannot be undone"
-                                    onCancel={() => setOpen(false)}
-                                    onContinue={() =>
-                                        deleteMutation.mutate(partner.id)
-                                    }
+                                    isOpen={openId === partner.id}
+                                    description="This action cannot be undone"
+                                    onCancel={() => setOpenId(null)}
+                                    onContinue={() => deleteMutation.mutate(partner.id)}
                                 />
-                                <CardContent className="p-4">
+                                <div className="p-4">
                                     <div className="aspect-[3/2] relative bg-muted/20 rounded-lg overflow-hidden">
-                                        <Image
-                                            src={
-                                                partner.url ||
-                                                "/placeholder.svg"
-                                            }
+                                        <NextImage
+                                            src={partner.url || "/placeholder.svg"}
                                             alt={`Partner ${index + 1}`}
                                             fill
                                             className="object-contain p-2"
                                         />
                                     </div>
-                                </CardContent>
+                                </div>
                             </Card>
                         ))}
                     </div>
                 )}
             </div>
+
+            <PaginationControls
+                page={page}
+                totalPages={totalPages}
+                isFetching={isFetching}
+                onPrev={() => setPage((p) => Math.max(1, p - 1))}
+                onNext={() => setPage((p) => Math.min(totalPages, p + 1))}
+                onPageChange={(p) => setPage(p)}
+            />
         </div>
     );
 }
-
-export default PremiumPartners;

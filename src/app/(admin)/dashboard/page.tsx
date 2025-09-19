@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Newspaper, Handshake, Image as ImageIcon } from "lucide-react";
+import { Newspaper, Handshake, Image as ImageIcon, HelpCircle } from "lucide-react";
 export default function DashboardPage() {
     return (
         <div className="min-h-screen p-8 bg-background">
@@ -13,7 +13,7 @@ export default function DashboardPage() {
                     Manage your content, partners, and more from one place.
                 </p>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                     <Card>
                         <CardHeader className="flex flex-col items-center">
                             <div className="bg-primary/10 rounded-lg p-3 mb-2">
@@ -47,6 +47,17 @@ export default function DashboardPage() {
                             Manage gallery images
                         </CardContent>
                     </Card>
+                    <Card>
+                        <CardHeader className="flex flex-col items-center">
+                            <div className="bg-muted/10 rounded-lg p-3 mb-2">
+                                <HelpCircle className="w-8 h-8 text-foreground" />
+                            </div>
+                            <CardTitle className="text-2xl">FAQs</CardTitle>
+                        </CardHeader>
+                        <CardContent className="text-center text-muted-foreground">
+                            Manage frequently asked questions
+                        </CardContent>
+                    </Card>
                 </div>
 
                 <div className="flex flex-wrap gap-4">
@@ -63,6 +74,11 @@ export default function DashboardPage() {
                     <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/70">
                         <Link href="/dashboard/images" className="flex items-center gap-2">
                             <ImageIcon className="w-5 h-5" /> Go to Images
+                        </Link>
+                    </Button>
+                    <Button asChild size="lg" className="bg-muted text-foreground hover:bg-muted/70">
+                        <Link href="/dashboard/faqs" className="flex items-center gap-2">
+                            <HelpCircle className="w-5 h-5" /> Go to FAQs
                         </Link>
                     </Button>
                 </div>

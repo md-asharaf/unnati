@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { AnimatedHeading } from "../animated-heading";
+import { Image as Partner } from "@/schemas";
 interface PremiumPartnersProps {
-    partners: string[];
+    partners: Partner[];
 }
 export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
     return (
@@ -23,7 +24,7 @@ export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
                 className="w-full max-w-5xl mx-auto flex justify-center"
             >
                 <CarouselContent>
-                    {partners?.map((partnerLogo, index) => (
+                    {partners?.map((p, index) => (
                         <CarouselItem
                             key={index}
                             className="md:basis-1/3 lg:basis-1/4 xl:basis-1/5 flex justify-center"
@@ -33,7 +34,7 @@ export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
                                     <CardContent className="flex items-center justify-center w-full p-4">
                                         <div className="flex items-center justify-center w-full">
                                             <Image
-                                                src={partnerLogo}
+                                                src={p.url || "/placeholder.svg"}
                                                 alt={`Partner ${index + 1}`}
                                                 width={80}
                                                 height={80}
