@@ -43,8 +43,8 @@ export function BranchesTable() {
     onSuccess: (_, id) => {
       setAlertOpen(false);
       toast.success("Branch deleted successfully");
-      qc.invalidateQueries({ queryKey: ["branchs"] });
-      qc.setQueryData(["branchs"], (old: Branch[] = []) =>
+      qc.invalidateQueries({ queryKey: ["branches"] });
+      qc.setQueryData(["branches"], (old: Branch[] = []) =>
         old.filter((branch) => branch.id !== id),
       );
     },
@@ -63,7 +63,8 @@ export function BranchesTable() {
     onSuccess: (updateBranch) => {
       if (!updateBranch) return;
       toast.success("Branch updated successfully!");
-      qc.setQueryData(["branchs"], (old: Branch[] = []) =>
+      qc.invalidateQueries({ queryKey: ["branches"] });
+      qc.setQueryData(["branches"], (old: Branch[] = []) =>
         old.map((branch) =>
           branch.id === updateBranch.id ? updateBranch : branch,
         ),
@@ -82,7 +83,8 @@ export function BranchesTable() {
     onSuccess: (newBranch) => {
       if (!newBranch) return;
       toast.success("Branch created successfully!");
-      qc.setQueryData(["branchs"], (old: Branch[] = []) => [
+      qc.invalidateQueries({ queryKey: ["branches"] });
+      qc.setQueryData(["branches"], (old: Branch[] = []) => [
         ...old,
         newBranch,
       ]);

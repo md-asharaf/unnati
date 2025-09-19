@@ -36,7 +36,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ sl
     const content = formData.get("content") as string;
     const newSlug = formData.get("slug") as string;
     const title = formData.get("title") as string;
-    const thumbnail = formData.get("thumbnail") as File | null | undefined;
+    const thumbnail = formData.get("thumbnail") as File | null || undefined;
     let validatedData;
     try {
         validatedData = updateBlogSchema.parse({ content, slug: newSlug, thumbnail, title });

@@ -24,7 +24,7 @@ import { EmptyState } from "@/components/dashboard/common/empty-state";
 const ALL = "ALL" as const;
 type AllOrType = typeof ALL | ImageType;
 
-const IMAGE_TYPES: ImageType[] = ["HERO", "LOGO", "PARTNER", "BLOG"];
+const IMAGE_TYPES: ImageType[] = ["HERO", "LOGO", "COMPANY", "BLOG"];
 
 export default function ImagesPage() {
     const [type, setType] = useState<AllOrType>(ALL);

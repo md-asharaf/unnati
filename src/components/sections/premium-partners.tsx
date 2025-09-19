@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { AnimatedHeading } from "../animated-heading";
-import { Image as Partner } from "@/schemas";
+import { Company } from "@/schemas";
 interface PremiumPartnersProps {
-    partners: Partner[];
+    partners: Company[];
 }
 export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
     return (
@@ -21,7 +21,7 @@ export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
                 opts={{
                     align: "center",
                 }}
-                className="w-full max-w-5xl mx-auto flex justify-center"
+                className="mx-auto max-w-6xl"
             >
                 <CarouselContent>
                     {partners?.map((p, index) => (
@@ -30,16 +30,11 @@ export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
                             className="md:basis-1/3 lg:basis-1/4 xl:basis-1/5 flex justify-center"
                         >
                             <div className="p-1">
-                                <Card className="bg-secondary w-40 h-40 flex items-center justify-center mx-auto transition-transform duration-300 hover:scale-105">
-                                    <CardContent className="flex items-center justify-center w-full p-4">
-                                        <div className="flex items-center justify-center w-full">
-                                            <Image
-                                                src={p.url || "/placeholder.svg"}
-                                                alt={`Partner ${index + 1}`}
-                                                width={80}
-                                                height={80}
-                                            />
-                                        </div>
+                                <Card>
+                                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                                        <span className="text-3xl font-semibold">
+                                            <Image src={p.logo.url || "/placeholder.svg"} alt={p.name} height={200} width={200} className="object-cover h-full w-full" sizes="(max-width: 640px) 60vw, (max-width: 1024px) 30vw, 20vw" />
+                                        </span>
                                     </CardContent>
                                 </Card>
                             </div>

@@ -35,8 +35,8 @@ const items = [
     icon: Users,
   },
   {
-    title: "Partners",
-    url: "/partners",
+    title: "Companies",
+    url: "/companies",
     icon: Handshake,
   },
   {
