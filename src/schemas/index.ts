@@ -24,12 +24,12 @@ export const companySchema = z.object({
 
 export const createCompanySchema = z.object({
     name: z.string().min(1, "Name is required"),
-    isPremium: z.boolean().optional().default(false),
-    file: z.file(),
+    isPremium: z.boolean(),
+    logo: z.file(),
 });
 
-export const updateCompanySchema = createCompanySchema.partial().extend({
-    file: z.file().optional(),
+export const updateCompanySchema = createCompanySchema.extend({
+    logo: z.file().optional(),
 });
 
 // Placement
@@ -268,6 +268,7 @@ export type ImageType = z.infer<typeof imageTypeSchema>;
 
 export type Company = z.infer<typeof companySchema>;
 export type CreateCompany = z.infer<typeof createCompanySchema>;
+export type UpdateCompany = z.infer<typeof updateCompanySchema>;
 
 export type Placement = z.infer<typeof placementSchema>;
 export type CreatePlacement = z.infer<typeof createPlacementSchema>;

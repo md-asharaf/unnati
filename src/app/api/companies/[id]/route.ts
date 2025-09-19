@@ -17,12 +17,12 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ i
 export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const formData = await req.formData();
-    const file = formData.get("file") as File | null | undefined;
+    const logo = formData.get("logo") as File | null | undefined;
     const name = formData.get("name") as string;
     const isPremium = formData.get("isPremium") === "true";
     let validatedData;
     try {
-        validatedData = updateCompanySchema.parse({ name, isPremium, file });
+        validatedData = updateCompanySchema.parse({ name, isPremium, logo });
     } catch (error) {
         return NextResponse.json(
             {
@@ -41,11 +41,11 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id
         return NextResponse.json({ error: "Company not found" }, { status: 404 });
     }
     let image;
-    if (validatedData.file) {
+    if (validatedData.logo) {
         // upload thumbnail
-        const arrayBuffer = await validatedData.file.arrayBuffer();
+        const arrayBuffer = await validatedData.logo.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
-        const { id, url } = await uploadService.uploadBuffer(buffer, validatedData.file.type);
+        const { id, url } = await uploadService.uploadBuffer(buffer, validatedData.logo.type);
         image = await db.image.create({
             data: {
                 type: "BLOG",
@@ -75,7 +75,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id
     }
     return NextResponse.json({
         data: {
-            company
+            company: updatedCompany
         }, message: "Company image uploaded successfully"
     });
 }
