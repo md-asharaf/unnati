@@ -1,6 +1,6 @@
 import { z } from "zod";
 // Image
-export const imageTypeSchema = z.enum(["HERO", "LOGO", "PARTNER", "BLOG"]);
+export const imageTypeSchema = z.enum(["HERO", "LOGO", "COMPANY", "BLOG"]);
 
 export const imageSchema = z.object({
     id: z.uuid(),
@@ -25,7 +25,11 @@ export const companySchema = z.object({
 export const createCompanySchema = z.object({
     name: z.string().min(1, "Name is required"),
     isPremium: z.boolean().optional().default(false),
-    imageId: z.uuid(),
+    file: z.file(),
+});
+
+export const updateCompanySchema = createCompanySchema.partial().extend({
+    file: z.file().optional(),
 });
 
 // Placement
@@ -231,9 +235,9 @@ export const createTrainerSchema = z.object({
 });
 
 // Update Schemas
-export const updateBlogSchema = createBlogSchema.omit({ thumbnail: true }).and(z.object({
+export const updateBlogSchema = createBlogSchema.extend({
     thumbnail: z.file().optional(),
-}));
+});
 
 // Type Inference
 export type Admin = z.infer<typeof adminSchema>;
