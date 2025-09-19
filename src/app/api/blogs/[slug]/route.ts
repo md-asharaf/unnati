@@ -36,7 +36,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ sl
     const content = formData.get("content") as string;
     const newSlug = formData.get("slug") as string;
     const title = formData.get("title") as string;
-    const thumbnail = formData.get("thumbnail") as File | null  || undefined;
+    const thumbnail = formData.get("thumbnail") as File | null | undefined;
     let validatedData;
     try {
         validatedData = updateBlogSchema.parse({ content, slug: newSlug, thumbnail, title });
@@ -96,4 +96,26 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ sl
         },
         { status: 200 }
     );
+}
+
+export const GET = async (req: NextRequest, { params }: { params: Promise<{ slug: string }> }) => {
+    const { slug } = await params;
+    const blog = await db.blog.findUnique({
+        where: { slug },
+        include: {
+            thumbnail: true
+        }
+    });
+    if (!blog) {
+        return NextResponse.json(
+            { error: "Blog not found" },
+            { status: 404 }
+        );
+    }
+    return NextResponse.json({
+        data: {
+            blog,
+        },
+        message: "Blog fetched successfully",
+    });
 }
