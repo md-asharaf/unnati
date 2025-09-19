@@ -107,7 +107,7 @@ export const createUspSchema = z.object({
 });
 
 // Settings
-export const settingsSchema = z.object({
+export const settingSchema = z.object({
     id: z.uuid(),
     key: z.string(),
     value: z.string(),
@@ -116,7 +116,7 @@ export const settingsSchema = z.object({
     updatedAt: z.date(),
 });
 
-export const createSettingsSchema = z.object({
+export const createSettingSchema = z.object({
     key: z.string().min(1, "Key is required"),
     value: z.string().min(1, "Value is required"),
     description: z.string().optional(),
@@ -281,5 +281,5 @@ export type CreateCourse = z.infer<typeof createCourseSchema>;
 export type Usp = z.infer<typeof uspSchema>;
 export type CreateUsp = z.infer<typeof createUspSchema>;
 
-export type Settings = z.infer<typeof settingsSchema>;
-export type CreateSettings = z.infer<typeof createSettingsSchema>;
+export type Setting = z.infer<typeof settingSchema>;
+export type CreateSetting = z.infer<typeof createSettingSchema>;
