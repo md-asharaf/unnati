@@ -17,7 +17,7 @@ export const DELETE = async (req: NextRequest, { params }: { params: Promise<{ i
 export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const formData = await req.formData();
-    const logo = formData.get("logo") as File | null | undefined;
+    const logo = formData.get("logo") as File | null || undefined;
     const name = formData.get("name") as string;
     const isPremium = formData.get("isPremium") === "true";
     let validatedData;

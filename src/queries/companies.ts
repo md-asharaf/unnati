@@ -34,7 +34,7 @@ const createCompany = async ({ logo, isPremium, name }: CreateCompany) => {
 const updateCompany = async (id: string, { logo, isPremium, name }: UpdateCompany) => {
   const formData = new FormData()
   if (logo) {
-    formData.append("file", logo)
+    formData.append("logo", logo)
   }
   formData.append("isPremium", isPremium.toString())
   formData.append("name", name)
