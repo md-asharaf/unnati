@@ -11,6 +11,11 @@ const fetchBlogs = async (page = 1, limit = 10) => {
     return response.data
 }
 
+const fetchBlog = async (slug: string) => {
+    const response = await instance.get(`/blogs/${slug}`)
+    return response.data
+}
+
 const deleteBlog = async (slug: string) => {
     const response = await instance.delete(`/blogs/${slug}`)
     return response.data
@@ -48,6 +53,7 @@ const updateBlog = async (slug: string, { title, content, slug: newSlug, thumbna
 
 export {
     fetchBlogs,
+    fetchBlog,
     deleteBlog,
     createBlog,
     updateBlog
