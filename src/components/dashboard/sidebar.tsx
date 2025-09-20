@@ -8,7 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Newspaper, Image, Building2, Handshake, MapPin, Users, HelpCircle } from "lucide-react"
+import { Newspaper, Image as ImageIcon, Building2, Handshake, MapPin, Users, HelpCircle, BookOpen, Award, Star, Settings2 } from "lucide-react"
 import { NavUser } from "./nav-user"
 import Link from "next/link"
 import { Admin } from "@/schemas"
@@ -26,13 +26,13 @@ const items = [
   },
   {
     title: "Images",
-    url: "/images ",
-    icon: Image,
+    url: "/images",
+    icon: ImageIcon,
   },
   {
     title: "Trainers",
     url: "/trainers",
-    icon: Users,
+    icon: Award,
   },
   {
     title: "Companies",
@@ -43,6 +43,31 @@ const items = [
     title: "Branches",
     url: "/branches",
     icon: MapPin,
+  },
+  {
+    title: "Courses",
+    url: "/courses",
+    icon: BookOpen,
+  },
+  {
+    title: "Placements",
+    url: "/placements",
+    icon: Star,
+  },
+  {
+    title: "Testimonials",
+    url: "/testimonials",
+    icon: Users,
+  },
+  {
+    title: "USPs",
+    url: "/usps",
+    icon: Building2,
+  },
+  {
+    title: "Settings",
+    url: "/settings",
+    icon: Settings2,
   },
 ]
 export const AppSidebar = ({ admin }: { admin: Admin }) => {

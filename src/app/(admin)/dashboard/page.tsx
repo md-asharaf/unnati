@@ -1,7 +1,73 @@
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Newspaper, Handshake, Image as ImageIcon, HelpCircle } from "lucide-react";
+import { Newspaper, Handshake, Image as ImageIcon, HelpCircle, FileText } from "lucide-react";
+import { LinkCard } from "@/components/dashboard/link-card";
+const dashboardCards = [
+    {
+        href: "/dashboard/blogs",
+        icon: Newspaper,
+        title: "Blogs",
+        description: "Create and manage blog posts",
+    },
+    {
+        href: "/dashboard/faqs",
+        icon: HelpCircle,
+        title: "FAQs",
+        description: "Manage frequently asked questions",
+    },
+    {
+        href: "/dashboard/images",
+        icon: ImageIcon,
+        title: "Images",
+        description: "Manage gallery images",
+    },
+    {
+        href: "/dashboard/usps",
+        icon: HelpCircle,
+        title: "USPs",
+        description: "Create, edit, and manage USPs.",
+    },
+    {
+        href: "/dashboard/trainers",
+        icon: FileText,
+        title: "Trainers",
+        description: "Create, edit, and manage your trainers.",
+    },
+    {
+        href: "/dashboard/companies",
+        icon: Handshake,
+        title: "Companies",
+        description: "Create, edit, and manage your company profiles.",
+    },
+    {
+        href: "/dashboard/branches",
+        icon: FileText,
+        title: "Branches",
+        description: "Create, edit, and manage your branches.",
+    },
+    {
+        href: "/dashboard/courses",
+        icon: FileText,
+        title: "Courses",
+        description: "Create, edit, and manage courses.",
+    },
+    {
+        href: "/dashboard/placements",
+        icon: Handshake,
+        title: "Placements",
+        description: "Create, edit, and manage placements.",
+    },
+    {
+        href: "/dashboard/testimonials",
+        icon: HelpCircle,
+        title: "Testimonials",
+        description: "Create, edit, and manage testimonials.",
+    },
+    {
+        href: "/dashboard/settings",
+        icon: FileText,
+        title: "Settings",
+        description: "Create, edit, and manage settings.",
+    },
+];
 export default function DashboardPage() {
     return (
         <div className="min-h-screen p-8 bg-background">
@@ -10,77 +76,13 @@ export default function DashboardPage() {
                     Welcome to Unnati Admin Dashboard
                 </h1>
                 <p className="text-muted-foreground mb-8 text-lg">
-                    Manage your content, partners, and more from one place.
+                    Manage your content, images, and more from one place.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-                    <Card>
-                        <CardHeader className="flex flex-col items-center">
-                            <div className="bg-primary/10 rounded-lg p-3 mb-2">
-                                <Newspaper className="w-8 h-8 text-primary" />
-                            </div>
-                            <CardTitle className="text-2xl">Blogs</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center text-muted-foreground">
-                            Create and manage blog posts
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-col items-center">
-                            <div className="bg-accent/10 rounded-lg p-3 mb-2">
-                                <Handshake className="w-8 h-8 text-accent" />
-                            </div>
-                            <CardTitle className="text-2xl">Partners</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center text-muted-foreground">
-                            Showcase premium partners
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-col items-center">
-                            <div className="bg-secondary/10 rounded-lg p-3 mb-2">
-                                <ImageIcon className="w-8 h-8 text-secondary" />
-                            </div>
-                            <CardTitle className="text-2xl">Images</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center text-muted-foreground">
-                            Manage gallery images
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-col items-center">
-                            <div className="bg-muted/10 rounded-lg p-3 mb-2">
-                                <HelpCircle className="w-8 h-8 text-foreground" />
-                            </div>
-                            <CardTitle className="text-2xl">FAQs</CardTitle>
-                        </CardHeader>
-                        <CardContent className="text-center text-muted-foreground">
-                            Manage frequently asked questions
-                        </CardContent>
-                    </Card>
-                </div>
-
-                <div className="flex flex-wrap gap-4">
-                    <Button asChild size="lg" className="bg-primary text-primary-foreground hover:bg-primary/70">
-                        <Link href="/dashboard/blogs" className="flex items-center gap-2">
-                            <Newspaper className="w-5 h-5" /> Go to Blogs
-                        </Link>
-                    </Button>
-                    <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/70">
-                        <Link href="/dashboard/partners" className="flex items-center gap-2">
-                            <Handshake className="w-5 h-5" /> Go to Partners
-                        </Link>
-                    </Button>
-                    <Button asChild size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/70">
-                        <Link href="/dashboard/images" className="flex items-center gap-2">
-                            <ImageIcon className="w-5 h-5" /> Go to Images
-                        </Link>
-                    </Button>
-                    <Button asChild size="lg" className="bg-muted text-foreground hover:bg-muted/70">
-                        <Link href="/dashboard/faqs" className="flex items-center gap-2">
-                            <HelpCircle className="w-5 h-5" /> Go to FAQs
-                        </Link>
-                    </Button>
+                    {dashboardCards.map(card => (
+                        <LinkCard key={card.title} {...card} />
+                    ))}
                 </div>
             </div>
         </div>
