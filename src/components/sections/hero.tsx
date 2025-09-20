@@ -1,47 +1,77 @@
-import Image from "next/image";
+"use client"
+import { useEffect, useRef } from "react";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+import Link from "next/link";
 
 interface HeroProps {
-    welcomeText: string;
-    introParagraph: string;
-    imageUrl: string;
+    welcomeText?: string;
+    introParagraph?: string;
+    imageUrl?: string;
 }
 
-export const Hero = ({ welcomeText, introParagraph, imageUrl }: HeroProps) => {
+const stats = [
+    { label: "Success Rate", value: "98%" },
+    { label: "Students Trained", value: "10,000+" },
+    { label: "Placements", value: "2,500+" },
+    { label: "Courses", value: "20+" },
+];
+
+export const Hero = ({ welcomeText, introParagraph }: HeroProps) => {
+    const gradientRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        let angle = 135;
+        let direction = 1;
+        const interval = setInterval(() => {
+            angle += direction * 0.5;
+            if (angle > 180 || angle < 90) direction *= -1;
+            if (gradientRef.current) {
+                gradientRef.current.style.background = `linear-gradient(${angle}deg, var(--background) 0%, var(--secondary) 100%)`;
+            }
+        }, 50);
+        return () => clearInterval(interval);
+    }, []);
+
     return (
-        <section className="bg-secondary py-12 md:py-20 lg:py-24 min-h-screen">
-            <div className="mx-auto max-w-[1600px] px-4 sm:px-6 lg:px-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-24 items-center">
-                    {/* Left Side - Image */}
-                    <div className="order-2 lg:order-1">
-                        <div className="relative aspect-[4/3] w-full max-w-lg mx-auto lg:max-w-none">
-                            <div className="bg-card shadow-xl">
-                                <Image
-                                    src={imageUrl}
-                                    alt="Hero image"
-                                    fill
-                                    className="object-cover rounded-2xl"
-                                    priority
-                                />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Right Side - Content */}
-                    <div className="order-1 lg:order-2 text-center lg:text-left">
-                        {/* Welcome Text */}
-                        <div className="mb-8">
-                            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-                                {welcomeText}
-                            </h1>
-                        </div>
-
-                        {/* Intro Paragraph */}
-                        <div className="max-w-2xl mx-auto lg:mx-0">
-                            <p className="text-base sm:text-lg lg:text-xl text-muted-foreground leading-relaxed">
-                                {introParagraph}
-                            </p>
-                        </div>
-                    </div>
+        <section ref={gradientRef} className="w-full min-h-screen flex flex-col items-center justify-center transition-all duration-1000">
+            <div className="flex flex-col items-center justify-center text-center py-24">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-6">
+                    {welcomeText}<br />
+                    <span className="block mt-2 text-xl">{introParagraph}</span>
+                </h1>
+                <div className="flex flex-wrap items-center justify-center gap-6 mb-8 mt-4 text-lg">
+                    <span className="flex items-center gap-2 font-medium">
+                        <span className="text-secondary">&#10003;</span> Redhat Courses
+                    </span>
+                    <span className="flex items-center gap-2 font-medium">
+                        <span className="text-secondary">&#10003;</span> AWS Courses
+                    </span>
+                    <span className="flex items-center gap-2 font-medium">
+                        <span className="text-secondary">&#10003;</span> Cyber Security Courses
+                    </span>
+                    <span className="flex items-center gap-2 font-medium">
+                        <span className="text-secondary">&#10003;</span> DevOps Courses
+                    </span>
+                </div>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-10">
+                    <Button variant="secondary" className="px-8 py-3 rounded-full font-semibold shadow hover:bg-accent hover:text-accent-foreground transition-colors">
+                        Get a Quote
+                    </Button>
+                    <Button variant="ghost" asChild className="font-semibold text-primary text-lg px-8 py-3">
+                        <Link href="#register">Register Now &rarr;</Link>
+                    </Button>
+                </div>
+                {/* Key Statistics */}
+                <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
+                    {stats.map((stat) => (
+                        <Card key={stat.label} className="min-w-[140px] rounded-xl shadow border border-accent bg-background/80 flex flex-col items-center justify-center">
+                            <CardContent className="flex flex-col items-center justify-center px-8 py-6">
+                                <span className="text-3xl font-bold mb-2">{stat.value}</span>
+                                <span className="text-base text-muted-foreground font-medium">{stat.label}</span>
+                            </CardContent>
+                        </Card>
+                    ))}
                 </div>
             </div>
         </section>
