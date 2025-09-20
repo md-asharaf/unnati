@@ -1,34 +1,43 @@
 import instance from "@/lib/axios";
 import type { CreateSetting } from "@/schemas";
 
-const fetchSettings = async (page: number, limit: number) => {
-    const res = await instance.get("/settings", {
-        params: {
-            page,
-            limit,
-        },
-    });
+const fetchSettings = async () => {
+    const res = await instance.get("/settings");
     return res.data;
 }
 
-const createSetting = async ({ key, value }: CreateSetting) => {
+const createSetting = async ({ welcomeText, introParagraph, email, phone, address, facebook, twitter, linkedin, instagram }: CreateSetting) => {
     const res = await instance.post("/settings", {
-        key,
-        value
+        welcomeText,
+        introParagraph,
+        email,
+        phone,
+        address,
+        facebook,
+        twitter,
+        linkedin,
+        instagram
     });
     return res.data;
 }
 
-const updateSetting = async (id: string, { key, value }: CreateSetting) => {
-    const res = await instance.put(`/settings/${id}`, {
-        key,
-        value
+const updateSetting = async ({ welcomeText, introParagraph, email, phone, address, facebook, twitter, linkedin, instagram }: CreateSetting) => {
+    const res = await instance.put(`/settings`, {
+        welcomeText,
+        introParagraph,
+        email,
+        phone,
+        address,
+        facebook,
+        twitter,
+        linkedin,
+        instagram
     });
     return res.data;
 }
 
-const deleteSetting = async (id: string) => {
-    const res = await instance.delete(`/settings/${id}`);
+const deleteSetting = async () => {
+    const res = await instance.delete(`/settings`);
     return res.data;
 }
 

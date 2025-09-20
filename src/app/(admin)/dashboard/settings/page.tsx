@@ -1,5 +1,5 @@
 import { PageHeader } from "@/components/dashboard/common/page-header";
-import { SettingsTable } from "@/components/dashboard/setting/settings-table";
+import { SettingsCard } from "@/components/dashboard/setting/settings-card";
 import { FileText } from "lucide-react";
 
 export default function SettingsPage() {
@@ -10,7 +10,7 @@ export default function SettingsPage() {
         title="Settings Management"
         subtitle="Create, edit, and manage settings."
       />
-      <SettingsTable />
+      <SettingsCard />
     </div>
   );
 }

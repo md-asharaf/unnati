@@ -130,12 +130,18 @@ model Usp {
 }
 
 model Setting {
-    id          String   @id @default(uuid())
-    key         String   @unique
-    value       String
-    description String?
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
+    id             String   @id @default(uuid())
+    welcomeText    String
+    introParagraph String
+    email          String
+    phone          String
+    address        String
+    facebook       String?
+    twitter        String?
+    linkedin       String?
+    instagram      String?
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
 }
 
 enum ImageType {

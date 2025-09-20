@@ -107,19 +107,33 @@ export const createUspSchema = z.object({
 });
 
 // Settings
+
+
 export const settingSchema = z.object({
     id: z.uuid(),
-    key: z.string(),
-    value: z.string(),
-    description: z.string().optional(),
+    welcomeText: z.string(),
+    introParagraph: z.string(),
+    email: z.string(),
+    phone: z.string(),
+    address: z.string(),
+    facebook: z.string().optional(),
+    twitter: z.string().optional(),
+    linkedin: z.string().optional(),
+    instagram: z.string().optional(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
 
 export const createSettingSchema = z.object({
-    key: z.string().min(1, "Key is required"),
-    value: z.string().min(1, "Value is required"),
-    description: z.string().optional(),
+    welcomeText: z.string().min(1, "Welcome text is required"),
+    introParagraph: z.string().min(1, "Intro paragraph is required"),
+    email: z.string().min(1, "Email is required"),
+    phone: z.string().min(1, "Phone is required"),
+    address: z.string().min(1, "Address is required"),
+    facebook: z.string().optional(),
+    twitter: z.string().optional(),
+    linkedin: z.string().optional(),
+    instagram: z.string().optional(),
 });
 
 
