@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Mail, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
-import { InputOTPForm } from "@/components/forms/otp-input";
+import { InputOTPForm } from "@/components/ui/otp-input";
 import { login } from "@/queries/auth";
 import { toast } from "sonner";
 import { useAuth } from "@/providers/auth-provider";
