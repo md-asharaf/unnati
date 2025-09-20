@@ -43,7 +43,7 @@ export const AnimatedHeading = ({ text }: { text: React.ReactNode }) => {
 
   return (
     <div className="relative inline-block">
-      <h2 className="text-3xl font-semibold" ref={headingRef}>
+      <h2 className="text-2xl font-semibold" ref={headingRef}>
         {firstWords && <span>{firstWords} </span>}
         <span className="relative inline-block" ref={wordRef}>
           {lastWord}
@@ -57,7 +57,7 @@ export const AnimatedHeading = ({ text }: { text: React.ReactNode }) => {
             >
               <path
                 d={`M0 22 Q${(wordWidth * 1.1) / 2} 12 ${wordWidth * 1.1} 22`}
-                stroke="var(--accent)"
+                stroke="var(--secondary)"
                 strokeWidth="2.43"
                 fill="none"
               >

@@ -15,8 +15,8 @@ export function LinkCard(props: LinkCardProps) {
     <Link href={href} className="group">
       <Card className="transition-shadow group-hover:shadow-lg cursor-pointer flex flex-col h-full min-h-[240px]">
         <CardHeader className="flex flex-col items-center flex-1 justify-center">
-          <div className="bg-primary/10 rounded-lg p-3 mb-2">
-            <span className="text-primary"><Icon className="w-8 h-8" /></span>
+          <div className="bg-primary/10 rounded-lg p-2">
+            <span className="text-secondary"><Icon className="w-8 h-8" /></span>
           </div>
           <CardTitle className="text-2xl">{title}</CardTitle>
         </CardHeader>

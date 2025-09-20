@@ -83,7 +83,7 @@ export const AppSidebar = ({ admin }: { admin: Admin }) => {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold text-base">Unnati</span>
-                  <span className="truncate text-xs text-muted-foreground">Admin Dashboard</span>
+                  <span className="truncate text-xs text-primary/50">Admin Dashboard</span>
                 </div>
               </Link>
             </SidebarMenuButton>
