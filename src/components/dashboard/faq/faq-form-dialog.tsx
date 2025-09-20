@@ -30,11 +30,11 @@ import {
 import { type CreateFaq, createFaqSchema, type Faq, Topic } from "@/schemas";
 import { createTopic, fetchTopics } from "@/queries/topics";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 type Props = {
     open: boolean;
     onOpenChange: (open: boolean) => void;
-    title: string;
     initialData?: Faq;
     onSubmit: (values: CreateFaq) => void;
 };
@@ -42,7 +42,6 @@ type Props = {
 export function FaqFormDialog({
     open,
     onOpenChange,
-    title,
     initialData,
     onSubmit,
 }: Props) {
@@ -94,7 +93,7 @@ export function FaqFormDialog({
                 <DialogContent className="max-w-xl">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold">
-                            {title}
+                            {initialData ? "Edit FAQ" : "Create FAQ"}
                         </DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
@@ -189,7 +188,7 @@ export function FaqFormDialog({
                                     Cancel
                                 </Button>
                                 <Button type="submit">
-                                    {initialData ? "Update FAQ" : "Create FAQ"}
+                                    {initialData ? "Save" : "Create"}
                                 </Button>
                             </div>
                         </form>
@@ -222,7 +221,7 @@ export function FaqFormDialog({
                                     createTopicMutation.mutate(newTopicName.trim())
                                 }
                             >
-                                {createTopicMutation.isPending ? "Creating..." : "Create"}
+                                {createTopicMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create"}
                             </Button>
                         </div>
                     </div>
