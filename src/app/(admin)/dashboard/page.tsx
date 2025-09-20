@@ -72,7 +72,7 @@ export default function DashboardPage() {
     return (
         <div className="min-h-screen p-8 bg-background">
             <div className="max-w-5xl mx-auto">
-                <h1 className="text-4xl font-bold mb-2 text-primary">
+                <h1 className="text-4xl font-bold mb-2">
                     Welcome to Unnati Admin Dashboard
                 </h1>
                 <p className="text-muted-foreground mb-8 text-lg">

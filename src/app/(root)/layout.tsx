@@ -4,6 +4,8 @@ import "@/app/globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import QueryProvider from "@/providers/query-provider";
+import { fetchSettings } from "@/queries/settings";
+import { Setting } from "@/schemas";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -20,22 +22,23 @@ export const metadata: Metadata = {
     description: "Your platform for premium educational courses",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const { data } = await fetchSettings()
+    const { email, phone, facebook, instagram, linkedin, twitter } = data.setting as Setting
     const logoUrl =
         "https://upload.wikimedia.org/wikipedia/commons/e/ea/Superman_shield.svg";
-
     return (
         <html lang="en">
             <body
                 className={`${geistSans.variable} ${geistMono.variable} font-mono antialiased`}
             ><QueryProvider>
-                    <div className="min-h-screen bg-background flex flex-col">
+                    <div className="min-h-screen flex flex-col">
                         <header>
-                            <Header logoUrl={logoUrl} />
+                            <Header logoUrl={logoUrl} phone={phone} email={email} social={{ facebook, linkedin, instagram, twitter }} />
                         </header>
                         <main className="flex-grow">{children}</main>
 
