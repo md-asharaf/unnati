@@ -65,13 +65,10 @@ export function CompaniesTable() {
 
     const deleteMutation = useMutation({
         mutationFn: deleteCompany,
-        onSuccess: (_, id) => {
+        onSuccess: () => {
             setIsOpen(false);
             toast.success("Company deleted successfully");
-            queryClient.invalidateQueries({ queryKey: ["companies"] });
-            queryClient.setQueryData(["companies"], (old: Company[] = []) =>
-                old.filter((company) => company.id !== id),
-            );
+            queryClient.invalidateQueries({ queryKey: ["companies"] })
         },
         onError: () => {
             setIsOpen(false);
@@ -85,18 +82,12 @@ export function CompaniesTable() {
             const { data } = await updateCompany(editingCompany?.id!, values);
             return data.company;
         },
-        onSuccess: (updateCompany) => {
-            if (!updateCompany) return;
+        onSuccess: () => {
             toast.success("Company updated successfully!");
             queryClient.invalidateQueries({ queryKey: ["companies"] });
-            queryClient.setQueryData(["companies"], (old: Company[] = []) =>
-                old.map((company) =>
-                    company.id === updateCompany.id ? updateCompany : company,
-                ),
-            );
             setEditingCompany(null);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to update company. Please try again.");
         },
     });
@@ -105,17 +96,12 @@ export function CompaniesTable() {
             const { data } = await createCompany(values);
             return data.company;
         },
-        onSuccess: (newCompany) => {
-            if (!newCompany) return;
+        onSuccess: ( ) => {
             toast.success("Company created successfully!");
             queryClient.invalidateQueries({ queryKey: ["companies"] });
-            queryClient.setQueryData(["companies"], (old: Company[] = []) => [
-                ...old,
-                newCompany,
-            ]);
             setIsCreateDialogOpen(false);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to create company. Please try again.");
         },
     });
@@ -269,7 +255,6 @@ export function CompaniesTable() {
                         logo: data.logo!,
                     })
                 }
-                title="Create New Company"
             />
 
             <CompanyFormDialog
@@ -277,7 +262,6 @@ export function CompaniesTable() {
                 open={!!editingCompany}
                 onOpenChange={(open) => !open && setEditingCompany(null)}
                 onSubmit={(data) => updatemutation.mutate(data)}
-                title="Edit Company"
                 initialData={editingCompany || undefined}
             />
 

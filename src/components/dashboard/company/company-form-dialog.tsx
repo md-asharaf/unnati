@@ -35,7 +35,6 @@ interface CompanyFormDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSubmit: (data: UpdateCompany | CreateCompany) => void;
-    title: string;
     initialData?: Company;
 }
 
@@ -43,7 +42,6 @@ export function CompanyFormDialog({
     open,
     onOpenChange,
     onSubmit,
-    title,
     initialData,
 }: CompanyFormDialogProps) {
     const logoRef = useRef<HTMLInputElement>(null);
@@ -83,7 +81,7 @@ export function CompanyFormDialog({
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">
-                        {title}
+                        {initialData ? "Edit Company" : "Create Company"}
                     </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
@@ -218,7 +216,7 @@ export function CompanyFormDialog({
                                 Cancel
                             </Button>
                             <Button type="submit" >
-                                {initialData ? "Update Company" : "Create Company"}
+                                {initialData ? "Save" : "Create"}
                             </Button>
                         </div>
                     </form>

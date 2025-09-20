@@ -37,7 +37,6 @@ interface BlogFormDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSubmit: (data: UpdateBlog | CreateBlog) => void;
-    title: string;
     initialData?: Blog;
 }
 
@@ -45,7 +44,6 @@ export function BlogFormDialog({
     open,
     onOpenChange,
     onSubmit,
-    title,
     initialData,
 }: BlogFormDialogProps) {
     const thumbnailRef = useRef<HTMLInputElement>(null);
@@ -95,7 +93,7 @@ export function BlogFormDialog({
             >
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">
-                        {title}
+                        {initialData ? "Edit Blog" : "Create Blog"}
                     </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
@@ -264,7 +262,7 @@ export function BlogFormDialog({
                                 Cancel
                             </Button>
                             <Button type="submit" >
-                                {initialData ? "Update Blog" : "Create Blog"}
+                                {initialData ? "Save" : "Create"}
                             </Button>
                         </div>
                     </form>
