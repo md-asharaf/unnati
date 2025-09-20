@@ -64,13 +64,10 @@ export function TrainersTable() {
 
     const deleteMutation = useMutation({
         mutationFn: deleteTrainer,
-        onSuccess: (_, id) => {
+        onSuccess: () => {
             setAlertOpen(false);
             toast.success("Trainer deleted successfully");
             qc.invalidateQueries({ queryKey: ["trainers"] });
-            qc.setQueryData(["trainers"], (old: Trainer[] = []) =>
-                old.filter((trainer) => trainer.id !== id),
-            );
         },
         onError: () => {
             setAlertOpen(false);
@@ -84,17 +81,12 @@ export function TrainersTable() {
             const { data } = await updateTrainer(editingTrainer?.id!, values);
             return data.trainer;
         },
-        onSuccess: (updateTrainer) => {
-            if (!updateTrainer) return;
+        onSuccess: () => {
             toast.success("Trainer updated successfully!");
-            qc.setQueryData(["trainers"], (old: Trainer[] = []) =>
-                old.map((trainer) =>
-                    trainer.id === updateTrainer.id ? updateTrainer : trainer,
-                ),
-            );
+            qc.invalidateQueries({ queryKey: ["trainers"] });
             setEditingTrainer(null);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to update trainer. Please try again.");
         },
     });
@@ -103,16 +95,12 @@ export function TrainersTable() {
             const { data } = await createTrainer(values);
             return data.trainer;
         },
-        onSuccess: (newTrainer) => {
-            if (!newTrainer) return;
+        onSuccess: () => {
             toast.success("Trainer created successfully!");
-            qc.setQueryData(["trainers"], (old: Trainer[] = []) => [
-                ...old,
-                newTrainer,
-            ]);
+            qc.invalidateQueries({ queryKey: ["trainers"] });
             setCreateOpen(false);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to create trainer. Please try again.");
         },
     });
@@ -132,9 +120,6 @@ export function TrainersTable() {
                     searchTerm={searchTerm}
                     onSearch={setSearchTerm}
                     searchPlaceholder="Search trainers..."
-                    pageSize={filtered.length || 0}
-                    onChangePageSize={() => {}}
-                    showPageSize={false}
                 />
             </CardHeader>
             <CardContent>
@@ -242,14 +227,12 @@ export function TrainersTable() {
                 open={!!editingTrainer}
                 onOpenChange={(open) => !open && setEditingTrainer(null)}
                 onSubmit={(data) => updatemutation.mutate(data)}
-                title="Edit Trainer"
                 initialData={editingTrainer || undefined}
             />
             <TrainerFormDialog
                 open={createOpen}
                 onOpenChange={setCreateOpen}
                 onSubmit={(data) => createMutation.mutate(data)}
-                title="Create New Trainer"
             />
             <CustomAlertDialog
                 isOpen={alertOpen}

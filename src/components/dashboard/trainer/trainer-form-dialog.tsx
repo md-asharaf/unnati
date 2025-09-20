@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { createTrainerSchema, CreateTrainer, Trainer } from "@/schemas";
@@ -15,12 +15,11 @@ interface TrainerFormDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     onSubmit: (data: CreateTrainer) => void;
-    title: string;
     initialData?: Trainer;
 }
 
 
-export function TrainerFormDialog({ open, onOpenChange, onSubmit, title, initialData }: TrainerFormDialogProps) {
+export function TrainerFormDialog({ open, onOpenChange, onSubmit, initialData }: TrainerFormDialogProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: initialData ?? {
@@ -37,7 +36,7 @@ export function TrainerFormDialog({ open, onOpenChange, onSubmit, title, initial
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>
-                        {title}
+                        {initialData ? "Edit Trainer" : "Create Trainer"}
                     </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
@@ -130,12 +129,12 @@ export function TrainerFormDialog({ open, onOpenChange, onSubmit, title, initial
                             )}
                         />
 
-                        <DialogFooter>
+                        <div className="flex justify-end gap-3 pt-4 border-t">
                             <Button variant="outline" onClick={() => onOpenChange(false)} disabled={!form.watch("name")}>Cancel</Button>
                             <Button type="submit" disabled={!form.watch("name")}>
                                 {initialData ? "Save" : "Create"}
                             </Button>
-                        </DialogFooter>
+                        </div>
                     </form>
                 </Form>
             </DialogContent>
