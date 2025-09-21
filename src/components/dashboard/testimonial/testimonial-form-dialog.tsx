@@ -1,19 +1,17 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { useQuery } from "@tanstack/react-query";
+import { fetchPlacements } from "@/queries/placements";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { CreateTestimonial, createTestimonialSchema } from "@/schemas";
+import { CreateTestimonial, createTestimonialSchema, Testimonial } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
+import { Loader2 } from "lucide-react";
+import { FormDialogProps } from "@/types/interfaces";
 
-interface TestimonialFormDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit: (data: CreateTestimonial) => void;
-  initialData?: CreateTestimonial;
-}
-
-export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialData }: TestimonialFormDialogProps) {
+export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialData, isLoading }: FormDialogProps<CreateTestimonial, Testimonial>) {
   const form = useForm<CreateTestimonial>({
     resolver: zodResolver(createTestimonialSchema),
     defaultValues: {
@@ -21,6 +19,11 @@ export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialDat
       rating: initialData?.rating || 1,
       placementId: initialData?.placementId || "",
     },
+  });
+
+  const { data: placements, isLoading: placementsLoading } = useQuery({
+    queryKey: ["placements"],
+    queryFn: () => fetchPlacements(1, 100)
   });
 
   return (
@@ -62,9 +65,24 @@ export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialDat
               name="placementId"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Placement ID *</FormLabel>
+                  <FormLabel>Placement *</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter placement ID..." {...field} />
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={placementsLoading}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={placementsLoading ? "Loading placements..." : "Select a placement"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.isArray(placements?.data) && placements.data.map((placement: any) => (
+                          <SelectItem key={placement.id} value={placement.id}>
+                            {placement.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,8 +92,8 @@ export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialDat
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button type="submit">
-                {initialData ? "Save" : "Create"}
+              <Button type="submit" variant="secondary">
+                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
               </Button>
             </div>
           </form>

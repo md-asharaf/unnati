@@ -211,6 +211,7 @@ export function PlacementsTable() {
         onOpenChange={setIsCreateDialogOpen}
         onSubmit={(data) => createMutation.mutate(data as CreatePlacement)}
         initialData={undefined}
+        isLoading={createMutation.isPending}
       />
 
       <PlacementFormDialog
@@ -219,6 +220,7 @@ export function PlacementsTable() {
         onOpenChange={(open) => !open && setEditingPlacement(null)}
         onSubmit={(data) => updatemutation.mutate(data as CreatePlacement)}
         initialData={editingPlacement || undefined}
+        isLoading={updatemutation.isPending}
       />
 
       <CustomAlertDialog

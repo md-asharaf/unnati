@@ -5,15 +5,10 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Course, CreateCourse } from "@/schemas";
+import { Loader2 } from "lucide-react";
+import { FormDialogProps } from "@/types/interfaces";
 
-interface CourseFormDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit: (data: CreateCourse) => void;
-  initialData?: Course;
-}
-
-export function CourseFormDialog({ open, onOpenChange, onSubmit, initialData }: CourseFormDialogProps) {
+export function CourseFormDialog({ open, onOpenChange, onSubmit, initialData,isLoading }: FormDialogProps<CreateCourse, Course>) {
   const form = useForm<CreateCourse>({
     defaultValues: {
       title: initialData?.title || "",
@@ -158,8 +153,8 @@ export function CourseFormDialog({ open, onOpenChange, onSubmit, initialData }: 
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button type="submit">
-                {initialData ? "Save" : "Create"}
+              <Button type="submit" variant="secondary">
+                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
               </Button>
             </div>
           </form>

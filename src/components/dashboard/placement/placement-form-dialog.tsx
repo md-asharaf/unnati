@@ -1,19 +1,17 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import { fetchCompanies } from "@/queries/companies";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
-import { CreatePlacement, createPlacementSchema } from "@/schemas";
+import { CreatePlacement, createPlacementSchema, Placement } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
+import { FormDialogProps } from "@/types/interfaces";
 
-interface PlacementFormDialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  onSubmit: (data: CreatePlacement) => void;
-  initialData?: CreatePlacement;
-}
-
-export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData }: PlacementFormDialogProps) {
+export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData, isLoading }: FormDialogProps<CreatePlacement, Placement>) {
   const form = useForm<CreatePlacement>({
     resolver: zodResolver(createPlacementSchema),
     defaultValues: {
@@ -22,6 +20,11 @@ export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData 
       companyId: initialData?.companyId || "",
       photoUrl: initialData?.photoUrl || "",
     },
+  });
+
+  const { data: companies, isLoading: companiesLoading } = useQuery({
+    queryKey: ["companies"],
+    queryFn: () => fetchCompanies(1, 50)
   });
 
   return (
@@ -63,9 +66,24 @@ export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData 
               name="companyId"
               render={({ field }) => (
                 <FormItem className="space-y-2">
-                  <FormLabel>Company ID *</FormLabel>
+                  <FormLabel>Company *</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter company ID..." {...field} />
+                    <Select
+                      value={field.value}
+                      onValueChange={field.onChange}
+                      disabled={companiesLoading}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder={companiesLoading ? "Loading companies..." : "Select a company"} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Array.isArray(companies?.data) && companies.data.map((company: any) => (
+                          <SelectItem key={company.id} value={company.id}>
+                            {company.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,8 +106,8 @@ export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData 
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
               </Button>
-              <Button type="submit">
-                {initialData ? "Save" : "Create"}
+              <Button type="submit" variant="secondary">
+                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
               </Button>
             </div>
           </form>

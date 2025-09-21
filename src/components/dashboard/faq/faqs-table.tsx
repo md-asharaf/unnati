@@ -216,6 +216,7 @@ export function FaqsTable() {
 
             <FaqFormDialog
                 open={isCreateDialogOpen}
+                isLoading={createMutation.isPending}
                 onOpenChange={setIsCreateDialogOpen}
                 onSubmit={(values) => createMutation.mutate(values)}
             />
@@ -226,6 +227,7 @@ export function FaqsTable() {
                 onOpenChange={(open) => !open && setEditingFaq(null)}
                 onSubmit={(values) => updatemutation.mutate(values)}
                 initialData={editingFaq || undefined}
+                isLoading={updatemutation.isPending}
             />
 
             <CustomAlertDialog

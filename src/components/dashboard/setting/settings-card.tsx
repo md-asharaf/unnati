@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { Setting, CreateSetting, createSettingSchema } from "@/schemas";
+import { CreateSetting, createSettingSchema } from "@/schemas";
 import { fetchSettings, updateSetting } from "@/queries/settings";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,7 @@ export const SettingsCard = () => {
   const form = useForm<CreateSetting>({
     resolver: zodResolver(createSettingSchema),
   });
-  const { data, isLoading, isFetching, refetch } = useQuery({
+  const { data, isFetching, refetch } = useQuery({
     queryKey: ["settings"],
     queryFn: fetchSettings,
   });
@@ -185,7 +185,7 @@ export const SettingsCard = () => {
               />
             </div>
             <div className="pt-6">
-              <Button type="submit" variant="outline" disabled={updateMutation.isPending}>
+              <Button type="submit" variant="secondary" disabled={updateMutation.isPending}>
                 {updateMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Save"}
               </Button>
             </div>

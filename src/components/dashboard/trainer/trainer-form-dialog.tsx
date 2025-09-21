@@ -2,26 +2,17 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { createTrainerSchema, CreateTrainer, Trainer } from "@/schemas";
+import { FormDialogProps } from "@/types/interfaces";
+import { Loader2 } from "lucide-react";
 
-const formSchema = createTrainerSchema;
-
-interface TrainerFormDialogProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSubmit: (data: CreateTrainer) => void;
-    initialData?: Trainer;
-}
-
-
-export function TrainerFormDialog({ open, onOpenChange, onSubmit, initialData }: TrainerFormDialogProps) {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+export function TrainerFormDialog({ open, onOpenChange, onSubmit, initialData,isLoading}: FormDialogProps<CreateTrainer, Trainer>) {
+    const form = useForm<CreateTrainer>({
+        resolver: zodResolver(createTrainerSchema),
         defaultValues: initialData ?? {
             designation: "",
             experience: "",
@@ -131,8 +122,8 @@ export function TrainerFormDialog({ open, onOpenChange, onSubmit, initialData }:
 
                         <div className="flex justify-end gap-3 pt-4 border-t">
                             <Button variant="outline" onClick={() => onOpenChange(false)} disabled={!form.watch("name")}>Cancel</Button>
-                            <Button type="submit" disabled={!form.watch("name")}>
-                                {initialData ? "Save" : "Create"}
+                            <Button type="submit" disabled={!form.watch("name")} variant="secondary">
+                                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                             </Button>
                         </div>
                     </form>

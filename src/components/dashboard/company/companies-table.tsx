@@ -255,6 +255,7 @@ export function CompaniesTable() {
                         logo: data.logo!,
                     })
                 }
+                isLoading={createMutation.isPending}
             />
 
             <CompanyFormDialog
@@ -263,6 +264,7 @@ export function CompaniesTable() {
                 onOpenChange={(open) => !open && setEditingCompany(null)}
                 onSubmit={(data) => updatemutation.mutate(data)}
                 initialData={editingCompany || undefined}
+                isLoading={updatemutation.isPending}
             />
 
             <CustomAlertDialog

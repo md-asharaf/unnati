@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageIcon, Trash, Upload } from "lucide-react";
+import { ImageIcon, Loader2, Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -31,19 +31,15 @@ import {
     updateCompanySchema,
 } from "@/schemas";
 import { Switch } from "@/components/ui/switch";
-interface CompanyFormDialogProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSubmit: (data: UpdateCompany | CreateCompany) => void;
-    initialData?: Company;
-}
+import { FormDialogProps } from "@/types/interfaces";
 
 export function CompanyFormDialog({
     open,
     onOpenChange,
     onSubmit,
     initialData,
-}: CompanyFormDialogProps) {
+    isLoading,
+}: FormDialogProps<CreateCompany | UpdateCompany, Company>) {
     const logoRef = useRef<HTMLInputElement>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(
         initialData?.logo?.url || null,
@@ -215,8 +211,8 @@ export function CompanyFormDialog({
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" >
-                                {initialData ? "Save" : "Create"}
+                            <Button type="submit" variant="secondary" >
+                                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                             </Button>
                         </div>
                     </form>

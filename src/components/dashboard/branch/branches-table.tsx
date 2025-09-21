@@ -174,6 +174,7 @@ export function BranchesTable() {
         onOpenChange={(open) => !open && setEditingBranch(null)}
         onSubmit={(data) => updatemutation.mutate(data)}
         initialData={editingBranch || undefined}
+        isLoading={updatemutation.isPending}
       />
       <BranchFormDialog
         open={createOpen}
@@ -181,6 +182,7 @@ export function BranchesTable() {
         onSubmit={(data) => {
           createMutation.mutate(data)
         }}
+        isLoading={createMutation.isPending}
       />
       <CustomAlertDialog
         isOpen={alertOpen}

@@ -217,6 +217,7 @@ export function TestimonialsTable() {
         onOpenChange={setIsCreateDialogOpen}
         onSubmit={(data) => createMutation.mutate(data as CreateTestimonial)}
         initialData={undefined}
+        isLoading={createMutation.isPending}
       />
 
       <TestimonialFormDialog
@@ -225,6 +226,7 @@ export function TestimonialsTable() {
         onOpenChange={(open) => !open && setEditingTestimonial(null)}
         onSubmit={(data) => updatemutation.mutate(data as CreateTestimonial)}
         initialData={editingTestimonial || undefined}
+        isLoading={updatemutation.isPending}
       />
 
       <CustomAlertDialog

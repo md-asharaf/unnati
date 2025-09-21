@@ -228,11 +228,13 @@ export function TrainersTable() {
                 onOpenChange={(open) => !open && setEditingTrainer(null)}
                 onSubmit={(data) => updatemutation.mutate(data)}
                 initialData={editingTrainer || undefined}
+                isLoading={updatemutation.isPending}
             />
             <TrainerFormDialog
                 open={createOpen}
                 onOpenChange={setCreateOpen}
                 onSubmit={(data) => createMutation.mutate(data)}
+                isLoading={createMutation.isPending}
             />
             <CustomAlertDialog
                 isOpen={alertOpen}

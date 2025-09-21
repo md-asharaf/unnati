@@ -215,6 +215,7 @@ export function CoursesTable() {
         onOpenChange={setIsCreateDialogOpen}
         onSubmit={(data) => createMutation.mutate(data as CreateCourse)}
         initialData={undefined}
+        isLoading={createMutation.isPending}
       />
 
       <CourseFormDialog
@@ -223,6 +224,7 @@ export function CoursesTable() {
         onOpenChange={(open) => !open && setEditingCourse(null)}
         onSubmit={(data) => updatemutation.mutate(data as CreateCourse)}
         initialData={editingCourse || undefined}
+        isLoading={updatemutation.isPending}
       />
 
       <CustomAlertDialog

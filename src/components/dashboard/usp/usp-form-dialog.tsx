@@ -2,20 +2,14 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash } from "lucide-react";
+import { Loader2, Plus, Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form";
 import { CreateUsp, createUspSchema, Usp } from "@/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FormDialogProps } from "@/types/interfaces";
 
-interface UspFormDialogProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSubmit: (data: CreateUsp) => void;
-    initialData?: Usp;
-}
-
-export const UspFormDialog = ({ open, onOpenChange, onSubmit, initialData }: UspFormDialogProps) => {
+export const UspFormDialog = ({ open, onOpenChange, onSubmit, initialData, isLoading }: FormDialogProps<CreateUsp, Usp>) => {
     const form = useForm<CreateUsp>({
         resolver: zodResolver(createUspSchema),
         defaultValues: {
@@ -97,8 +91,8 @@ export const UspFormDialog = ({ open, onOpenChange, onSubmit, initialData }: Usp
                             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                                 Cancel
                             </Button>
-                            <Button type="submit">
-                                {initialData ? "Save" : "Create"}
+                            <Button type="submit" variant="secondary">
+                                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                             </Button>
                         </div>
                     </form>

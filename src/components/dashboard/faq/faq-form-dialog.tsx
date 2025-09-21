@@ -31,20 +31,15 @@ import { type CreateFaq, createFaqSchema, type Faq, Topic } from "@/schemas";
 import { createTopic, fetchTopics } from "@/queries/topics";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-
-type Props = {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    initialData?: Faq;
-    onSubmit: (values: CreateFaq) => void;
-};
+import { FormDialogProps } from "@/types/interfaces";
 
 export function FaqFormDialog({
     open,
     onOpenChange,
     initialData,
     onSubmit,
-}: Props) {
+    isLoading
+}: FormDialogProps<CreateFaq, Faq>) {
     const queryClient = useQueryClient();
     const [isCreateTopicOpen, setIsCreateTopicOpen] = useState(false);
     const [newTopicName, setNewTopicName] = useState("");
@@ -187,8 +182,8 @@ export function FaqFormDialog({
                                 >
                                     Cancel
                                 </Button>
-                                <Button type="submit">
-                                    {initialData ? "Save" : "Create"}
+                                <Button type="submit" variant="secondary">
+                                    {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                                 </Button>
                             </div>
                         </form>
@@ -220,6 +215,7 @@ export function FaqFormDialog({
                                 onClick={() =>
                                     createTopicMutation.mutate(newTopicName.trim())
                                 }
+                                variant="secondary"
                             >
                                 {createTopicMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create"}
                             </Button>

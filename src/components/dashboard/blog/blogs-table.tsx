@@ -247,6 +247,7 @@ export function BlogsTable() {
             </CardContent>
 
             <BlogFormDialog
+                isLoading={createMutation.isPending}
                 open={isCreateDialogOpen}
                 onOpenChange={setIsCreateDialogOpen}
                 onSubmit={(data) =>
@@ -258,6 +259,7 @@ export function BlogsTable() {
             />
 
             <BlogFormDialog
+                isLoading={updatemutation.isPending}
                 key={editingBlog?.slug || "edit-dialog"}
                 open={!!editingBlog}
                 onOpenChange={(open) => !open && setEditingBlog(null)}

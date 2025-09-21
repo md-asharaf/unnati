@@ -162,6 +162,7 @@ export function UspsTable() {
                 open={isCreateDialogOpen}
                 onOpenChange={setIsCreateDialogOpen}
                 onSubmit={(data) => createMutation.mutate(data)}
+                isLoading={createMutation.isPending}
             />
 
             <UspFormDialog
@@ -170,6 +171,7 @@ export function UspsTable() {
                 onOpenChange={(open) => !open && setEditingUsp(null)}
                 onSubmit={(data) => updatemutation.mutate(data)}
                 initialData={editingUsp || undefined}
+                isLoading={updatemutation.isPending}
             />
 
             <CustomAlertDialog
