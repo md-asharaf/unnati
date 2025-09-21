@@ -57,7 +57,7 @@ export const AnimatedHeading = ({ text }: { text: React.ReactNode }) => {
             >
               <path
                 d={`M0 22 Q${(wordWidth * 1.1) / 2} 12 ${wordWidth * 1.1} 22`}
-                stroke="var(--secondary)"
+                stroke="var(--accent)"
                 strokeWidth="2.43"
                 fill="none"
               >
