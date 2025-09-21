@@ -77,6 +77,7 @@ export const courseSchema = z.object({
     duration: z.string(),
     language: z.array(z.string()),
     mode: z.array(z.string()),
+    thumbnail: z.url().optional(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });
@@ -88,6 +89,7 @@ export const createCourseSchema = z.object({
     duration: z.string().min(1, "Duration is required"),
     language: z.array(z.string().min(1)),
     mode: z.array(z.string().min(1)),
+    thumbnail: z.url().optional(),
 });
 
 // Usp

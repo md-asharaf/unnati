@@ -9,11 +9,11 @@ import { motion } from "framer-motion";
 
 const navLinks = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
     { href: "/courses", label: "Courses" },
     { href: "/placements", label: "Placements" },
+    { href: "/trainers", label: "Trainers" },
+    { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
-    { href: "/gallery", label: "Gallery" },
 ];
 
 export interface HeaderProps {
@@ -73,13 +73,15 @@ export const Header = ({ logoUrl, phone, email, social }: HeaderProps) => {
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
                     {/* Logo */}
                     <div className="flex items-center space-x-2">
-                        <Image
+                        <a href="/">
+                            <Image
                             src={logoUrl || "/placeholder.svg"}
                             alt="Logo"
                             width={50}
                             height={50}
                             className="h-10 w-10 md:h-12 md:w-12"
                         />
+                        </a>
                     </div>
 
                     {/* Desktop Nav links - Using primary color for main navigation */}
