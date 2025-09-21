@@ -1,62 +1,26 @@
-import React from "react";
-import { Course } from "@/schemas";
+import { fetchCourses } from "@/queries/courses";
+import { CoursesInfinite } from "@/components/courses-infinite";
 
-// Example mock data for demonstration
-const mockCourses: Course[] = [
-    {
-        id: "1",
-        title: "Ongoing RHCSA (linux) batch",
-        subtitle: "Linux Admin",
-        description: "RHCSA course",
-        duration: "2 months",
-        language: ["English"],
-        mode: ["Offline"],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    {
-        id: "2",
-        title: "Ongoing AWS (cloud) batch",
-        subtitle: "AWS Cloud",
-        description: "AWS course",
-        duration: "2 months",
-        language: ["English"],
-        mode: ["Online"],
-        createdAt: new Date(),
-        updatedAt: new Date(),
-    },
-    // ...add more mock courses as needed
-];
+const LIMIT = 9;
 
-export default function CoursesPage() {
+export default async function CoursesPage() {
+    const { data } = await fetchCourses(1, LIMIT);
     return (
-        <section className="w-full py-16 px-4 flex flex-col items-center bg-background">
-            <h1 className="text-3xl font-bold text-primary mb-8">All Courses</h1>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
-                {mockCourses.map((course) => (
-                    <div key={course.id} className="bg-background rounded-xl shadow p-6 flex flex-col justify-between border border-accent/30">
-                        <div>
-                            <h2 className="text-xl font-bold text-foreground mb-2">{course.title}</h2>
-                            <h3 className="text-lg text-muted-foreground mb-2">{course.subtitle}</h3>
-                            <p className="mb-4 text-foreground">{course.description}</p>
-                            <div className="mb-2">
-                                <span className="font-semibold text-primary">Duration:</span> {course.duration}
-                            </div>
-                            <div className="mb-2">
-                                <span className="font-semibold text-primary">Languages:</span> {course.language.join(", ")}
-                            </div>
-                            <div className="mb-2">
-                                <span className="font-semibold text-primary">Mode:</span> {course.mode.join(", ")}
-                            </div>
-                        </div>
-                        <a
-                            href={`/courses/${course.id}?course=${encodeURIComponent(JSON.stringify(course))}`}
-                            className="mt-6 bg-accent text-accent-foreground px-6 py-3 rounded font-semibold shadow hover:bg-accent/90 transition-colors text-center"
-                        >
-                            View Details
-                        </a>
-                    </div>
-                ))}
+        <section className="w-full bg-background bg-[url('/courses.png')] bg-top bg-cover md:bg-contain bg-no-repeat">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-12 sm:pb-16 text-center">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+                    Premium Courses
+                </h1>
+                <p className="mt-3 sm:mt-4 text-muted-foreground max-w-2xl mx-auto text-base sm:text-lg leading-relaxed">
+                    Master one technology at a time with focused, mentor‑guided learning paths.
+                </p>
+            </div>
+            <div className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 pb-16 sm:pb-20">
+                {data && data.courses.length > 0 ? (
+                    <CoursesInfinite initialData={data} />
+                ) : (
+                    <div className="text-center text-sm text-muted-foreground">No courses available</div>
+                )}
             </div>
         </section>
     );
