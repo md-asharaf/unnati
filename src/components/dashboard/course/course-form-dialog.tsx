@@ -8,13 +8,14 @@ import { Course, CreateCourse } from "@/schemas";
 import { Loader2 } from "lucide-react";
 import { FormDialogProps } from "@/types/interfaces";
 
-export function CourseFormDialog({ open, onOpenChange, onSubmit, initialData,isLoading }: FormDialogProps<CreateCourse, Course>) {
+export function CourseFormDialog({ open, onOpenChange, onSubmit, initialData, isLoading }: FormDialogProps<CreateCourse, Course>) {
   const form = useForm<CreateCourse>({
     defaultValues: {
       title: initialData?.title || "",
       subtitle: initialData?.subtitle || "",
       description: initialData?.description || "",
       duration: initialData?.duration || "",
+      thumbnail: initialData?.thumbnail || "",
       language: Array.isArray(initialData?.language)
         ? initialData?.language : [""],
       mode: Array.isArray(initialData?.mode)
@@ -41,6 +42,19 @@ export function CourseFormDialog({ open, onOpenChange, onSubmit, initialData,isL
                   <FormLabel>Title *</FormLabel>
                   <FormControl>
                     <Input placeholder="Enter course title..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="thumbnail"
+              render={({ field }) => (
+                <FormItem className="space-y-2">
+                  <FormLabel>Thumbnail *</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Enter course thumbnail..." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

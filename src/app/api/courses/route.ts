@@ -4,10 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
 export const POST = async (req: NextRequest) => {
-    const { description, duration, language, mode, subtitle, title } = await req.json() as CreateCourse
+    const { description, duration, language, mode, subtitle, title, thumbnail } = await req.json() as CreateCourse
     let validatedData;
     try {
-        validatedData = createCourseSchema.parse({ description, duration, language, mode, subtitle, title });
+        validatedData = createCourseSchema.parse({ description, duration, language, mode, subtitle, title, thumbnail });
     } catch (error) {
         return NextResponse.json(
             {
