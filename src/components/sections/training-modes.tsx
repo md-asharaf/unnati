@@ -56,10 +56,10 @@ export const TrainingModes = () => {
   return (
     <section className="w-full py-16 px-4 flex flex-col items-center bg-background">
      <AnimatedHeading text="Flexible Training Modes" />
-      <p className="text-muted-foreground text-center mt-4 mb-8 text-lg">
+      <p className="text-muted-foreground text-center mt-4 mb-8 md:text-lg">
         Choose the learning format that best fits your schedule and learning style
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8 w-full max-w-6xl">
         {mockUsps.map((usp, i) => (
           <Card key={usp.id} className="rounded-xl shadow bg-background border border-accent/30 flex flex-col items-center p-4">
             <div className="flex items-center justify-center">
@@ -73,7 +73,7 @@ export const TrainingModes = () => {
               <ul className="space-y-2 text-left w-full max-w-xs mx-auto text-sm">
                 {usp.bulletPoints.map((point, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-accent">
-                    <span className="w-4 h-4 rounded-full border-2 border-accent flex items-center justify-center">
+                    <span className="w-4 h-4 rounded-full border-2 border-accent flex items-center justify-center hover:scale-105 transition-transform duration-300">
                       <span className="w-2 h-2 rounded-full bg-accent/50" />
                     </span>
                     <span className="text-foreground">{point}</span>

@@ -37,10 +37,10 @@ export const UpcomingBatches = () => {
     return (
         <section className="w-full py-16 px-4 flex flex-col items-center bg-background">
             <AnimatedHeading text="Latest Upcoming Batches" />
-            <p className="text-muted-foreground text-center mt-4 mb-8 text-lg">
+            <p className="text-muted-foreground text-center mt-4 mb-8 md:text-lg">
                 Join our upcoming batches and kickstart your career with expert-led training.
             </p>
-            <div className="flex flex-col md:flex-row gap-8 w-3/4">
+            <div className="flex flex-col md:flex-row gap-8 md:w-3/4">
                 {/* Table */}
                 <div className="flex-1 overflow-x-auto">
                     <table className="w-full text-left border-separate border-spacing-y-2">

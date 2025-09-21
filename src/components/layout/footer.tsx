@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Instagram, Phone, Globe } from "lucide-react";
+import { Instagram, Phone, Globe, Facebook, Linkedin, Twitter } from "lucide-react";
 import Link from "next/link";
 
 interface FooterProps {
@@ -62,54 +62,57 @@ export const Footer = ({ logoUrl }: FooterProps) => {
                         ))}
                     </ul>
                 </div>
-
-                {/* Social Links */}
-                <div className="flex flex-col space-y-4">
-                    <h3 className="font-semibold mb-4 text-lg">
-                        Connect With Us
-                    </h3>
+                {/* Legal Links */}
+                <div className="flex space-x-4 mt-2 md:mt-0">
                     <Link
-                        href="https://instagram.com"
-                        className="flex items-center space-x-2 transition-colors hover:text-accent"
+                        href="/privacy"
+                        className=" hover:text-accent transition-colors"
                     >
-                        <Instagram size={18} /> <span>Instagram</span>
+                        Privacy Policy
                     </Link>
                     <Link
-                        href="tel:+123456789"
-                        className="flex items-center space-x-2 transition-colors hover:text-accent"
+                        href="/terms"
+                        className=" hover:text-accent transition-colors"
                     >
-                        <Phone size={18} /> <span>+1 234 567 89</span>
-                    </Link>
-                    <Link
-                        href="https://example.com"
-                        className="flex items-center space-x-2 transition-colors hover:text-accent"
-                    >
-                        <Globe size={18} /> <span>Other Social</span>
+                        Terms of Service
                     </Link>
                 </div>
             </div>
 
             {/* Bottom Bar */}
             <div className="border-t border-primary-foreground/20">
-                <div className="mx-auto max-w-7xl px-6 py-4 flex flex-col md:flex-row items-center justify-between text-sm">
+                <div className="mx-auto max-w-7xl px-6 py-4 flex flex-col md:flex-row items-center justify-between text-sm space-y-2">
                     <p className="">
                         © {new Date().getFullYear()} Your Company. All rights
                         reserved.
                     </p>
-                    <div className="flex space-x-4 mt-2 md:mt-0">
+                    <div className="flex space-x-4">
                         <Link
-                            href="/privacy"
-                            className=" hover:text-accent transition-colors"
+                            href="https://facebook.com"
+                            className="flex items-center space-x-2 transition-colors hover:text-accent"
                         >
-                            Privacy Policy
+                            <Facebook size={18} />
                         </Link>
                         <Link
-                            href="/terms"
-                            className=" hover:text-accent transition-colors"
+                            href="https://linkedin.com"
+                            className="flex items-center space-x-2 transition-colors hover:text-accent"
                         >
-                            Terms of Service
+                            <Linkedin size={18} />
+                        </Link>
+                        <Link
+                            href="https://instagram.com"
+                            className="flex items-center space-x-2 transition-colors hover:text-accent"
+                        >
+                            <Instagram size={18} />
+                        </Link>
+                        <Link
+                            href="https://x.com"
+                            className="flex items-center space-x-2 transition-colors hover:text-accent"
+                        >
+                            <Twitter size={18} />
                         </Link>
                     </div>
+
                 </div>
             </div>
         </div>

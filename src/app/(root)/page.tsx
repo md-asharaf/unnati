@@ -12,17 +12,18 @@ import { fetchImages } from "@/queries/images";
 import { Companies } from "@/components/sections/companies";
 import { UpcomingBatches } from "@/components/sections/upcoming-batches";
 import { TrainingModes } from "@/components/sections/training-modes";
+import { WhyChooseITESection } from "@/components/sections/why-choose-ite-section";
 import { fetchTestimonials } from "@/queries/testimonials";
 import { Testimonials } from "@/components/sections/testimonials";
 
 export default async function Home() {
-    const [hero, settings, partners, companies, placements,testimonials, faqs, blogs] = await Promise.all([
+    const [hero, settings, partners, companies, placements, testimonials, faqs, blogs] = await Promise.all([
         fetchImages("HERO"),
         fetchSettings(),
         fetchCompanies(1, 10, true),
         fetchCompanies(1, 10),
         fetchPlacements(1, 6),
-        fetchTestimonials(1,6),
+        fetchTestimonials(1, 6),
         fetchFaqs(undefined, 1, 5),
         fetchBlogs(1, 3),
     ]);
@@ -39,6 +40,7 @@ export default async function Home() {
             <Placements placements={placements.data.placements} />
             <UpcomingBatches />
             <TrainingModes />
+            <WhyChooseITESection />
             <Testimonials testimonials={testimonials.data.testimonials} />
             <FAQs items={faqs.data.faqs} />
             <Blogs blogs={blogs.data.blogs} />

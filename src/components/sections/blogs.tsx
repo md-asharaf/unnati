@@ -15,7 +15,7 @@ export const Blogs = ({ blogs }: BlogsProps) => {
           <Link
             key={idx}
             href={`/blogs/${blog.slug}`}
-            className="block max-w-md h-[220px] rounded-lg overflow-hidden shadow hover:sm:scale-105 transition-transform bg-primary border"
+            className="block max-w-md h-[220px] rounded overflow-hidden shadow hover:sm:scale-105 transition-transform bg-primary border"
           >
             <Image
               src={blog.thumbnail?.url || "/placeholder.svg"}
