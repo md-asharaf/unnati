@@ -2,7 +2,6 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -22,6 +21,8 @@ import { VerifyLogin, verifyLoginSchema } from "@/schemas";
 import { verifyLogin } from "@/queries/auth";
 import { toast } from "sonner";
 import { useAuth } from "@/providers/auth-provider";
+import { useMutation } from "@tanstack/react-query";
+import { Loader2 } from "lucide-react";
 
 export function InputOTPForm({ email }: { email: string }) {
     const { login } = useAuth();
@@ -29,23 +30,24 @@ export function InputOTPForm({ email }: { email: string }) {
         resolver: zodResolver(verifyLoginSchema),
         defaultValues: {
             email,
-            otp: "",    
+            otp: "",
         },
     });
 
-    const onSubmit = async (values: VerifyLogin) => {
-        try {
-            const { data,message } = await verifyLogin(values.email, values.otp);
+    const { mutate, isPending } = useMutation({
+        mutationFn: (values: VerifyLogin) => verifyLogin(values.email, values.otp),
+        onSuccess: ({ data }) => {
             login(data.admin, data.accessToken, data.refreshToken);
-            toast.success(message || "Login successful!");
-        } catch (error:any) {
-            toast.error(error.response?.message || "Failed to verify OTP. Please try again.");
-        }
-    }
+            toast.success("Login successful!")
+        },
+        onError: () => {
+            toast.error("Invalid OTP. Please try again.")
+        },
+    })
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit((values) => mutate(values))} className="space-y-6">
                 <FormField
                     control={form.control}
                     name="otp"
@@ -82,7 +84,7 @@ export function InputOTPForm({ email }: { email: string }) {
                     size="lg"
                     className="w-full bg-accent hover:bg-accent/80 text-primary"
                 >
-                    Verify OTP →
+                    {isPending ? <Loader2 className="animate-spin h-4 w-4" /> : "Verify OTP →"}
                 </Button>
             </form>
         </Form>
