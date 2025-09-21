@@ -59,7 +59,7 @@ export const TrainingModes = () => {
       <p className="text-muted-foreground text-center mt-4 mb-8 text-lg">
         Choose the learning format that best fits your schedule and learning style
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xl:gap-8 w-full max-w-6xl">
         {mockUsps.map((usp, i) => (
           <Card key={usp.id} className="rounded-xl shadow bg-background border border-accent/30 flex flex-col items-center p-4">
             <div className="flex items-center justify-center">
