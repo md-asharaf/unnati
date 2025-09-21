@@ -73,28 +73,28 @@ export function Placements({ placements }: PlacementsProps) {
   ];
 
   return (
-    <section className="w-full py-16 px-4 flex flex-col items-center">
+    <section className="w-full py-12 sm:py-14 md:py-16 px-4 sm:px-6 flex flex-col items-center">
       <AnimatedHeading text="Our Recent Placements" />
-      <h2 className="text-lg font-medium text-muted-foreground mt-4 mb-8 text-center">
+      <h2 className="text-sm sm:text-base md:text-lg font-medium text-muted-foreground mt-3 sm:mt-4 mb-6 sm:mb-8 text-center max-w-2xl">
         Meet our successful graduates who are now thriving in top tech companies.
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8 w-full max-w-6xl">
         {mockPlacements.map((placement) => (
           <div
             key={placement.id}
-            className="bg-card rounded-xl shadow border border-secondary/40 p-6 flex items-center gap-6 hover:shadow-lg transition-shadow"
+            className="bg-card rounded-xl shadow-sm border border-secondary/40 p-5 sm:p-6 flex items-center gap-5 hover:shadow-md transition-shadow min-h-[140px]"
           >
-            <div className="bg-secondary/30 rounded-full p-4 flex items-center justify-center">
-              <User className="w-10 h-10 text-primary" />
+            <div className="bg-secondary/30 rounded-full p-3 sm:p-4 flex items-center justify-center shrink-0">
+              <User className="w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 text-primary" />
             </div>
-            <div>
-              <div className="font-bold text-lg md:text-xl text-foreground mb-1">
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-base sm:text-lg md:text-xl text-foreground mb-0.5 truncate">
                 {placement.name}
               </div>
-              <div className="text-base text-muted-foreground mb-1">
+              <div className="text-sm sm:text-base text-muted-foreground mb-1 line-clamp-2">
                 {placement.role}
               </div>
-              <div className="text-sm text-secondary font-medium">
+              <div className="text-xs sm:text-sm text-secondary font-medium">
                 {placement.company?.name}
               </div>
             </div>

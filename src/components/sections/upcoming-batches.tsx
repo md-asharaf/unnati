@@ -33,51 +33,51 @@ const mockBatches: Batch[] = [
     }
 ];
 
-export const UpcomingBatches = () => {
-    return (
-        <section className="w-full py-16 px-4 flex flex-col items-center bg-background">
-            <AnimatedHeading text="Latest Upcoming Batches" />
-            <p className="text-muted-foreground text-center mt-4 mb-8 md:text-lg">
-                Join our upcoming batches and kickstart your career with expert-led training.
-            </p>
-            <div className="flex flex-col md:flex-row gap-8 md:w-3/4">
-                {/* Table */}
-                <div className="flex-1 overflow-x-auto">
-                    <table className="w-full text-left border-separate border-spacing-y-2">
-                        <thead>
-                            <tr className="bg-primary text-primary-foreground">
-                                <th className="px-4 rounded-tl-lg font-bold">Course</th>
-                                <th className="px-4 font-bold">Date</th>
-                                <th className="px-4 font-bold">Timings</th>
-                                <th className="px-4 rounded-tr-lg font-bold">Details</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {mockBatches.map((batch, idx) => (
-                                <tr key={idx} className="bg-background text-foreground border-b border-border">
-                                    <td className="py-2 px-4">{batch.course.title}</td>
-                                    <td className="py-2 px-4">{batch.date}</td>
-                                    <td className="py-2 px-4">{batch.timings}</td>
-                                    <td className="py-2 px-4">
-                                        <Link href={`/courses/${batch.course.id}`} className="text-accent underline underline-offset-2">Details</Link>
-                                    </td>
+    export const UpcomingBatches = () => {
+        return (
+            <section className="w-full py-16 px-4 flex flex-col items-center bg-background">
+                <AnimatedHeading text="Latest Upcoming Batches" />
+                <p className="text-muted-foreground text-center mt-4 mb-8 md:text-lg max-w-3xl">
+                    Join our upcoming batches and kickstart your career with expert-led training.
+                </p>
+                <div className="flex flex-col xl:flex-row gap-8 w-full max-w-7xl">
+                    {/* Table */}
+                    <div className="flex-[1.4] overflow-x-auto rounded-lg border border-border/50 bg-background/40 backdrop-blur">
+                        <table className="w-full text-left border-separate border-spacing-y-2">
+                            <thead>
+                                <tr className="bg-primary text-primary-foreground text-sm md:text-base">
+                                    <th className="px-4 py-3 rounded-tl-lg font-bold whitespace-nowrap w-[45%] md:w-[50%]">Course</th>
+                                    <th className="px-4 py-3 font-bold whitespace-nowrap">Date</th>
+                                    <th className="px-4 py-3 font-bold whitespace-nowrap">Timings</th>
+                                    <th className="px-4 py-3 rounded-tr-lg font-bold whitespace-nowrap">Details</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                {/* Sidebar */}
-                <div className="flex-1 flex flex-col gap-6">
-                    <div className="bg-foreground text-background rounded-xl p-8 flex flex-col items-center justify-center">
-                        <h3 className="text-2xl font-bold mb-2 text-center">Need Help Choosing?</h3>
-                        <p className="mb-2 text-center">Our education counselors can help you select the best training mode based on your requirements</p>
+                            </thead>
+                            <tbody>
+                                {mockBatches.map((batch, idx) => (
+                                    <tr key={idx} className="bg-background text-foreground border-b border-border/60 text-xs md:text-sm lg:text-base">
+                                        <td className="py-2 px-4 font-medium pr-6">{batch.course.title}</td>
+                                        <td className="py-2 px-4 whitespace-nowrap">{batch.date}</td>
+                                        <td className="py-2 px-4 whitespace-nowrap">{batch.timings}</td>
+                                        <td className="py-2 px-4">
+                                            <Link href={`/courses/${batch.course.id}`} className="text-accent underline underline-offset-2 text-sm md:text-base">Details</Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
-                    <div className="bg-foreground text-background rounded-xl p-8 flex flex-col items-center justify-center">
-                        <p className="mb-4 text-center">We offer flexible batch timings and can arrange special batches based on demand.</p>
-                        <Link href="/demo-class" className="bg-accent text-accent-foreground px-6 py-3 rounded font-semibold shadow hover:bg-accent/90 transition-colors">Book Free Demo Class</Link>
+                    {/* Sidebar */}
+                    <div className="flex-[0.9] flex flex-col gap-6 min-w-[280px]">
+                        <div className="bg-foreground text-background rounded-xl p-6 lg:p-8 flex flex-col items-center justify-center h-full">
+                            <h3 className="text-xl lg:text-2xl font-bold mb-2 text-center">Need Help Choosing?</h3>
+                            <p className="mb-2 text-center text-sm lg:text-base">Our education counselors can help you select the best training mode based on your requirements</p>
+                        </div>
+                        <div className="bg-foreground text-background rounded-xl p-6 lg:p-8 flex flex-col items-center justify-center h-full">
+                            <p className="mb-4 text-center text-sm lg:text-base">We offer flexible batch timings and can arrange special batches based on demand.</p>
+                            <Link href="/demo-class" className="bg-accent text-accent-foreground px-5 lg:px-6 py-2.5 lg:py-3 rounded font-semibold shadow hover:bg-accent/90 transition-colors text-sm lg:text-base">Book Free Demo Class</Link>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    );
-};
+            </section>
+        );
+    };

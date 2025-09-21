@@ -13,22 +13,27 @@ interface PremiumPartnersProps {
     partners: Company[];
 }
 export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
+    const display = partners.slice(0, 10);
     return (
-        <div className="w-full flex flex-col items-center justify-center space-y-8 p-12 md:p-20 lg:p-24">
+        <div className="w-full flex flex-col items-center justify-center space-y-8 py-12 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 md:px-10">
             <AnimatedHeading text="Our Premium Partners" />
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-4 lg:gap-6 xl:gap-8 mx-auto max-w-7xl">
-                {partners?.map((p) => (
-                    <Card key={p.id} className="flex items-center justify-center hover:border-1 hover:border-secondary hover:bg-secondary-foreground bg-secondary/30 rounded-xl shadow-md min-h-[150px] max-h-[200px] p-0 overflow-hidden">
-                        <CardContent className="flex items-center justify-center h-full w-full p-0 overflow-hidden">
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 xl:gap-8 mx-auto max-w-7xl w-full">
+                {display.map((p) => (
+                    <Card key={p.id} className="flex items-center justify-center bg-secondary/30 hover:bg-secondary/40 rounded-xl shadow-sm hover:shadow-md border border-transparent hover:border-accent/40 transition-all min-h-[90px] sm:min-h-[110px] md:min-h-[130px] lg:min-h-[150px] p-0 overflow-hidden">
+                        <CardContent className="flex items-center justify-center h-full w-full p-2 sm:p-3 overflow-hidden">
                             <img
                                 src={p.logo?.url || "/placeholder.svg"}
                                 alt={p.name}
-                                className="object-cover h-full w-full overflow-hidden"
+                                className="object-contain h-full w-full scale-95"
+                                loading="lazy"
                             />
                         </CardContent>
                     </Card>
                 ))}
             </div>
+            {partners.length > display.length && (
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">+ {partners.length - display.length} more</p>
+            )}
         </div>
     );
 };
