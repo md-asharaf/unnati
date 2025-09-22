@@ -1,4 +1,3 @@
-import React from "react";
 import { Course } from "@/schemas";
 import Link from "next/link";
 import { AnimatedHeading } from "../animated-heading";

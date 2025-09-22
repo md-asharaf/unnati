@@ -1,4 +1,3 @@
-import { fetchFaqs } from "@/queries/faqs";
 import {
   Accordion,
   AccordionItem,
@@ -7,9 +6,14 @@ import {
 } from "@/components/ui/accordion";
 import { Faq } from "@/schemas";
 import { Separator } from "@/components/ui/separator";
+import { db } from "@/lib/db";
 
 export default async function FaqsPage() {
-  const { faqs } = await fetchFaqs();
+  const faqs = await db.faq.findMany({
+    include: {
+      topic: true
+    }
+  })
   const grouped = faqs.reduce((acc: Record<string, Faq[]>, faq: Faq) => {
     const topic = faq.topic?.name;
     if (!acc[topic]) acc[topic] = [];

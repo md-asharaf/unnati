@@ -2,38 +2,100 @@ import { Blogs } from "@/components/sections/blogs";
 import { FAQs } from "@/components/sections/faqs";
 import { Hero } from "@/components/sections/hero";
 import { PremiumPartners } from "@/components/sections/premium-partners";
-import { fetchCompanies } from "@/queries/companies";
-import { fetchBlogs } from "@/queries/blogs";
-import { fetchFaqs } from "@/queries/faqs";
 import { Placements } from "@/components/sections/placements";
-import { fetchPlacements } from "@/queries/placements";
-import { fetchSettings } from "@/queries/settings";
-import { fetchImages } from "@/queries/images";
 import { Companies } from "@/components/sections/companies";
 import { UpcomingBatches } from "@/components/sections/upcoming-batches";
 import { TrainingModes } from "@/components/sections/training-modes";
 import { WhyChooseITESection } from "@/components/sections/why-choose-ite-section";
-import { fetchTestimonials } from "@/queries/testimonials";
 import { Testimonials } from "@/components/sections/testimonials";
+import { db } from "@/lib/db";
 
 export default async function Home() {
-    const [{images}, {setting}, {companies:partners}, {companies}, {placements}, {testimonials}, {faqs}, {blogs}] = await Promise.all([
-        fetchImages("HERO"),
-        fetchSettings(),
-        fetchCompanies(1, 10, true),
-        fetchCompanies(1, 10),
-        fetchPlacements(1, 6),
-        fetchTestimonials(1, 6),
-        fetchFaqs(undefined, 1, 5),
-        fetchBlogs(1, 3),
-    ]);
-    const { welcomeText, introParagraph } = setting || {};
+    const settings = await db.setting.findFirst({
+        select: {
+            welcomeText: true,
+            introParagraph: true
+        }
+    })
+    const hero = await db.image.findFirst({
+        where: {
+            type: "HERO"
+        },
+        select: {
+            url: true
+        }
+    })
+    const partners = await db.company.findMany({
+        where: {
+            isPremium: true
+        },
+        include: {
+            logo: true
+        }
+    })
+    const companies = await db.company.findMany({
+        include: {
+            logo: true
+        }
+    })
+    const placements = await db.placement.findMany({
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: 6,
+        include: {
+            company: {
+                include: {
+                    logo: true
+                }
+            }
+        }
+    })
+    const testimonials = await db.testimonial.findMany({
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: 6,
+        include: {
+            placement: {
+                include: {
+                    company: {
+                        include: {
+                            logo: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+    const faqs = await db.faq.findMany({
+        where: {
+            topic: {
+                name: "General"
+            }
+        },
+        include:{
+            topic:true
+        }
+    })
+
+    const blogs = await db.blog.findMany({
+        orderBy: {
+            createdAt: "desc"
+        },
+        take: 3,
+        include: {
+            thumbnail: true
+        }
+    })
+
     return (
         <div>
             <Hero
-                welcomeText={welcomeText}
-                introParagraph={introParagraph}
-                imageUrl={images[0]?.url}
+                welcomeText={settings?.welcomeText}
+                introParagraph={settings?.introParagraph}
+                imageUrl={hero?.url}
             />
             <PremiumPartners partners={partners} />
             <Companies companies={companies} />

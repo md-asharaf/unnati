@@ -1,4 +1,3 @@
-import React from "react";
 import { Usp } from "@/schemas";
 import { Card, CardContent } from "@/components/ui/card";
 import { Users, Laptop, Boxes } from "lucide-react";

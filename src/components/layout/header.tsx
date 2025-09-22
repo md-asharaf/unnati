@@ -18,8 +18,8 @@ const navLinks = [
 
 export interface HeaderProps {
     logoUrl: string;
-    phone?: string;
-    email?: string;
+    phone: string;
+    email: string;
     social?: {
         facebook?: string;
         linkedin?: string;
@@ -75,12 +75,12 @@ export const Header = ({ logoUrl, phone, email, social }: HeaderProps) => {
                     <div className="flex items-center space-x-2">
                         <a href="/">
                             <Image
-                            src={logoUrl || "/placeholder.svg"}
-                            alt="Logo"
-                            width={50}
-                            height={50}
-                            className="h-10 w-10 md:h-12 md:w-12"
-                        />
+                                src={logoUrl || "/placeholder.svg"}
+                                alt="Logo"
+                                width={50}
+                                height={50}
+                                className="h-10 w-10 md:h-12 md:w-12"
+                            />
                         </a>
                     </div>
 

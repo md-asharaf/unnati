@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { fetchCourse } from "@/queries/courses";
+import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const { course } = await fetchCourse(id);
+    const course = await db.course.findUnique({
+        where: { id }
+    });
     if (!course) {
         notFound();
     }

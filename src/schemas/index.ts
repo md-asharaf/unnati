@@ -37,7 +37,7 @@ export const placementSchema = z.object({
     id: z.uuid(),
     name: z.string(),
     role: z.string(),
-    photoUrl: z.url().optional(),
+    photoUrl: z.url().nullable(),
     companyId: z.uuid(),
     createdAt: z.date(),
     updatedAt: z.date(),
@@ -77,7 +77,7 @@ export const courseSchema = z.object({
     duration: z.string(),
     language: z.array(z.string()),
     mode: z.array(z.string()),
-    thumbnail: z.url().optional(),
+    thumbnail: z.url().nullable().optional(),
     createdAt: z.date(),
     updatedAt: z.date(),
 });

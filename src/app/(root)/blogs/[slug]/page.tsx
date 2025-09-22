@@ -1,4 +1,4 @@
-import { fetchBlog } from "@/queries/blogs"
+import { db } from "@/lib/db";
 import { ArrowLeft, Calendar, Clock } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -6,8 +6,11 @@ import { notFound } from "next/navigation"
 
 export default async function BlogPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
-    const { blog } = await fetchBlog(slug)
-    if(!blog){
+    const blog = await db.blog.findUnique({
+        where: { slug },
+        include: { thumbnail: true }
+    });
+    if (!blog) {
         notFound()
     }
     const formatDate = (date: Date) => {
@@ -25,11 +28,11 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
             <div className="container mx-auto px-6 py-16 max-w-4xl">
                 {/* Back button */}
                 <Link
-                    href="/blog"
+                    href="/blogs"
                     className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors mb-12 group"
                 >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                    Back to blog
+                    Back to All blogs
                 </Link>
 
                 {/* Article header */}
@@ -54,17 +57,6 @@ export default async function BlogPage({ params }: { params: Promise<{ slug: str
                 <article className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
                     <div className="whitespace-pre-line leading-relaxed" dangerouslySetInnerHTML={{ __html: blog.content }} />
                 </article>
-
-                {/* Navigation */}
-                <footer className="mt-16 pt-8 border-t border-border/20">
-                    <Link
-                        href="/blogs"
-                        className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors group"
-                    >
-                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                        Back to all blogs
-                    </Link>
-                </footer>
             </div>
         </div>
     )

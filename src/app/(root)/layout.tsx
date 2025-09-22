@@ -4,7 +4,8 @@ import "@/app/globals.css";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import QueryProvider from "@/providers/query-provider";
-import { fetchSettings } from "@/queries/settings";
+import { notFound } from "next/navigation";
+import { db } from "@/lib/db";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -26,8 +27,20 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const { setting } = await fetchSettings()
-    const { email, phone, facebook, instagram, linkedin, twitter } = setting || {};
+    const setting = await db.setting.findFirst({
+        select: {
+            email: true,
+            phone: true,
+            facebook: true,
+            instagram: true,
+            linkedin: true,
+            twitter: true
+        }
+    })
+    if (!setting) {
+        notFound()
+    }
+    const { email, phone, facebook, instagram, linkedin, twitter } = setting;
     const logoUrl =
         "https://upload.wikimedia.org/wikipedia/commons/e/ea/Superman_shield.svg";
     return (
@@ -37,7 +50,7 @@ export default async function RootLayout({
             ><QueryProvider>
                     <div className="min-h-screen flex flex-col">
                         <header>
-                            <Header logoUrl={logoUrl} phone={phone} email={email} social={{ facebook, linkedin, instagram, twitter }} />
+                            <Header logoUrl={logoUrl} phone={phone} email={email} social={{ facebook: facebook!, linkedin: linkedin!, instagram: instagram!, twitter: twitter! }} />
                         </header>
                         <main className="flex-grow">{children}</main>
 

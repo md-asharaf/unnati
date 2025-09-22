@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Instagram, Phone, Globe, Facebook, Linkedin, Twitter } from "lucide-react";
+import { Instagram, Facebook, Linkedin, Twitter } from "lucide-react";
 import Link from "next/link";
 
 interface FooterProps {
