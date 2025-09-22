@@ -43,14 +43,12 @@ export const FAQs = ({ items }: FAQsProps) => {
                     </Card>
                 ))}
             </Accordion>
-            {items.length > 4 && (
                 <Link
                     href={"/faqs"}
                     className="bg-accent text-accent-foreground px-6 sm:px-8 py-2.5 sm:py-3 rounded-md font-medium shadow hover:bg-accent/90 transition-colors text-sm sm:text-base"
                 >
                     More FAQs
                 </Link>
-            )}
         </div>
     );
 };

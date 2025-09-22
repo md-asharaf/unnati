@@ -31,18 +31,20 @@ export default async function Home() {
         },
         include: {
             logo: true
-        }
+        },
+        take:5
     })
     const companies = await db.company.findMany({
         include: {
             logo: true
-        }
+        },
+        take:20
     })
     const placements = await db.placement.findMany({
         orderBy: {
             createdAt: "desc"
         },
-        take: 6,
+        take: 10,
         include: {
             company: {
                 include: {
@@ -55,7 +57,7 @@ export default async function Home() {
         orderBy: {
             createdAt: "desc"
         },
-        take: 6,
+        take: 10,
         include: {
             placement: {
                 include: {
@@ -75,6 +77,7 @@ export default async function Home() {
                 name: "General"
             }
         },
+        take:10,
         include:{
             topic:true
         }
