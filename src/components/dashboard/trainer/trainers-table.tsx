@@ -42,16 +42,14 @@ export function TrainersTable() {
     const [createOpen, setCreateOpen] = useState(false);
     const [editingTrainer, setEditingTrainer] = useState<Trainer | null>(null);
     const {
-        data: trainers = [],
+        data,
         isLoading,
         isFetching,
     } = useQuery({
         queryKey: ["trainers"],
-        queryFn: async (): Promise<Trainer[]> => {
-            const { data } = await fetchTrainers();
-            return data.trainers;
-        },
+        queryFn: fetchTrainers
     });
+    const trainers = data?.trainers ?? [];
     const filtered = useMemo(() => {
         const q = searchTerm.trim().toLowerCase();
         if (!q) return trainers;
@@ -78,8 +76,8 @@ export function TrainersTable() {
     const updatemutation = useMutation({
         mutationFn: async (values: CreateTrainer) => {
             if (!editingTrainer) return;
-            const { data } = await updateTrainer(editingTrainer?.id!, values);
-            return data.trainer;
+            const { trainer } = await updateTrainer(editingTrainer?.id!, values);
+            return trainer;
         },
         onSuccess: () => {
             toast.success("Trainer updated successfully!");
@@ -92,8 +90,8 @@ export function TrainersTable() {
     });
     const createMutation = useMutation({
         mutationFn: async (values: CreateTrainer) => {
-            const { data } = await createTrainer(values);
-            return data.trainer;
+            const { trainer } = await createTrainer(values);
+            return trainer;
         },
         onSuccess: () => {
             toast.success("Trainer created successfully!");

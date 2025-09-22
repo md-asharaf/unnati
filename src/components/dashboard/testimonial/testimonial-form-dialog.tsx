@@ -21,10 +21,11 @@ export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialDat
     },
   });
 
-  const { data: placements, isLoading: placementsLoading } = useQuery({
+  const { data, isLoading: placementsLoading } = useQuery({
     queryKey: ["placements"],
     queryFn: () => fetchPlacements(1, 100)
   });
+  const placements = data?.placements ?? [];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -76,7 +77,7 @@ export function TestimonialFormDialog({ open, onOpenChange, onSubmit, initialDat
                         <SelectValue placeholder={placementsLoading ? "Loading placements..." : "Select a placement"} />
                       </SelectTrigger>
                       <SelectContent>
-                        {Array.isArray(placements?.data) && placements.data.map((placement: any) => (
+                        {Array.isArray(placements) && placements.map((placement: any) => (
                           <SelectItem key={placement.id} value={placement.id}>
                             {placement.name}
                           </SelectItem>

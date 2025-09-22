@@ -44,8 +44,8 @@ export function CoursesTable() {
     queryFn: async () => await fetchCourses(page, limit),
   });
 
-  const courses = data?.data.courses ?? [];
-  const totalPages = data?.data.totalPages ?? 1;
+  const courses = data?.courses ?? [];
+  const totalPages = data?.totalPages ?? 1;
   const filteredCourses = useMemo(
     () =>
       courses.filter(

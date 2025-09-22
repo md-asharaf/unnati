@@ -44,8 +44,8 @@ export function TestimonialsTable() {
     queryFn: async () => await fetchTestimonials(page, limit),
   });
 
-  const testimonials = data?.data.testimonials ?? [];
-  const totalPages = data?.data.totalPages ?? 1;
+  const testimonials = data?.testimonials ?? [];
+  const totalPages = data?.totalPages ?? 1;
   const filteredTestimonials = useMemo(
     () =>
       testimonials.filter(
@@ -87,7 +87,7 @@ export function TestimonialsTable() {
   });
   const createMutation = useMutation({
     mutationFn: async (values: CreateTestimonial) => {
-      const { data } = await createTestimonial(values);
+      const data = await createTestimonial(values);
       return data.testimonial;
     },
     onSuccess: () => {

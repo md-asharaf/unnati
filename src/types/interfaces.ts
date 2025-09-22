@@ -5,3 +5,15 @@ export interface FormDialogProps<T, U> {
     onSubmit: (data: T) => void;
     initialData?: U;
 }
+
+export interface Pagination {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+}
+
+export interface ApiResponse<T> {
+    data?: T;
+    message?: string;
+}

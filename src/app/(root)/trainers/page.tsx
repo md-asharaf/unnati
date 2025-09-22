@@ -3,8 +3,7 @@ import { fetchTrainers } from "@/queries/trainers";
 import { Trainer } from "@/schemas";
 
 export default async function TrainersPage() {
-  const { data } = await fetchTrainers();
-  const trainers = data.trainers as Trainer[];
+  const { trainers } = await fetchTrainers();
   return (
     <main className="max-w-4xl mx-auto py-10 px-4">
       <h1 className="text-3xl font-bold mb-6">Our Trainers</h1>

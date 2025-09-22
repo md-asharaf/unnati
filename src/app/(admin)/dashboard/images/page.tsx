@@ -49,9 +49,9 @@ export default function ImagesPage() {
         }
     }, [isError, error]);
 
-    const images = (data?.data.images ?? []) as ImageEntity[];
-    const totalPages = data?.data.totalPages ?? 1;
-    const totalCount: number = (data?.data?.total ?? data?.data?.count ?? (Array.isArray(images) ? images.length : 0)) as number;
+    const images = (data?.images ?? []) as ImageEntity[];
+    const totalPages = data?.totalPages ?? 1;
+    const totalCount: number = data?.total ?? 0;
 
     return (
         <div className="space-y-6 max-w-6xl mx-auto p-4">

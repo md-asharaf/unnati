@@ -17,7 +17,7 @@ import { fetchTestimonials } from "@/queries/testimonials";
 import { Testimonials } from "@/components/sections/testimonials";
 
 export default async function Home() {
-    const [hero, settings, partners, companies, placements, testimonials, faqs, blogs] = await Promise.all([
+    const [{images}, {setting}, {companies:partners}, {companies}, {placements}, {testimonials}, {faqs}, {blogs}] = await Promise.all([
         fetchImages("HERO"),
         fetchSettings(),
         fetchCompanies(1, 10, true),
@@ -27,23 +27,23 @@ export default async function Home() {
         fetchFaqs(undefined, 1, 5),
         fetchBlogs(1, 3),
     ]);
-    const { welcomeText, introParagraph } = settings.data.setting || {};
+    const { welcomeText, introParagraph } = setting || {};
     return (
         <div>
             <Hero
                 welcomeText={welcomeText}
                 introParagraph={introParagraph}
-                imageUrl={hero.data.images[0]?.url}
+                imageUrl={images[0]?.url}
             />
-            <PremiumPartners partners={partners.data.companies} />
-            <Companies companies={companies.data.companies} />
-            <Placements placements={placements.data.placements} />
+            <PremiumPartners partners={partners} />
+            <Companies companies={companies} />
+            <Placements placements={placements} />
             <UpcomingBatches />
             <TrainingModes />
             <WhyChooseITESection />
-            <Testimonials testimonials={testimonials.data.testimonials} />
-            <FAQs items={faqs.data.faqs} />
-            <Blogs blogs={blogs.data.blogs} />
+            <Testimonials testimonials={testimonials} />
+            <FAQs items={faqs} />
+            <Blogs blogs={blogs} />
         </div>
     );
 }

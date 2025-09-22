@@ -9,8 +9,7 @@ import { Faq } from "@/schemas";
 import { Separator } from "@/components/ui/separator";
 
 export default async function FaqsPage() {
-  const { data } = await fetchFaqs();
-  const faqs = data?.faqs || [];
+  const { faqs } = await fetchFaqs();
   const grouped = faqs.reduce((acc: Record<string, Faq[]>, faq: Faq) => {
     const topic = faq.topic?.name;
     if (!acc[topic]) acc[topic] = [];

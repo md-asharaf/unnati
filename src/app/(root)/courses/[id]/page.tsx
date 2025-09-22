@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { fetchCourse } from "@/queries/courses";
 import { notFound } from "next/navigation";
 
-export default async function CoursePage({ params }: { params: { id: string } }) {
-    const { id } = params;
-    const { data: { course } } = await fetchCourse(id);
+export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const { course } = await fetchCourse(id);
     if (!course) {
         notFound();
     }

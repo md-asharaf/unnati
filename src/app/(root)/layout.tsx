@@ -5,7 +5,6 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import QueryProvider from "@/providers/query-provider";
 import { fetchSettings } from "@/queries/settings";
-import { Setting } from "@/schemas";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,8 +26,8 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const { data } = await fetchSettings()
-    const { email, phone, facebook, instagram, linkedin, twitter } = data.setting as Setting
+    const { setting } = await fetchSettings()
+    const { email, phone, facebook, instagram, linkedin, twitter } = setting || {};
     const logoUrl =
         "https://upload.wikimedia.org/wikipedia/commons/e/ea/Superman_shield.svg";
     return (

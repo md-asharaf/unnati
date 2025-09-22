@@ -1,10 +1,17 @@
 import instance from "@/lib/axios"
-import { CreateBranch } from "@/schemas"
+import { Branch, CreateBranch } from "@/schemas"
+import { ApiResponse } from "@/types/interfaces"
+
+interface MultipleBranchResponse { branches: Branch[] }
+interface SingleBranchResponse { branch: Branch }
+
+type MultipleBranchApiResponse = ApiResponse<MultipleBranchResponse>
+type SingleBranchApiResponse = ApiResponse<SingleBranchResponse>
 
 const fetchBranches = async () => {
     try {
-        const response = await instance.get("/branches")
-        return response.data
+        const res = await instance.get<MultipleBranchApiResponse>("/branches")
+        return res.data.data!;
     } catch (e) {
         return { branches: [] }
     }
@@ -12,28 +19,28 @@ const fetchBranches = async () => {
 
 const deleteBranch = async (id: string) => {
     try {
-        const response = await instance.delete(`/branches/${id}`)
-        return response.data
+        const response = await instance.delete<SingleBranchApiResponse>(`/branches/${id}`)
+        return response.data.data!;
     } catch (e) {
-        return null
+        return { branch: null }
     }
 }
 
 const createBranch = async ({ address, latitude, longitude, name, phone }: CreateBranch) => {
     try {
-        const response = await instance.post("/branches", { address, latitude, longitude, name, phone })
-        return response.data
+        const response = await instance.post<SingleBranchApiResponse>("/branches", { address, latitude, longitude, name, phone })
+        return response.data.data!;
     } catch (e) {
-        return null
+        return { branch: null }
     }
 }
 
 const updateBranch = async (id: string, { address, latitude, longitude, name, phone }: CreateBranch) => {
     try {
-        const response = await instance.put(`/branches/${id}`, { address, latitude, longitude, name, phone })
-        return response.data
+        const response = await instance.put<SingleBranchApiResponse>(`/branches/${id}`, { address, latitude, longitude, name, phone })
+        return response.data.data!;
     } catch (e) {
-        return null
+        return { branch: null }
     }
 }
 

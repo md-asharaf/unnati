@@ -44,8 +44,8 @@ export function PlacementsTable() {
     queryFn: async () => await fetchPlacements(page, limit),
   });
 
-  const placements = data?.data.placements ?? [];
-  const totalPages = data?.data.totalPages ?? 1;
+  const placements = data?.placements ?? [];
+  const totalPages = data?.totalPages ?? 1;
   const filteredPlacements = useMemo(
     () =>
       placements.filter(
