@@ -21,6 +21,7 @@ model Image {
     createdAt DateTime  @default(now())
     updatedAt DateTime  @updatedAt
     blogs     Blog[]
+    companies Company[]
 }
 
 model Topic {
@@ -69,14 +70,84 @@ model Trainer {
     expertise   String
     experience  String
     designation String
-    photoUrl    String
+    photoUrl    String?
     createdAt   DateTime @default(now())
     updatedAt   DateTime @updatedAt
+}
+
+model Company {
+    id         String      @id @default(uuid())
+    name       String
+    isPremium  Boolean     @default(false)
+    imageId    String
+    logo       Image       @relation(fields: [imageId], references: [id])
+    placements Placement[]
+    createdAt  DateTime    @default(now())
+    updatedAt  DateTime    @updatedAt
+}
+
+model Placement {
+    id           String        @id @default(uuid())
+    name         String
+    role         String
+    photoUrl     String?
+    companyId    String
+    company      Company       @relation(fields: [companyId], references: [id])
+    createdAt    DateTime      @default(now())
+    updatedAt    DateTime      @updatedAt
+    testimonials Testimonial[]
+}
+
+model Testimonial {
+    id          String    @id @default(uuid())
+    content     String
+    rating      Int
+    placementId String
+    placement   Placement @relation(fields: [placementId], references: [id])
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
+}
+
+model Course {
+    id          String   @id @default(uuid())
+    title       String
+    subtitle    String
+    description String
+    duration    String
+    language    String[]
+    mode        String[]
+    thumbnail   String?
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Usp {
+    id           String   @id @default(uuid())
+    heading      String
+    subheading   String
+    bulletPoints String[]
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+}
+
+model Setting {
+    id             String   @id @default(uuid())
+    welcomeText    String
+    introParagraph String
+    email          String
+    phone          String
+    address        String
+    facebook       String?
+    twitter        String?
+    linkedin       String?
+    instagram      String?
+    createdAt      DateTime @default(now())
+    updatedAt      DateTime @updatedAt
 }
 
 enum ImageType {
     LOGO
     HERO
     BLOG
-    PARTNER
+    COMPANY
 }

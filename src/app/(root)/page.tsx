@@ -1,26 +1,47 @@
-import React from "react";
 import { Blogs } from "@/components/sections/blogs";
 import { FAQs } from "@/components/sections/faqs";
 import { Hero } from "@/components/sections/hero";
 import { PremiumPartners } from "@/components/sections/premium-partners";
-import { fetchPartners } from "@/queries/partners";
+import { fetchCompanies } from "@/queries/companies";
 import { fetchBlogs } from "@/queries/blogs";
 import { fetchFaqs } from "@/queries/faqs";
+import { Placements } from "@/components/sections/placements";
+import { fetchPlacements } from "@/queries/placements";
+import { fetchSettings } from "@/queries/settings";
+import { fetchImages } from "@/queries/images";
+import { Companies } from "@/components/sections/companies";
+import { UpcomingBatches } from "@/components/sections/upcoming-batches";
+import { TrainingModes } from "@/components/sections/training-modes";
+import { WhyChooseITESection } from "@/components/sections/why-choose-ite-section";
+import { fetchTestimonials } from "@/queries/testimonials";
+import { Testimonials } from "@/components/sections/testimonials";
 
 export default async function Home() {
-    const [blogs, faqs, partners] = await Promise.all([
-        fetchBlogs(1, 3),
+    const [hero, settings, partners, companies, placements, testimonials, faqs, blogs] = await Promise.all([
+        fetchImages("HERO"),
+        fetchSettings(),
+        fetchCompanies(1, 10, true),
+        fetchCompanies(1, 10),
+        fetchPlacements(1, 6),
+        fetchTestimonials(1, 6),
         fetchFaqs(undefined, 1, 5),
-        fetchPartners(1, 10),
+        fetchBlogs(1, 3),
     ]);
+    const { welcomeText, introParagraph } = settings.data.setting || {};
     return (
-        <div className="text-primary">
+        <div>
             <Hero
-                welcomeText="Welcome to Our Platform"
-                introParagraph="Discover amazing courses and transform your career with expert-led training programs."
-                imageUrl="https://t4.ftcdn.net/jpg/06/00/71/39/360_F_600713911_ItK5Nj9WqBjJkRUVTLmmlhML6is9eaLg.jpg"
+                welcomeText={welcomeText}
+                introParagraph={introParagraph}
+                imageUrl={hero.data.images[0]?.url}
             />
-            <PremiumPartners partners={partners.data.images} />
+            <PremiumPartners partners={partners.data.companies} />
+            <Companies companies={companies.data.companies} />
+            <Placements placements={placements.data.placements} />
+            <UpcomingBatches />
+            <TrainingModes />
+            <WhyChooseITESection />
+            <Testimonials testimonials={testimonials.data.testimonials} />
             <FAQs items={faqs.data.faqs} />
             <Blogs blogs={blogs.data.blogs} />
         </div>

@@ -61,13 +61,10 @@ export function FaqsTable() {
 
     const deleteMutation = useMutation({
         mutationFn: deleteFaq,
-        onSuccess: (_, id) => {
+        onSuccess: () => {
             setIsOpen(false);
             toast.success("FAQ deleted successfully");
             queryClient.invalidateQueries({ queryKey: ["faqs"] });
-            queryClient.setQueryData(["faqs"], (old: Faq[] = []) =>
-                old.filter((f) => f.id !== id),
-            );
         },
         onError: () => {
             setIsOpen(false);
@@ -81,13 +78,9 @@ export function FaqsTable() {
             const { data } = await updateFaq(editingFaq?.id!, values);
             return data.faq as Faq;
         },
-        onSuccess: (updated) => {
-            if (!updated) return;
+        onSuccess: () => {
             toast.success("FAQ updated successfully!");
             queryClient.invalidateQueries({ queryKey: ["faqs"] });
-            queryClient.setQueryData(["faqs"], (old: Faq[] = []) =>
-                old.map((f) => (f.id === updated.id ? updated : f)),
-            );
             setEditingFaq(null);
         },
         onError: () => {
@@ -98,16 +91,11 @@ export function FaqsTable() {
     const createMutation = useMutation({
         mutationFn: async (values: CreateFaq) => {
             const { data } = await createFaq(values);
-            return data.faq as Faq;
+            return data.faq;
         },
-        onSuccess: (newFaq) => {
-            if (!newFaq) return;
+        onSuccess: () => {
             toast.success("FAQ created successfully!");
             queryClient.invalidateQueries({ queryKey: ["faqs"] });
-            queryClient.setQueryData(["faqs"], (old: Faq[] = []) => [
-                ...old,
-                newFaq,
-            ]);
             setIsCreateDialogOpen(false);
         },
         onError: () => {
@@ -228,9 +216,9 @@ export function FaqsTable() {
 
             <FaqFormDialog
                 open={isCreateDialogOpen}
+                isLoading={createMutation.isPending}
                 onOpenChange={setIsCreateDialogOpen}
                 onSubmit={(values) => createMutation.mutate(values)}
-                title="Create FAQ"
             />
 
             <FaqFormDialog
@@ -238,8 +226,8 @@ export function FaqsTable() {
                 open={!!editingFaq}
                 onOpenChange={(open) => !open && setEditingFaq(null)}
                 onSubmit={(values) => updatemutation.mutate(values)}
-                title="Edit FAQ"
                 initialData={editingFaq || undefined}
+                isLoading={updatemutation.isPending}
             />
 
             <CustomAlertDialog

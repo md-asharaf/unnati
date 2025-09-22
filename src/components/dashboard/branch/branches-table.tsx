@@ -40,13 +40,10 @@ export function BranchesTable() {
 
   const deleteMutation = useMutation({
     mutationFn: deleteBranch,
-    onSuccess: (_, id) => {
+    onSuccess: () => {
       setAlertOpen(false);
       toast.success("Branch deleted successfully");
-      qc.invalidateQueries({ queryKey: ["branchs"] });
-      qc.setQueryData(["branchs"], (old: Branch[] = []) =>
-        old.filter((branch) => branch.id !== id),
-      );
+      qc.invalidateQueries({ queryKey: ["branches"] });
     },
     onError: () => {
       setAlertOpen(false);
@@ -60,17 +57,12 @@ export function BranchesTable() {
       const { data } = await updateBranch(editingBranch?.id!, values);
       return data.branch;
     },
-    onSuccess: (updateBranch) => {
-      if (!updateBranch) return;
+    onSuccess: () => {
       toast.success("Branch updated successfully!");
-      qc.setQueryData(["branchs"], (old: Branch[] = []) =>
-        old.map((branch) =>
-          branch.id === updateBranch.id ? updateBranch : branch,
-        ),
-      );
+      qc.invalidateQueries({ queryKey: ["branches"] });
       setEditingBranch(null);
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("Failed to update branch. Please try again.");
     },
   });
@@ -79,16 +71,12 @@ export function BranchesTable() {
       const { data } = await createBranch(values);
       return data.branch;
     },
-    onSuccess: (newBranch) => {
-      if (!newBranch) return;
+    onSuccess: () => {
       toast.success("Branch created successfully!");
-      qc.setQueryData(["branchs"], (old: Branch[] = []) => [
-        ...old,
-        newBranch,
-      ]);
+      qc.invalidateQueries({ queryKey: ["branches"] });
       setCreateOpen(false);
     },
-    onError: (error) => {
+    onError: () => {
       toast.error("Failed to create branch. Please try again.");
     },
   });
@@ -106,9 +94,6 @@ export function BranchesTable() {
           searchTerm={searchTerm}
           onSearch={setSearchTerm}
           searchPlaceholder="Search branches..."
-          pageSize={filtered.length || 0}
-          onChangePageSize={() => { }}
-          showPageSize={false}
         />
       </CardHeader>
       <CardContent>
@@ -188,8 +173,8 @@ export function BranchesTable() {
         open={!!editingBranch}
         onOpenChange={(open) => !open && setEditingBranch(null)}
         onSubmit={(data) => updatemutation.mutate(data)}
-        title="Edit Branch"
         initialData={editingBranch || undefined}
+        isLoading={updatemutation.isPending}
       />
       <BranchFormDialog
         open={createOpen}
@@ -197,7 +182,7 @@ export function BranchesTable() {
         onSubmit={(data) => {
           createMutation.mutate(data)
         }}
-        title="Create New Branch"
+        isLoading={createMutation.isPending}
       />
       <CustomAlertDialog
         isOpen={alertOpen}

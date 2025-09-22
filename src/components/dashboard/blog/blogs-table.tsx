@@ -65,13 +65,10 @@ export function BlogsTable() {
 
     const deleteMutation = useMutation({
         mutationFn: deleteBlog,
-        onSuccess: (_, slug) => {
+        onSuccess: () => {
             setIsOpen(false);
             toast.success("Blog deleted successfully");
-            queryClient.invalidateQueries({ queryKey: ["blogs"] });
-            queryClient.setQueryData(["blogs"], (old: Blog[] = []) =>
-                old.filter((blog) => blog.slug !== slug),
-            );
+            queryClient.invalidateQueries({ queryKey: ["blogs"], exact: false });
         },
         onError: () => {
             setIsOpen(false);
@@ -85,18 +82,12 @@ export function BlogsTable() {
             const { data } = await updateBlog(editingBlog?.slug!, values);
             return data.blog;
         },
-        onSuccess: (updateBlog) => {
-            if (!updateBlog) return;
+        onSuccess: () => {
             toast.success("Blog updated successfully!");
             queryClient.invalidateQueries({ queryKey: ["blogs"] });
-            queryClient.setQueryData(["blogs"], (old: Blog[] = []) =>
-                old.map((blog) =>
-                    blog.slug === updateBlog.slug ? updateBlog : blog,
-                ),
-            );
             setEditingBlog(null);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to update blog. Please try again.");
         },
     });
@@ -105,17 +96,12 @@ export function BlogsTable() {
             const { data } = await createBlog(values);
             return data.blog;
         },
-        onSuccess: (newBlog) => {
-            if (!newBlog) return;
+        onSuccess: () => {
             toast.success("Blog created successfully!");
             queryClient.invalidateQueries({ queryKey: ["blogs"] });
-            queryClient.setQueryData(["blogs"], (old: Blog[] = []) => [
-                ...old,
-                newBlog,
-            ]);
             setIsCreateDialogOpen(false);
         },
-        onError: (error) => {
+        onError: () => {
             toast.error("Failed to create blog. Please try again.");
         },
     });
@@ -261,6 +247,7 @@ export function BlogsTable() {
             </CardContent>
 
             <BlogFormDialog
+                isLoading={createMutation.isPending}
                 open={isCreateDialogOpen}
                 onOpenChange={setIsCreateDialogOpen}
                 onSubmit={(data) =>
@@ -269,15 +256,14 @@ export function BlogsTable() {
                         thumbnail: data.thumbnail!,
                     })
                 }
-                title="Create New Blog"
             />
 
             <BlogFormDialog
+                isLoading={updatemutation.isPending}
                 key={editingBlog?.slug || "edit-dialog"}
                 open={!!editingBlog}
                 onOpenChange={(open) => !open && setEditingBlog(null)}
                 onSubmit={(data) => updatemutation.mutate(data)}
-                title="Edit Blog"
                 initialData={editingBlog || undefined}
             />
 

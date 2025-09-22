@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ImageIcon, Trash, Upload } from "lucide-react";
+import { ImageIcon, Loader2, Trash, Upload } from "lucide-react";
 import Image from "next/image";
 import type React from "react";
 import { useEffect, useRef, useState } from "react";
@@ -32,22 +32,15 @@ import {
     updateBlogSchema,
 } from "@/schemas";
 import BlogEditor from "./editor";
-
-interface BlogFormDialogProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSubmit: (data: UpdateBlog | CreateBlog) => void;
-    title: string;
-    initialData?: Blog;
-}
+import { FormDialogProps } from "@/types/interfaces";
 
 export function BlogFormDialog({
     open,
     onOpenChange,
     onSubmit,
-    title,
     initialData,
-}: BlogFormDialogProps) {
+    isLoading,
+}: FormDialogProps<CreateBlog | UpdateBlog, Blog>) {
     const thumbnailRef = useRef<HTMLInputElement>(null);
     const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(
         initialData?.thumbnail?.url || null,
@@ -95,7 +88,7 @@ export function BlogFormDialog({
             >
                 <DialogHeader>
                     <DialogTitle className="text-2xl font-bold">
-                        {title}
+                        {initialData ? "Edit Blog" : "Create Blog"}
                     </DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
@@ -263,8 +256,8 @@ export function BlogFormDialog({
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" >
-                                {initialData ? "Update Blog" : "Create Blog"}
+                            <Button type="submit" variant="secondary" >
+                                {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                             </Button>
                         </div>
                     </form>

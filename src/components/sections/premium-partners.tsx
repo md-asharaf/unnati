@@ -7,48 +7,33 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel";
-import Image from "next/image";
 import { AnimatedHeading } from "../animated-heading";
-import { Image as Partner } from "@/schemas";
+import { Company } from "@/schemas";
 interface PremiumPartnersProps {
-    partners: Partner[];
+    partners: Company[];
 }
 export const PremiumPartners = ({ partners }: PremiumPartnersProps) => {
+    const display = partners.slice(0, 10);
     return (
-        <div className="w-full flex flex-col items-center justify-center space-y-8 p-12 md:p-20 lg:p-24">
+        <div className="w-full flex flex-col items-center justify-center space-y-8 py-12 sm:py-14 md:py-20 lg:py-24 px-4 sm:px-6 md:px-10">
             <AnimatedHeading text="Our Premium Partners" />
-            <Carousel
-                opts={{
-                    align: "center",
-                }}
-                className="w-full max-w-5xl mx-auto flex justify-center"
-            >
-                <CarouselContent>
-                    {partners?.map((p, index) => (
-                        <CarouselItem
-                            key={index}
-                            className="md:basis-1/3 lg:basis-1/4 xl:basis-1/5 flex justify-center"
-                        >
-                            <div className="p-1">
-                                <Card className="bg-secondary w-40 h-40 flex items-center justify-center mx-auto transition-transform duration-300 hover:scale-105">
-                                    <CardContent className="flex items-center justify-center w-full p-4">
-                                        <div className="flex items-center justify-center w-full">
-                                            <Image
-                                                src={p.url || "/placeholder.svg"}
-                                                alt={`Partner ${index + 1}`}
-                                                width={80}
-                                                height={80}
-                                            />
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-            </Carousel>
+            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 sm:gap-5 lg:gap-6 xl:gap-8 mx-auto max-w-7xl w-full">
+                {display.map((p) => (
+                    <Card key={p.id} className="flex items-center justify-center bg-secondary/30 hover:bg-secondary/40 rounded-xl shadow-sm hover:shadow-md border border-transparent hover:border-accent/40 transition-all min-h-[90px] sm:min-h-[110px] md:min-h-[130px] lg:min-h-[150px] p-0 overflow-hidden">
+                        <CardContent className="flex items-center justify-center h-full w-full p-2 sm:p-3 overflow-hidden">
+                            <img
+                                src={p.logo?.url || "/placeholder.svg"}
+                                alt={p.name}
+                                className="object-contain h-full w-full scale-95"
+                                loading="lazy"
+                            />
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+            {partners.length > display.length && (
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2">+ {partners.length - display.length} more</p>
+            )}
         </div>
     );
 };

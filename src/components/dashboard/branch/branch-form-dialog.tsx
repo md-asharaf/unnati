@@ -3,9 +3,8 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { createBranchSchema, CreateBranch, Branch } from "@/schemas";
@@ -13,21 +12,12 @@ import { toast } from "sonner";
 import { useJsApiLoader } from "@react-google-maps/api";
 import { PlaceAutocomplete } from "@/components/location/place-auto-complete";
 import { MapPicker } from "@/components/location/map-picker";
+import { FormDialogProps } from "@/types/interfaces";
+import { Loader2 } from "lucide-react";
 
-const formSchema = createBranchSchema;
-
-interface BranchFormDialogProps {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    onSubmit: (data: CreateBranch) => void;
-    title: string;
-    initialData?: Branch;
-}
-
-
-export function BranchFormDialog({ open, onOpenChange, onSubmit, title, initialData }: BranchFormDialogProps) {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+export function BranchFormDialog({ open, onOpenChange, onSubmit, initialData,isLoading }: FormDialogProps<CreateBranch, Branch>) {
+    const form = useForm<CreateBranch>({
+        resolver: zodResolver(createBranchSchema),
         defaultValues: initialData ?? {
             name: "",
             phone: "",
@@ -60,7 +50,7 @@ export function BranchFormDialog({ open, onOpenChange, onSubmit, title, initialD
                 >
                     <DialogHeader>
                         <DialogTitle>
-                            {title}
+                            {initialData ? "Edit Branch" : "Create Branch"}
                         </DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
@@ -143,12 +133,12 @@ export function BranchFormDialog({ open, onOpenChange, onSubmit, title, initialD
                                 />
                             )}
 
-                            <DialogFooter>
+                            <div className="flex justify-end gap-3 pt-4 border-t">
                                 <Button variant="outline" onClick={() => onOpenChange(false)} disabled={!form.watch("address")}>Cancel</Button>
-                                <Button type="submit" disabled={!form.watch("address")}>
-                                    {initialData ? "Save" : "Create"}
+                                <Button type="submit" variant="secondary" disabled={!form.watch("address")}>
+                                    {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                                 </Button>
-                            </DialogFooter>
+                            </div>
                         </form>
                     </Form>
                 </DialogContent>

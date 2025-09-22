@@ -30,22 +30,16 @@ import {
 import { type CreateFaq, createFaqSchema, type Faq, Topic } from "@/schemas";
 import { createTopic, fetchTopics } from "@/queries/topics";
 import { toast } from "sonner";
-
-type Props = {
-    open: boolean;
-    onOpenChange: (open: boolean) => void;
-    title: string;
-    initialData?: Faq;
-    onSubmit: (values: CreateFaq) => void;
-};
+import { Loader2 } from "lucide-react";
+import { FormDialogProps } from "@/types/interfaces";
 
 export function FaqFormDialog({
     open,
     onOpenChange,
-    title,
     initialData,
     onSubmit,
-}: Props) {
+    isLoading
+}: FormDialogProps<CreateFaq, Faq>) {
     const queryClient = useQueryClient();
     const [isCreateTopicOpen, setIsCreateTopicOpen] = useState(false);
     const [newTopicName, setNewTopicName] = useState("");
@@ -94,7 +88,7 @@ export function FaqFormDialog({
                 <DialogContent className="max-w-xl">
                     <DialogHeader>
                         <DialogTitle className="text-2xl font-bold">
-                            {title}
+                            {initialData ? "Edit FAQ" : "Create FAQ"}
                         </DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
@@ -188,8 +182,8 @@ export function FaqFormDialog({
                                 >
                                     Cancel
                                 </Button>
-                                <Button type="submit">
-                                    {initialData ? "Update FAQ" : "Create FAQ"}
+                                <Button type="submit" variant="secondary">
+                                    {isLoading ? <Loader2 className="animate-spin h-4 w-4" /> : initialData ? "Save" : "Create"}
                                 </Button>
                             </div>
                         </form>
@@ -221,8 +215,9 @@ export function FaqFormDialog({
                                 onClick={() =>
                                     createTopicMutation.mutate(newTopicName.trim())
                                 }
+                                variant="secondary"
                             >
-                                {createTopicMutation.isPending ? "Creating..." : "Create"}
+                                {createTopicMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Create"}
                             </Button>
                         </div>
                     </div>

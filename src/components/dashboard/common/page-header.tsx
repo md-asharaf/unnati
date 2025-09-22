@@ -15,7 +15,7 @@ export function PageHeader({ title, subtitle, icon: Icon }: Props) {
                     <div
                         className={cn(
                             "inline-flex items-center justify-center rounded-xl shadow-sm",
-                            "size-10 md:size-12 bg-gradient-to-br from-primary/15 to-primary/5 text-primary ring-1 ring-primary/20",
+                            "size-10 md:size-12 bg-gradient-to-br from-secondary/15 to-secondary/5 text-secondary ring-1 ring-primary/20",
                         )}
                     >
                         <Icon className="h-5 w-5 md:h-6 md:w-6" />
