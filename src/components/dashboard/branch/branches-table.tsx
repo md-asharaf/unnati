@@ -23,13 +23,11 @@ export function BranchesTable() {
   const [searchTerm, setSearchTerm] = useState("");
   const [createOpen, setCreateOpen] = useState(false);
   const [editingBranch, setEditingBranch] = useState<Branch | null>(null);
-  const { data: branches = [], isLoading, isFetching } = useQuery({
+  const { data, isLoading, isFetching } = useQuery({
     queryKey: ["branches"],
-    queryFn: async (): Promise<Branch[]> => {
-      const { data } = await fetchBranches()
-      return data.branches;
-    }
+    queryFn: fetchBranches
   });
+  const branches = data?.branches ?? [];
   const filtered = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
     if (!q) return branches;
@@ -54,7 +52,7 @@ export function BranchesTable() {
   const updatemutation = useMutation({
     mutationFn: async (values: CreateBranch) => {
       if (!editingBranch) return;
-      const { data } = await updateBranch(editingBranch?.id!, values);
+      const data = await updateBranch(editingBranch?.id!, values);
       return data.branch;
     },
     onSuccess: () => {
@@ -68,7 +66,7 @@ export function BranchesTable() {
   });
   const createMutation = useMutation({
     mutationFn: async (values: CreateBranch) => {
-      const { data } = await createBranch(values);
+      const data = await createBranch(values);
       return data.branch;
     },
     onSuccess: () => {

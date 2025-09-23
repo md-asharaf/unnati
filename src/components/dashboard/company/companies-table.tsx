@@ -49,8 +49,8 @@ export function CompaniesTable() {
         queryFn: async () => await fetchCompanies(page, limit),
     });
 
-    const companies = data?.data.companies ?? [];
-    const totalPages = data?.data.totalPages ?? 1;
+    const companies = data?.companies ?? [];
+    const totalPages = data?.totalPages ?? 1;
     const filteredCompanies = useMemo(
         () =>
             companies.filter(
@@ -79,7 +79,7 @@ export function CompaniesTable() {
     const updatemutation = useMutation({
         mutationFn: async (values: UpdateCompany) => {
             if (!editingCompany) return;
-            const { data } = await updateCompany(editingCompany?.id!, values);
+            const data = await updateCompany(editingCompany?.id!, values);
             return data.company;
         },
         onSuccess: () => {
@@ -93,7 +93,7 @@ export function CompaniesTable() {
     });
     const createMutation = useMutation({
         mutationFn: async (values: CreateCompany) => {
-            const { data } = await createCompany(values);
+            const data = await createCompany(values);
             return data.company;
         },
         onSuccess: ( ) => {

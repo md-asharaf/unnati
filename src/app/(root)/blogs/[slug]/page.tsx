@@ -1,12 +1,18 @@
-import { fetchBlog } from "@/queries/blogs"
+import { db } from "@/lib/db";
 import { ArrowLeft, Calendar, Clock } from "lucide-react"
 import Link from "next/link"
+import { notFound } from "next/navigation"
 
 
-export default async function BlogPostClient({ params }: { params: Promise<{ slug: string }> }) {
+export default async function BlogPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = await params
-    const { data } = await fetchBlog(slug)
-    const post = data.blog
+    const blog = await db.blog.findUnique({
+        where: { slug },
+        include: { thumbnail: true }
+    });
+    if (!blog) {
+        notFound()
+    }
     const formatDate = (date: Date) => {
         return new Date(date).toLocaleDateString("en-US", {
             month: "long",
@@ -15,30 +21,30 @@ export default async function BlogPostClient({ params }: { params: Promise<{ slu
         })
     }
 
-    const estimatedReadTime = Math.ceil(post.content.split(" ").length / 200)
+    const estimatedReadTime = Math.ceil(blog.content.split(" ").length / 200)
 
     return (
         <div className="min-h-screen bg-background">
             <div className="container mx-auto px-6 py-16 max-w-4xl">
                 {/* Back button */}
                 <Link
-                    href="/blog"
+                    href="/blogs"
                     className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors mb-12 group"
                 >
                     <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                    Back to blog
+                    Back to All blogs
                 </Link>
 
                 {/* Article header */}
                 <header className="mb-12">
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-sans font-light text-foreground text-balance mb-8">
-                        {post.title}
+                        {blog.title}
                     </h1>
 
                     <div className="flex items-center gap-6 text-sm text-muted-foreground">
                         <div className="flex items-center gap-2">
                             <Calendar className="w-4 h-4" />
-                            <time>{formatDate(post.createdAt)}</time>
+                            <time>{formatDate(blog.createdAt)}</time>
                         </div>
                         <div className="flex items-center gap-2">
                             <Clock className="w-4 h-4" />
@@ -49,19 +55,8 @@ export default async function BlogPostClient({ params }: { params: Promise<{ slu
 
                 {/* Article content */}
                 <article className="prose prose-lg prose-neutral dark:prose-invert max-w-none">
-                    <div className="whitespace-pre-line leading-relaxed" dangerouslySetInnerHTML={{ __html: post.content }} />
+                    <div className="whitespace-pre-line leading-relaxed" dangerouslySetInnerHTML={{ __html: blog.content }} />
                 </article>
-
-                {/* Navigation */}
-                <footer className="mt-16 pt-8 border-t border-border/20">
-                    <Link
-                        href="/blogs"
-                        className="inline-flex items-center gap-2 text-sm font-mono text-muted-foreground hover:text-foreground transition-colors group"
-                    >
-                        <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" />
-                        Back to all posts
-                    </Link>
-                </footer>
             </div>
         </div>
     )

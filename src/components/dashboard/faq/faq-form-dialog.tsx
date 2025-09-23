@@ -44,13 +44,12 @@ export function FaqFormDialog({
     const [isCreateTopicOpen, setIsCreateTopicOpen] = useState(false);
     const [newTopicName, setNewTopicName] = useState("");
 
-    const { data = [] } = useQuery({
+    const { data } = useQuery({
         queryKey: ["topics", { page: 1, limit: 20 }],
-        queryFn: async (): Promise<Topic[]> => {
-            const { data } = await fetchTopics(1, 20);
-            return data.topics;
-        },
+        queryFn: async () => fetchTopics(1, 20)
     });
+
+    const topics = data?.topics ?? [];
 
     const form = useForm<CreateFaq>({
         resolver: zodResolver(createFaqSchema),
@@ -63,7 +62,7 @@ export function FaqFormDialog({
 
     const createTopicMutation = useMutation({
         mutationFn: async (name: string) => {
-            const { data } = await createTopic({ name });
+            const data = await createTopic({ name });
             return data.topic;
         },
         onSuccess: (topic) => {
@@ -155,7 +154,7 @@ export function FaqFormDialog({
                                                     <SelectValue placeholder="Select a topic" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    {data?.map((t) => (
+                                                    {topics?.map((t) => (
                                                         <SelectItem
                                                             key={t.id}
                                                             value={t.id}

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { AnimatedHeading } from "../animated-heading";
 import { User } from "lucide-react";
 import { Placement } from "@/schemas";

@@ -1,10 +1,17 @@
 import instance from "@/lib/axios";
-import type { CreateUsp } from "@/schemas";
+import type { Usp, CreateUsp } from "@/schemas";
+import { ApiResponse } from "@/types/interfaces";
+
+interface MultipleUspResponse { usps: Usp[] }
+interface SingleUspResponse { usp: Usp }
+
+type MultipleUspApiResponse = ApiResponse<MultipleUspResponse>
+type SingleUspApiResponse = ApiResponse<SingleUspResponse>
 
 const fetchUsps = async () => {
     try {
-        const res = await instance.get(`/usps`);
-        return res.data;
+        const res = await instance.get<MultipleUspApiResponse>(`/usps`);
+        return res.data.data!;
     } catch (e) {
         return { usps: [] };
     }
@@ -12,28 +19,28 @@ const fetchUsps = async () => {
 
 const createUsp = async ({ bulletPoints, heading, subheading }: CreateUsp) => {
     try {
-        const res = await instance.post("/usps", { bulletPoints, heading, subheading });
-        return res.data;
+        const res = await instance.post<SingleUspApiResponse>("/usps", { bulletPoints, heading, subheading });
+        return res.data.data!;
     } catch (e) {
-        return null;
+        return { usp: null };
     }
 }
 
 const updateUsp = async (id: string, { bulletPoints, heading, subheading }: CreateUsp) => {
     try {
-        const res = await instance.put(`/usps/${id}`, { bulletPoints, heading, subheading });
-        return res.data;
+        const res = await instance.put<SingleUspApiResponse>(`/usps/${id}`, { bulletPoints, heading, subheading });
+        return res.data.data!;
     } catch (e) {
-        return null;
+        return { usp: null };
     }
 }
 
 const deleteUsp = async (id: string) => {
     try {
-        const res = await instance.delete(`/usps/${id}`);
-        return res.data;
+        const res = await instance.delete<SingleUspApiResponse>(`/usps/${id}`);
+        return res.data.data!;
     } catch (e) {
-        return null;
+        return { usp: null };
     }
 }
 

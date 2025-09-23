@@ -1,11 +1,13 @@
-import { PrismaClient } from "@/../generated/prisma";
-import RedisService from "../services/redis";
+import RedisService from "@/services/redis";
+import { PrismaClient } from '@/../generated/prisma';
 import { logger } from "./logger";
 
 let prisma: PrismaClient;
+let redis: RedisService;
 
 if (process.env.NODE_ENV === "production") {
     prisma = new PrismaClient();
+    redis = new RedisService();
 } else {
     // @ts-ignore
     if (!global.prisma) {
@@ -13,31 +15,22 @@ if (process.env.NODE_ENV === "production") {
         global.prisma = new PrismaClient();
     }
     // @ts-ignore
-    prisma = global.prisma;
-}
-
-export const db = prisma;
-
-db.$connect()
-    .then(() => {
-        logger.info("[PRISMA] : connected to database");
-    })
-    .catch((error: any) => {
-        logger.error("[PRISMA] : failed to connect database : ", error);
-    });
-
-let redis: RedisService;
-
-if (process.env.NODE_ENV === "production") {
-    redis = new RedisService();
-} else {
-    // @ts-ignore
     if (!global.redis) {
         // @ts-ignore
         global.redis = new RedisService();
     }
     // @ts-ignore
+    prisma = global.prisma;
+    // @ts-ignore
     redis = global.redis;
 }
 
-export { redis };
+prisma
+    .$connect()
+    .then(() => logger.info("[POSTGRES] Connected to DB"))
+    .catch((e) => logger.error("[POSTGRES] DB connection error", e));
+
+export {
+    prisma as db,
+    redis
+}

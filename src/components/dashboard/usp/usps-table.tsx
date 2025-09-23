@@ -34,7 +34,7 @@ export function UspsTable() {
         queryFn: async () => await fetchUsps(),
     });
 
-    const usps = data?.data.usps ?? [];
+    const usps = data?.usps ?? [];
     const filteredUsps = useMemo(
         () =>
             usps.filter(
@@ -62,8 +62,8 @@ export function UspsTable() {
     const updatemutation = useMutation({
         mutationFn: async (values: CreateUsp) => {
             if (!editingUsp) return;
-            const { data } = await updateUsp(editingUsp?.id!, values);
-            return data.usp;
+            const { usp } = await updateUsp(editingUsp?.id!, values);
+            return usp;
         },
         onSuccess: () => {
             toast.success("USP updated successfully!");
@@ -76,8 +76,8 @@ export function UspsTable() {
     });
     const createMutation = useMutation({
         mutationFn: async (values: CreateUsp) => {
-            const { data } = await createUsp(values);
-            return data.usp;
+            const { usp } = await createUsp(values);
+            return usp;
         },
         onSuccess: () => {
             toast.success("USP created successfully!");

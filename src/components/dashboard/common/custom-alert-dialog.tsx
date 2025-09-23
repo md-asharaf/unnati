@@ -21,8 +21,8 @@ export const CustomAlertDialog = ({
     isOpen,
     description = "This action cannot be undone. This will permanently delete your account and remove your data from our servers.",
     title = "Are you sure?",
-    onCancel = () => {},
-    onContinue = () => {},
+    onCancel = () => { },
+    onContinue = () => { },
 }: CustomAlertDialogProps) => {
     return (
         <AlertDialog open={isOpen} onOpenChange={onCancel}>
@@ -37,7 +37,7 @@ export const CustomAlertDialog = ({
                     <AlertDialogCancel onClick={onCancel}>
                         Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction onClick={onContinue}>
+                    <AlertDialogAction onClick={onContinue} className="bg-secondary text-secondary-foreground hover:bg-destructive/70 hover:text-destructive-foreground/70">
                         Continue
                     </AlertDialogAction>
                 </AlertDialogFooter>

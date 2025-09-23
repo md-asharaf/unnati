@@ -1,5 +1,5 @@
 import { Search } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { CardContent } from "@/components/ui/card";
 
 type Props = {
     title: string;

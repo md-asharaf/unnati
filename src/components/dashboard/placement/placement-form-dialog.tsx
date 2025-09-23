@@ -22,11 +22,11 @@ export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData,
     },
   });
 
-  const { data: companies, isLoading: companiesLoading } = useQuery({
+  const { data, isLoading: companiesLoading } = useQuery({
     queryKey: ["companies"],
     queryFn: () => fetchCompanies(1, 50)
   });
-
+  const companies = data?.companies ?? [];
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
@@ -77,7 +77,7 @@ export function PlacementFormDialog({ open, onOpenChange, onSubmit, initialData,
                         <SelectValue placeholder={companiesLoading ? "Loading companies..." : "Select a company"} />
                       </SelectTrigger>
                       <SelectContent>
-                        {Array.isArray(companies?.data) && companies.data.map((company: any) => (
+                        {Array.isArray(companies) && companies.map((company: any) => (
                           <SelectItem key={company.id} value={company.id}>
                             {company.name}
                           </SelectItem>

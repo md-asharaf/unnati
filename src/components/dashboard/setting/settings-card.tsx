@@ -26,7 +26,7 @@ export const SettingsCard = () => {
     queryKey: ["settings"],
     queryFn: fetchSettings,
   });
-  const setting = data?.data?.setting;
+  const setting = data?.setting;
   useEffect(() => {
     if (setting)
       form.reset({

@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -22,6 +21,7 @@ interface TestimonialCardProps {
 }
 
 import React from "react";
+import { Testimonial } from "@/schemas";
 const TestimonialCard = ({ name, photoUrl, content, rating, companyLogoUrl }: TestimonialCardProps) => {
   const [expanded, setExpanded] = useState(false);
   const displayContent = expanded ? content : (content.length > 80 ? content.slice(0, 80) + "..." : content);
@@ -76,25 +76,12 @@ const TestimonialCard = ({ name, photoUrl, content, rating, companyLogoUrl }: Te
   );
 };
 
-interface Testimonial {
-  id: string;
-  content: string;
-  rating: number;
-  placement: {
-    name: string;
-    photoUrl: string;
-    company?: {
-      logo?: { url: string };
-    };
-  };
-}
-
 interface TestimonialsProps {
   testimonials?: Testimonial[];
 }
 
 export const Testimonials = ({ testimonials = [] }: TestimonialsProps) => {
-  const testimonialList: Testimonial[] =
+  const testimonialList =
     testimonials.length > 0
       ? testimonials
       : [

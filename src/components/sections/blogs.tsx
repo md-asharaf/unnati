@@ -27,7 +27,6 @@ export const Blogs = ({ blogs }: BlogsProps) => {
           </Link>
         ))}
       </div>
-      {blogs.length > 6 && (
         <div className="mt-8 sm:mt-10">
           <Link
             href={"/blogs"}
@@ -36,7 +35,6 @@ export const Blogs = ({ blogs }: BlogsProps) => {
             More Blogs
           </Link>
         </div>
-      )}
     </section>
   );
 };

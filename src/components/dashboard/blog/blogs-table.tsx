@@ -49,8 +49,8 @@ export function BlogsTable() {
         queryFn: async () => await fetchBlogs(page, limit),
     });
 
-    const blogs = data?.data.blogs ?? [];
-    const totalPages = data?.data.totalPages ?? 1;
+    const blogs = data?.blogs ?? [];
+    const totalPages = data?.totalPages ?? 1;
     const filteredBlogs = useMemo(
         () =>
             blogs.filter(
@@ -79,7 +79,7 @@ export function BlogsTable() {
     const updatemutation = useMutation({
         mutationFn: async (values: UpdateBlog) => {
             if (!editingBlog) return;
-            const { data } = await updateBlog(editingBlog?.slug!, values);
+            const data = await updateBlog(editingBlog?.slug!, values);
             return data.blog;
         },
         onSuccess: () => {
@@ -93,7 +93,7 @@ export function BlogsTable() {
     });
     const createMutation = useMutation({
         mutationFn: async (values: CreateBlog) => {
-            const { data } = await createBlog(values);
+            const data = await createBlog(values);
             return data.blog;
         },
         onSuccess: () => {

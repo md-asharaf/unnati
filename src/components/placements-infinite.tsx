@@ -20,10 +20,7 @@ export function PlacementsInfinite({ initialData }: Props) {
     const { data, hasNextPage, isFetchingNextPage, isError, fetchNextPage } = useInfiniteQuery({
         queryKey: ["placements", initialData.limit],
         initialPageParam: initialData.page,
-        queryFn: async ({ pageParam }) => {
-            const { data } = await fetchPlacements(pageParam, initialData.limit)
-            return data;
-        },
+        queryFn: async ({ pageParam }) => await fetchPlacements(pageParam, initialData.limit),
         getNextPageParam: (lastPage, allPages) => {
             const list = (lastPage?.placements || []) as Placement[];
             if (list.length < initialData.limit) return undefined;

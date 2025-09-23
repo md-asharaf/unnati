@@ -1,0 +1,13 @@
+node_modules
+.next
+.vscode
+.idea
+.DS_Store
+.example.env
+logs
+generated
+dist
+bun.lock
+package-lock.json
+tsconfig.tsbuildinfo
+README*.md

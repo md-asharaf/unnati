@@ -44,8 +44,8 @@ export function FaqsTable() {
         placeholderData: keepPreviousData,
     });
 
-    const faqs: Faq[] = data?.data.faqs ?? [];
-    const totalPages = data?.data.totalPages ?? 1;
+    const faqs: Faq[] = data?.faqs ?? [];
+    const totalPages = data?.totalPages ?? 1;
 
     const filteredFaqs = useMemo(
         () =>
@@ -75,8 +75,8 @@ export function FaqsTable() {
     const updatemutation = useMutation({
         mutationFn: async (values: CreateFaq) => {
             if (!editingFaq) return;
-            const { data } = await updateFaq(editingFaq?.id!, values);
-            return data.faq as Faq;
+            const data = await updateFaq(editingFaq?.id!, values);
+            return data.faq;
         },
         onSuccess: () => {
             toast.success("FAQ updated successfully!");
@@ -90,7 +90,7 @@ export function FaqsTable() {
 
     const createMutation = useMutation({
         mutationFn: async (values: CreateFaq) => {
-            const { data } = await createFaq(values);
+            const data = await createFaq(values);
             return data.faq;
         },
         onSuccess: () => {

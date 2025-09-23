@@ -1,12 +1,5 @@
 "use client"
 import { Card, CardContent } from "@/components/ui/card";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
 import { AnimatedHeading } from "../animated-heading";
 import { Company } from "@/schemas";
 interface PremiumPartnersProps {

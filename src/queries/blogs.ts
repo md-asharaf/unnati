@@ -1,30 +1,44 @@
 import instance from "@/lib/axios"
-import { CreateBlog, UpdateBlog } from "@/schemas"
+import { Blog, CreateBlog, UpdateBlog } from "@/schemas"
+import { ApiResponse, Pagination } from "@/types/interfaces"
+interface MultipleBlogResponse extends Pagination {
+    blogs: Blog[]
+}
+interface SingleBlogResponse {
+    blog: Blog
+}
+
+type MultipleBlogApiResponse = ApiResponse<MultipleBlogResponse>
+type SingleBlogApiResponse = ApiResponse<SingleBlogResponse>
 
 const fetchBlogs = async (page = 1, limit = 10) => {
     try {
-        const response = await instance.get("/blogs", { params: { page, limit } })
-        return response.data
+        const response = await instance.get<MultipleBlogApiResponse>("/blogs", { params: { page, limit } })
+        return response.data.data!;
     } catch (e) {
-        return { blogs: [], page, limit, total: 0 }
+        return { blogs: [], page, limit, total: 0, totalPages: 0 }
     }
 }
 
 const fetchBlog = async (slug: string) => {
     try {
-        const response = await instance.get(`/blogs/${slug}`)
-        return response.data
+        const response = await instance.get<SingleBlogApiResponse>(`/blogs/${slug}`)
+        return response.data.data!;
     } catch (e) {
-        return null
+        return {
+            blog: null
+        }
     }
 }
 
 const deleteBlog = async (slug: string) => {
     try {
-        const response = await instance.delete(`/blogs/${slug}`)
-        return response.data
+        const response = await instance.delete<SingleBlogApiResponse>(`/blogs/${slug}`)
+        return response.data.data!;
     } catch (e) {
-        return null
+        return {
+            blog: null
+        }
     }
 }
 
@@ -35,10 +49,12 @@ const createBlog = async ({ title, content, slug, thumbnail }: CreateBlog) => {
         formData.append("title", title)
         formData.append("content", content)
         formData.append("slug", slug)
-        const response = await instance.post("/blogs", formData, { headers: { "Content-Type": "multipart/form-data" } })
-        return response.data
+        const response = await instance.post<SingleBlogApiResponse>("/blogs", formData, { headers: { "Content-Type": "multipart/form-data" } })
+        return response.data.data!;
     } catch (e) {
-        return null
+        return {
+            blog: null
+        }
     }
 }
 
@@ -49,10 +65,12 @@ const updateBlog = async (slug: string, { title, content, slug: newSlug, thumbna
         formData.append("title", title)
         formData.append("content", content)
         formData.append("slug", newSlug)
-        const response = await instance.patch(`/blogs/${slug}`, formData, { headers: { "Content-Type": "multipart/form-data" } })
-        return response.data
+        const response = await instance.patch<SingleBlogApiResponse>(`/blogs/${slug}`, formData, { headers: { "Content-Type": "multipart/form-data" } })
+        return response.data.data!;
     } catch (e) {
-        return null
+        return {
+            blog: null
+        }
     }
 }
 
