@@ -15,9 +15,8 @@ const logout = async () => {
     return response.data;
 }
 
-
 const getMe = async () => {
-    const response = await instance.post('/me');
+    const response = await instance.get('/me');
     return response.data;
 }
 

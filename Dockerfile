@@ -37,5 +37,10 @@ COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
 
+# Healthcheck
+
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=20s \
+    CMD curl -fsS http://localhost:3000/api/health || exit 1
+
 # The command to start the production server
 CMD ["node", "server.js"]

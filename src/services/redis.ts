@@ -13,6 +13,7 @@ export default class RedisService {
             host: host,
             port: port,
             db: db,
+            lazyConnect: true,
         });
         this.client.on("connect", () => {
             logger.info("[REDIS] Connected to Redis.");

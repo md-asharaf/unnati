@@ -17,15 +17,11 @@ export async function middleware(req: NextRequest) {
   if (req.method === "GET") {
     response = NextResponse.next();
   } else {
-    const { error, id, status } = await requireAdmin();
-    if (!id) {
+    const { error, status } = await requireAdmin();
+    if (error) {
       response = NextResponse.json({ error }, { status });
     } else {
-      const requestHeaders = new Headers(req.headers);
-      requestHeaders.set("x-admin-id", id);
-      response = NextResponse.next({
-        request: { headers: requestHeaders },
-      });
+      response = NextResponse.next();
     }
   }
   Object.entries(corsHeaders).forEach(([key, value]) => {
