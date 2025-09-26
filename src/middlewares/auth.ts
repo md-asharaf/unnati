@@ -1,17 +1,17 @@
 import { verifyToken } from "../lib/token";
+import { cookies } from "next/headers";
 
-export const requireAdmin = async (authHeader: string | null) => {
-    const token = authHeader?.startsWith("Bearer ")
-        ? authHeader.slice(7)
-        : null;
-
-    if (!token) {
+export const requireAdmin = async () => {
+    const cookieStore = await cookies();
+    const accessToken = cookieStore.get("accessToken")?.value;
+    if (!accessToken) {
         return { error: "Unauthorized", status: 401 };
     }
+    let payload;
     try {
-        var decodedToken = await verifyToken(token);
-    } catch (err) {
+        payload = await verifyToken(accessToken);
+    } catch {
         return { error: "Invalid or expired token", status: 401 };
     }
-    return { id: decodedToken.id };
+    return { id: payload.id };
 }

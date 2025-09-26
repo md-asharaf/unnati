@@ -14,14 +14,10 @@ const geistMono = Geist_Mono({
 });
 export default function AdminLayout({
     children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} font-mono antialiased`}
-            >
+            <body className={`${geistSans.variable} ${geistMono.variable} font-mono antialiased`}>
                 <AuthProvider>
                     <QueryProvider>
                         <main className="min-h-screen">{children}</main>

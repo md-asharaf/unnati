@@ -1,34 +1,46 @@
-ARG NODE_VERSION=20.14.0
-
-FROM node:${NODE_VERSION}-alpine AS builder
-
-WORKDIR /usr/src/template
+# Stage 1: Builder - Installs dependencies and builds the application
+FROM node:20-alpine AS builder
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
 COPY . .
 
+# Generate the Prisma client based on your schema
 RUN npx prisma generate
+
+# Disable Next.js telemetry during the build
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Build the Next.js application
 RUN npm run build
-RUN npm prune --production
 
-FROM node:${NODE_VERSION}-alpine AS production
 
-WORKDIR /usr/src/template
-COPY --from=builder /usr/src/template/node_modules ./node_modules
-COPY --from=builder /usr/src/template/.next ./.next
-COPY --from=builder /usr/src/template/generated ./generated
-COPY --from=builder /usr/src/template/package*.json ./
-COPY --from=builder /usr/src/template/prisma ./prisma
-COPY --from=builder /usr/src/template/.env ./
-COPY --from=builder /usr/src/template/public ./public
+# ---
 
-# Using the correct port from your application
+
+# Stage 2: Runner - Creates the final, small production image
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# Set the environment to production
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Copy only the necessary files from the standalone output
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+
+# The Prisma client is automatically included by the standalone output
+
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:3000/health || exit 1
+# Healthcheck
 
-# Run with module-alias for path aliases
-CMD ["npm", "run", "start"]
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 --start-period=20s \
+    CMD curl -fsS http://localhost:3000/api/health || exit 1
+
+# The command to start the production server
+CMD ["node", "server.js"]

@@ -37,7 +37,7 @@ export function InputOTPForm({ email }: { email: string }) {
     const { mutate, isPending } = useMutation({
         mutationFn: (values: VerifyLogin) => verifyLogin(values.email, values.otp),
         onSuccess: ({ data }) => {
-            login(data.admin, data.accessToken, data.refreshToken);
+            login(data.admin);
             toast.success("Login successful!")
         },
         onError: () => {
