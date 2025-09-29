@@ -21,11 +21,11 @@ import { login } from "@/queries/auth";
 import { toast } from "sonner";
 import { useAuth } from "@/providers/auth-provider";
 import Loader from "@/components/ui/loader";
-import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
+import { useTransitionRouter } from "next-view-transitions";
 
 export default function LoginPage() {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const { loading, admin } = useAuth();
     const [showOTP, setShowOTP] = useState(false);
     useEffect(() => {

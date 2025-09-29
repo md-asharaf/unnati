@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Instagram, Facebook, Linkedin, Twitter } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 interface FooterProps {
     logoUrl: string;

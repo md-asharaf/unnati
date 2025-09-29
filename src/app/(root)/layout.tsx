@@ -6,6 +6,7 @@ import { Footer } from "@/components/layout/footer";
 import QueryProvider from "@/providers/query-provider";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { ViewTransitions } from "next-view-transitions";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -44,22 +45,24 @@ export default async function RootLayout({
     const logoUrl =
         "https://upload.wikimedia.org/wikipedia/commons/e/ea/Superman_shield.svg";
     return (
-        <html lang="en">
-            <body
-                className={`${geistSans.variable} ${geistMono.variable} font-mono antialiased`}
-            ><QueryProvider>
-                    <div className="min-h-screen flex flex-col">
-                        <header>
-                            <Header logoUrl={logoUrl} phone={phone} email={email} social={{ facebook: facebook!, linkedin: linkedin!, instagram: instagram!, twitter: twitter! }} />
-                        </header>
-                        <main className="flex-grow">{children}</main>
+        <ViewTransitions>
+            <html lang="en">
+                <body
+                    className={`${geistSans.variable} ${geistMono.variable} font-mono antialiased`}
+                ><QueryProvider>
+                        <div className="min-h-screen flex flex-col">
+                            <header>
+                                <Header logoUrl={logoUrl} phone={phone} email={email} social={{ facebook: facebook!, linkedin: linkedin!, instagram: instagram!, twitter: twitter! }} />
+                            </header>
+                            <main className="flex-grow">{children}</main>
 
-                        <footer className="mt-auto">
-                            <Footer logoUrl={logoUrl} />
-                        </footer>
-                    </div>
-                </QueryProvider>
-            </body>
-        </html>
+                            <footer className="mt-auto">
+                                <Footer logoUrl={logoUrl} />
+                            </footer>
+                        </div>
+                    </QueryProvider>
+                </body>
+            </html>
+        </ViewTransitions>
     );
 }

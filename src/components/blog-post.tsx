@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { Blog } from "@/schemas";
 import Image from "next/image";
 

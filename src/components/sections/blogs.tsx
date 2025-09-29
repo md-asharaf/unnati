@@ -1,7 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { AnimatedHeading } from "../animated-heading";
 import { Blog } from "@/schemas";
+import { Link } from "next-view-transitions";
 interface BlogsProps {
   blogs: Blog[];
 }

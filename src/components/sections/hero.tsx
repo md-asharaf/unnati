@@ -1,6 +1,6 @@
+import { Link } from "next-view-transitions";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
-import Link from "next/link";
 
 interface HeroProps {
     welcomeText?: string;

@@ -1,7 +1,6 @@
 "use client";
 
-
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { Search, Menu, X, Mail, Phone, Facebook, Linkedin, Instagram, Twitter } from "lucide-react";
 import { useState } from "react";
@@ -73,7 +72,7 @@ export const Header = ({ logoUrl, phone, email, social }: HeaderProps) => {
                 <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
                     {/* Logo */}
                     <div className="flex items-center space-x-2">
-                        <a href="/">
+                        <Link href="/" aria-label="Home">
                             <Image
                                 src={logoUrl || "/placeholder.svg"}
                                 alt="Logo"
@@ -81,7 +80,7 @@ export const Header = ({ logoUrl, phone, email, social }: HeaderProps) => {
                                 height={50}
                                 className="h-10 w-10 md:h-12 md:w-12"
                             />
-                        </a>
+                        </Link>
                     </div>
 
                     {/* Desktop Nav links - Using primary color for main navigation */}

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/sidebar"
 import { Newspaper, Image as ImageIcon, Building2, Handshake, MapPin, Users, HelpCircle, BookOpen, Award, Star, Settings2 } from "lucide-react"
 import { NavUser } from "./nav-user"
-import Link from "next/link"
+import { Link } from "next-view-transitions"
 import { Admin } from "@/schemas"
 
 const items = [

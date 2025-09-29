@@ -1,6 +1,6 @@
 import { Course } from "@/schemas";
-import Link from "next/link";
 import { AnimatedHeading } from "../animated-heading";
+import { Link } from "next-view-transitions";
 
 interface Batch {
     course: Course;

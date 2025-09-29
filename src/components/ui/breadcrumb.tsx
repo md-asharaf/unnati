@@ -1,9 +1,9 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import Link from "next/link";
 import type * as React from "react";
 import { cn } from "@/lib/utils";
+import { Link } from "next-view-transitions";
 
 export function Breadcrumb({
     className,

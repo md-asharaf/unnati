@@ -6,9 +6,9 @@ import {
 } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 import { AnimatedHeading } from "../animated-heading";
 import { Faq } from "@/schemas";
+import { Link } from "next-view-transitions";
 
 interface FAQsProps {
     items: Faq[]
